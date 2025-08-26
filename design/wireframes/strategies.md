@@ -7,7 +7,7 @@ Hub for all 20 money-saving features organized by impact categories. Allows user
 
 ```
 ┌─────────────────────────────────────┐
-│ 💰 20 Money-Saving Strategies [🔍] │
+│ ₹30L @ 8.5% • 20yr            [⚙️] │
 ├─────────────────────────────────────┤
 │                                     │
 │ 📈 CORE SAVINGS CALCULATORS        │
@@ -172,10 +172,13 @@ Hub for all 20 money-saving features organized by impact categories. Allows user
 
 ## Component Breakdown
 
-### Header
-- Back navigation arrow
-- Screen title with feature count "20 Money-Saving Strategies"
-- Search icon for feature discovery
+### Header (Smart Compact)
+- Loan summary "₹30L @ 8.5% • 20yr" (shows loan context for strategies)
+- Settings gear icon (navigates to Calculator tab for loan adjustments)
+- Entire header is tappable → Goes to Calculator tab
+- Height: 48px (compact design)
+- No back arrow - this is a primary tab
+- Search functionality moved to screen content or floating action
 
 ### Category Sections
 - **Visual Hierarchy**: Categories clearly separated

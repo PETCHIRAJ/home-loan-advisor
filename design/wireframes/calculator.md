@@ -7,7 +7,7 @@ Control center for ALL loan and personal settings. 4th tab in bottom navigation 
 
 ```
 ┌─────────────────────────────────────┐
-│ 📊 Calculator (Control Center)  [?] │
+│ ₹30L @ 8.5% • 20yr            [⚙️] │
 ├─────────────────────────────────────┤
 │                                     │
 │ 💰 LOAN DETAILS                     │
@@ -54,11 +54,13 @@ Control center for ALL loan and personal settings. 4th tab in bottom navigation 
 
 ## Component Breakdown
 
-### Header (Tab Navigation)
-- Screen title "📊 Calculator (Control Center)"
-- Help icon (calculation explanations)
-- No back arrow - this is a primary tab
-- Positions calculator as central control hub
+### Header (Smart Compact - Edit Mode)
+- Loan summary "₹30L @ 8.5% • 20yr" (shows current parameters being edited)
+- Settings gear icon (additional settings and help)
+- Entire header is tappable (can highlight to show edit mode)
+- Height: 48px (compact design)
+- Shows "Edit mode" or highlights when user is actively editing
+- Consistent with other screens for navigation clarity
 
 ### Loan Details Section
 - **Purpose**: Core loan parameter configuration

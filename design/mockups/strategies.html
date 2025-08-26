@@ -82,50 +82,28 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Header */
-        .header {
+        /* Smart Header */
+        .smart-header {
+            height: 48px;
             background: var(--surface);
-            padding: var(--space-lg) var(--space-md);
+            border-bottom: 1px solid var(--divider);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--divider);
-            box-shadow: var(--shadow-sm);
+            padding: 0 16px;
+            cursor: pointer;
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
+        .loan-summary {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
         }
 
-        .back-button {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            padding: var(--space-sm);
-            margin-right: var(--space-md);
-            border-radius: var(--radius-sm);
-            transition: background-color var(--transition-fast);
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .back-button:hover {
-            background-color: var(--surface-variant);
-        }
-
-        .header h1 {
-            font-size: var(--font-size-title);
-            font-weight: 600;
-        }
-
-        .search-button {
-            background: none;
-            border: none;
+        .settings-icon {
             font-size: 20px;
             cursor: pointer;
             padding: var(--space-sm);
@@ -133,7 +111,7 @@
             transition: background-color var(--transition-fast);
         }
 
-        .search-button:hover {
+        .settings-icon:hover {
             background-color: var(--surface-variant);
         }
 
@@ -152,7 +130,7 @@
             padding: var(--space-lg) var(--space-md);
             border-bottom: 3px solid;
             position: sticky;
-            top: 72px;
+            top: 48px;
             z-index: 90;
         }
 
@@ -469,17 +447,12 @@
             margin-bottom: var(--space-xs);
         }
 
-        /* Hidden Categories */
-        .hidden-category {
-            display: none;
-            opacity: 0;
-            transition: opacity var(--transition-slow);
-        }
-
-        .hidden-category.show {
-            display: block;
-            opacity: 1;
-        }
+        /* Category Colors */
+        .category-header.instant { border-bottom-color: var(--error-red); }
+        .category-header.core { border-bottom-color: var(--primary-blue); }
+        .category-header.tax { border-bottom-color: var(--growth-teal); }
+        .category-header.behavioral { border-bottom-color: var(--warning-orange); }
+        .category-header.life { border-bottom-color: #9C27B0; }
 
         /* Responsive Design */
         @media (max-width: 375px) {
@@ -525,121 +498,20 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <h1>🏠 Home Loan Advisor</h1>
-            </div>
-            <div class="header-right">
-                <a href="calculator.html" class="header-icon" aria-label="Settings">⚙️</a>
-            </div>
+        <!-- Smart Header -->
+        <header class="smart-header" onclick="window.location.href='calculator.html'">
+            <div class="loan-summary">₹30L @ 8.5% • 20yr</div>
+            <div class="settings-icon">⚙️</div>
         </header>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Core Savings Calculators -->
+            <!-- Instant Eye-Openers (4) -->
             <section class="category-section">
-                <div class="category-header core">
+                <div class="category-header instant">
                     <div class="category-title">
-                        <span class="category-icon">📈</span>
-                        CORE SAVINGS CALCULATORS
-                    </div>
-                    <div class="category-subtitle">Highest impact, universal applicability</div>
-                </div>
-                
-                <div class="strategies-grid">
-                    <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge low">Low Effort</div>
-                        <div class="strategy-header">
-                            <span class="strategy-icon">🔄</span>
-                            <div class="strategy-content">
-                                <div class="strategy-name">Bi-Weekly Payment Hack</div>
-                                <div class="strategy-description">Switch from monthly → bi-weekly payments</div>
-                            </div>
-                        </div>
-                        <div class="strategy-impact">
-                            <div class="impact-savings">
-                                <div class="savings-amount">Save ₹7,23,450</div>
-                                <div class="savings-label">Lifetime savings</div>
-                            </div>
-                            <div class="impact-time">
-                                <div class="time-saved">3.2yr early</div>
-                                <div class="time-label">Completion</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge medium">Medium Effort</div>
-                        <div class="strategy-header">
-                            <span class="strategy-icon">💸</span>
-                            <div class="strategy-content">
-                                <div class="strategy-name">Extra EMI Strategy</div>
-                                <div class="strategy-description">Pay one additional EMI per year</div>
-                            </div>
-                        </div>
-                        <div class="strategy-impact">
-                            <div class="impact-savings">
-                                <div class="savings-amount">Save ₹5,89,120</div>
-                                <div class="savings-label">Lifetime savings</div>
-                            </div>
-                            <div class="impact-time">
-                                <div class="time-saved">2.8yr early</div>
-                                <div class="time-label">Completion</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge low">Low Effort</div>
-                        <div class="strategy-header">
-                            <span class="strategy-icon">🎯</span>
-                            <div class="strategy-content">
-                                <div class="strategy-name">Round-Up Optimizer</div>
-                                <div class="strategy-description">Round EMI to nearest thousand</div>
-                            </div>
-                        </div>
-                        <div class="strategy-impact">
-                            <div class="impact-savings">
-                                <div class="savings-amount">Save ₹4,12,890</div>
-                                <div class="savings-label">Lifetime savings</div>
-                            </div>
-                            <div class="impact-time">
-                                <div class="time-saved">2.1yr early</div>
-                                <div class="time-label">Completion</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge medium">Planning Required</div>
-                        <div class="strategy-header">
-                            <span class="strategy-icon">💰</span>
-                            <div class="strategy-content">
-                                <div class="strategy-name">Prepayment Impact Calculator</div>
-                                <div class="strategy-description">Shows exact savings potential</div>
-                            </div>
-                        </div>
-                        <div class="strategy-impact">
-                            <div class="impact-savings">
-                                <div class="savings-amount">Variable</div>
-                                <div class="savings-label">Based on amount</div>
-                            </div>
-                            <div class="impact-time">
-                                <div class="time-saved">Calculate</div>
-                                <div class="time-label">For your loan</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Instant Eye-Openers -->
-            <section class="category-section">
-                <div class="category-header eye-openers">
-                    <div class="category-title">
-                        <span class="category-icon">⚡</span>
-                        INSTANT EYE-OPENERS
+                        <span class="category-icon">🔥</span>
+                        INSTANT EYE-OPENERS (4)
                     </div>
                     <div class="category-subtitle">Emotional impact, motivational awareness</div>
                 </div>
@@ -650,13 +522,13 @@
                             <span class="strategy-icon">🔥</span>
                             <div class="strategy-content">
                                 <div class="strategy-name">Daily Interest Burn Counter</div>
-                                <div class="strategy-description">Live counter: ₹1,147 lost today</div>
+                                <div class="strategy-description">₹696/day - Live counter showing daily loss</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Awareness</div>
-                                <div class="savings-label">Motivational</div>
+                                <div class="savings-amount">₹696/day</div>
+                                <div class="savings-label">Interest burn</div>
                             </div>
                             <div class="impact-time">
                                 <div class="time-saved">Live</div>
@@ -670,13 +542,13 @@
                             <span class="strategy-icon">📊</span>
                             <div class="strategy-content">
                                 <div class="strategy-name">78% Rule Revealer</div>
-                                <div class="strategy-description">Why 78% interest paid in 1st half</div>
+                                <div class="strategy-description">See breakdown - Why 78% interest paid in 1st half</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Education</div>
-                                <div class="savings-label">Timing awareness</div>
+                                <div class="savings-amount">78%</div>
+                                <div class="savings-label">Front-loaded</div>
                             </div>
                             <div class="impact-time">
                                 <div class="time-saved">Critical</div>
@@ -689,18 +561,18 @@
                         <div class="strategy-header">
                             <span class="strategy-icon">😱</span>
                             <div class="strategy-content">
-                                <div class="strategy-name">Total Interest Shock Display</div>
-                                <div class="strategy-description">Reveals total interest: ₹50L+</div>
+                                <div class="strategy-name">Total Interest Shock</div>
+                                <div class="strategy-description">₹32.6L lifetime - Reality check of total cost</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Reality Check</div>
-                                <div class="savings-label">Often doubles principal</div>
+                                <div class="savings-amount">₹32.6L</div>
+                                <div class="savings-label">Total interest</div>
                             </div>
                             <div class="impact-time">
-                                <div class="time-saved">Initial</div>
-                                <div class="time-label">Motivation</div>
+                                <div class="time-saved">108%</div>
+                                <div class="time-label">Of principal</div>
                             </div>
                         </div>
                     </div>
@@ -710,105 +582,411 @@
                             <span class="strategy-icon">⚖️</span>
                             <div class="strategy-content">
                                 <div class="strategy-name">Break-Even Point Tracker</div>
-                                <div class="strategy-description">When you own more than bank</div>
+                                <div class="strategy-description">Year 12 - When you own more than bank</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Milestone</div>
-                                <div class="savings-label">Typically year 12-15</div>
+                                <div class="savings-amount">Year 12</div>
+                                <div class="savings-label">Break-even</div>
                             </div>
                             <div class="impact-time">
-                                <div class="time-saved">Progress</div>
-                                <div class="time-label">Visualization</div>
+                                <div class="time-saved">60%</div>
+                                <div class="time-label">Through loan</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Load More Categories -->
-            <section class="load-more" id="load-more-section">
-                <button class="load-more-button" id="load-more-btn">
-                    Load More Categories...
-                </button>
-            </section>
-
-            <!-- Hidden Categories (Smart Comparisons) -->
-            <section class="category-section hidden-category" id="smart-comparisons">
-                <div class="category-header comparisons">
+            <!-- Core Savings Strategies (4) -->
+            <section class="category-section">
+                <div class="category-header core">
                     <div class="category-title">
-                        <span class="category-icon">🧠</span>
-                        RATE OPTIMIZATION TOOLS
+                        <span class="category-icon">📈</span>
+                        CORE SAVINGS STRATEGIES (4)
                     </div>
-                    <div class="category-subtitle">Rate awareness, generic optimization guidance</div>
+                    <div class="category-subtitle">Highest impact, universal applicability</div>
                 </div>
                 
                 <div class="strategies-grid">
                     <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge low">Educational</div>
+                        <div class="effort-badge low">Low Effort</div>
                         <div class="strategy-header">
-                            <span class="strategy-icon">📈</span>
+                            <span class="strategy-icon">💸</span>
                             <div class="strategy-content">
-                                <div class="strategy-name">Rate Awareness Tips</div>
-                                <div class="strategy-description">Learn typical rate ranges 7.5%-10.5%</div>
+                                <div class="strategy-name">Extra EMI Strategy (12+1)</div>
+                                <div class="strategy-description">Save ₹7.2L - Pay one additional EMI per year</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Knowledge</div>
-                                <div class="savings-label">Negotiation power</div>
+                                <div class="savings-amount">Save ₹7.2L</div>
+                                <div class="savings-label">Lifetime savings</div>
                             </div>
                             <div class="impact-time">
-                                <div class="time-saved">Generic</div>
-                                <div class="time-label">Rate guidance</div>
+                                <div class="time-saved">3.2yr early</div>
+                                <div class="time-label">Completion</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge medium">Educational</div>
+                        <div class="effort-badge low">Low Effort</div>
                         <div class="strategy-header">
-                            <span class="strategy-icon">🔄</span>
+                            <span class="strategy-icon">🎯</span>
                             <div class="strategy-content">
-                                <div class="strategy-name">Rate Difference Impact</div>
-                                <div class="strategy-description">See impact of 0.25%, 0.5%, 1% better rates</div>
+                                <div class="strategy-name">Round-Up Optimizer</div>
+                                <div class="strategy-description">Save ₹2.1L - Round EMI to nearest thousand</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Calculate</div>
-                                <div class="savings-label">Different scenarios</div>
+                                <div class="savings-amount">Save ₹2.1L</div>
+                                <div class="savings-label">Lifetime savings</div>
                             </div>
                             <div class="impact-time">
-                                <div class="time-saved">Generic</div>
-                                <div class="time-label">Rate impact</div>
+                                <div class="time-saved">1.8yr early</div>
+                                <div class="time-label">Completion</div>
                             </div>
                         </div>
                     </div>
 
                     <div class="strategy-card" tabindex="0" role="button">
-                        <div class="effort-badge medium">Educational</div>
+                        <div class="effort-badge medium">Planning Required</div>
                         <div class="strategy-header">
-                            <span class="strategy-icon">⚡</span>
+                            <span class="strategy-icon">💰</span>
                             <div class="strategy-content">
-                                <div class="strategy-name">Rate Sensitivity Calculator</div>
-                                <div class="strategy-description">How EMI changes with different rate scenarios</div>
+                                <div class="strategy-name">Prepayment Impact Calculator</div>
+                                <div class="strategy-description">Shows exact savings potential for any amount</div>
                             </div>
                         </div>
                         <div class="strategy-impact">
                             <div class="impact-savings">
-                                <div class="savings-amount">Educational</div>
-                                <div class="savings-label">Rate impact awareness</div>
+                                <div class="savings-amount">Variable</div>
+                                <div class="savings-label">Based on amount</div>
                             </div>
                             <div class="impact-time">
-                                <div class="time-saved">Generic</div>
-                                <div class="time-label">Scenarios</div>
+                                <div class="time-saved">Calculate</div>
+                                <div class="time-label">For your loan</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Timing Critical</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">⏰</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Part-Payment Timing Guide</div>
+                                <div class="strategy-description">When to make prepayments for maximum impact</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Optimize</div>
+                                <div class="savings-label">Impact timing</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Max</div>
+                                <div class="time-label">Effect</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
+
+            <!-- Tax & Investment (4) -->
+            <section class="category-section">
+                <div class="category-header tax">
+                    <div class="category-title">
+                        <span class="category-icon">🧠</span>
+                        TAX & INVESTMENT (4)
+                    </div>
+                    <div class="category-subtitle">Smart money management and tax optimization</div>
+                </div>
+                
+                <div class="strategies-grid">
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Analysis Required</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">📊</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Tax Arbitrage Calculator</div>
+                                <div class="strategy-description">5.95% effective - Compare prepay vs invest after tax</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">5.95%</div>
+                                <div class="savings-label">Effective rate</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">30%</div>
+                                <div class="time-label">Tax bracket</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Decision Tool</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">⚖️</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Prepay vs Investment Guide</div>
+                                <div class="strategy-description">When to prepay vs invest in markets/FDs</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Optimize</div>
+                                <div class="savings-label">Returns</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Risk vs</div>
+                                <div class="time-label">Certainty</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge high">Long-term</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">🏛️</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">PPF vs Prepayment Analyzer</div>
+                                <div class="strategy-description">Compare 15-year PPF vs loan prepayment</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">7.1%</div>
+                                <div class="savings-label">PPF returns</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">15yr</div>
+                                <div class="time-label">Lock-in</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Strategic</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">📉</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Partial Tenure Reduction</div>
+                                <div class="strategy-description">Reduce tenure vs EMI - hybrid approach</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Balanced</div>
+                                <div class="savings-label">Approach</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Flexible</div>
+                                <div class="time-label">Strategy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Behavioral Motivation (4) -->
+            <section class="category-section">
+                <div class="category-header behavioral">
+                    <div class="category-title">
+                        <span class="category-icon">🎯</span>
+                        BEHAVIORAL MOTIVATION (4)
+                    </div>
+                    <div class="category-subtitle">Psychology-based strategies for consistent action</div>
+                </div>
+                
+                <div class="strategies-grid">
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge low">Eye-opener</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">☕</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Coffee-to-EMI Converter</div>
+                                <div class="strategy-description">₹5.2L savings - Daily ₹150 coffee → prepayment</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">₹5.2L</div>
+                                <div class="savings-label">Coffee money</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">₹150</div>
+                                <div class="time-label">Per day</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge low">Auto-pilot</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">📈</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Increment Allocator</div>
+                                <div class="strategy-description">Auto-allocate 50% of salary increments to loan</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">50%</div>
+                                <div class="savings-label">Of increments</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Annual</div>
+                                <div class="time-label">Boost</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Analysis</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">🎛️</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Fixed vs Floating Optimizer</div>
+                                <div class="strategy-description">Switch timing based on rate trends</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Rate</div>
+                                <div class="savings-label">Optimization</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Market</div>
+                                <div class="time-label">Timing</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge high">Complex</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">🔄</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Refinancing ROI Calculator</div>
+                                <div class="strategy-description">Calculate break-even for loan switching</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Variable</div>
+                                <div class="savings-label">Break-even</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">2-3yr</div>
+                                <div class="time-label">Payback</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Life Planning (4) -->
+            <section class="category-section">
+                <div class="category-header life">
+                    <div class="category-title">
+                        <span class="category-icon">👨‍👩‍👧</span>
+                        LIFE PLANNING (4)
+                    </div>
+                    <div class="category-subtitle">Life events and milestone-based strategies</div>
+                </div>
+                
+                <div class="strategies-grid">
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Planning</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">💑</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Marriage Dual-Income Strategy</div>
+                                <div class="strategy-description">Combine incomes for accelerated prepayment</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Double</div>
+                                <div class="savings-label">Income power</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Fast</div>
+                                <div class="time-label">Closure</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Contingency</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">💼</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Job Change EMI Planner</div>
+                                <div class="strategy-description">Prepare for income transitions</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Safety</div>
+                                <div class="savings-label">Net planning</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Risk</div>
+                                <div class="time-label">Mitigation</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge high">Life planning</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">👶</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Children's Milestone Planner</div>
+                                <div class="strategy-description">Balance loan vs education/marriage savings</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">Balance</div>
+                                <div class="savings-label">Priorities</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">18-25yr</div>
+                                <div class="time-label">Planning</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="strategy-card" tabindex="0" role="button">
+                        <div class="effort-badge medium">Tax planning</div>
+                        <div class="strategy-header">
+                            <span class="strategy-icon">📋</span>
+                            <div class="strategy-content">
+                                <div class="strategy-name">Section 80C/24b Maximizer</div>
+                                <div class="strategy-description">Optimize tax benefits with EMI timing</div>
+                            </div>
+                        </div>
+                        <div class="strategy-impact">
+                            <div class="impact-savings">
+                                <div class="savings-amount">₹1.5L</div>
+                                <div class="savings-label">80C limit</div>
+                            </div>
+                            <div class="impact-time">
+                                <div class="time-saved">Annual</div>
+                                <div class="time-label">Benefits</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <!-- Search Overlay -->
@@ -856,24 +1034,39 @@
             const searchClose = document.getElementById('search-close');
             const searchInput = document.getElementById('search-input');
             const searchResults = document.getElementById('search-results');
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            const loadMoreSection = document.getElementById('load-more-section');
-            
-            let categoriesLoaded = false;
+            // Load more functionality removed - all strategies shown by default
 
             // All strategies data for search
             const allStrategies = [
-                { name: 'Bi-Weekly Payment Hack', category: 'Core Savings', description: 'Switch from monthly to bi-weekly payments', savings: 'Save ₹7,23,450', time: '3.2yr early' },
-                { name: 'Extra EMI Strategy', category: 'Core Savings', description: 'Pay one additional EMI per year', savings: 'Save ₹5,89,120', time: '2.8yr early' },
-                { name: 'Round-Up Optimizer', category: 'Core Savings', description: 'Round EMI to nearest thousand', savings: 'Save ₹4,12,890', time: '2.1yr early' },
-                { name: 'Prepayment Impact Calculator', category: 'Core Savings', description: 'Shows exact savings potential', savings: 'Variable', time: 'Calculate' },
-                { name: 'Daily Interest Burn Counter', category: 'Eye-Openers', description: 'Live counter showing daily loss', savings: 'Awareness', time: 'Live' },
-                { name: '78% Rule Revealer', category: 'Eye-Openers', description: 'Why 78% interest paid in first half', savings: 'Education', time: 'Critical' },
-                { name: 'Total Interest Shock Display', category: 'Eye-Openers', description: 'Reveals total interest amount', savings: 'Reality Check', time: 'Initial' },
-                { name: 'Break-Even Point Tracker', category: 'Eye-Openers', description: 'When you own more than bank', savings: 'Milestone', time: 'Progress' },
-                { name: 'Rate Awareness Tips', category: 'Rate Optimization Tools', description: 'Learn typical rate ranges 7.5%-10.5%', savings: 'Knowledge', time: 'Generic' },
-                { name: 'Rate Difference Impact', category: 'Rate Optimization Tools', description: 'See impact of 0.25%, 0.5%, 1% better rates', savings: 'Calculate', time: 'Generic' },
-                { name: 'Rate Sensitivity Calculator', category: 'Rate Optimization Tools', description: 'How EMI changes with different rate scenarios', savings: 'Educational', time: 'Generic' }
+                // Instant Eye-Openers
+                { name: 'Daily Interest Burn Counter', category: 'Instant Eye-Openers', description: '₹696/day - Live counter showing daily loss', savings: '₹696/day', time: 'Live' },
+                { name: '78% Rule Revealer', category: 'Instant Eye-Openers', description: 'See breakdown - Why 78% interest paid in 1st half', savings: '78%', time: 'Critical' },
+                { name: 'Total Interest Shock', category: 'Instant Eye-Openers', description: '₹32.6L lifetime - Reality check of total cost', savings: '₹32.6L', time: '108%' },
+                { name: 'Break-Even Point Tracker', category: 'Instant Eye-Openers', description: 'Year 12 - When you own more than bank', savings: 'Year 12', time: '60%' },
+                
+                // Core Savings Strategies
+                { name: 'Extra EMI Strategy (12+1)', category: 'Core Savings', description: 'Save ₹7.2L - Pay one additional EMI per year', savings: 'Save ₹7.2L', time: '3.2yr early' },
+                { name: 'Round-Up Optimizer', category: 'Core Savings', description: 'Save ₹2.1L - Round EMI to nearest thousand', savings: 'Save ₹2.1L', time: '1.8yr early' },
+                { name: 'Prepayment Impact Calculator', category: 'Core Savings', description: 'Shows exact savings potential for any amount', savings: 'Variable', time: 'Calculate' },
+                { name: 'Part-Payment Timing Guide', category: 'Core Savings', description: 'When to make prepayments for maximum impact', savings: 'Optimize', time: 'Max' },
+                
+                // Tax & Investment
+                { name: 'Tax Arbitrage Calculator', category: 'Tax & Investment', description: '5.95% effective - Compare prepay vs invest after tax', savings: '5.95%', time: '30%' },
+                { name: 'Prepay vs Investment Guide', category: 'Tax & Investment', description: 'When to prepay vs invest in markets/FDs', savings: 'Optimize', time: 'Risk vs' },
+                { name: 'PPF vs Prepayment Analyzer', category: 'Tax & Investment', description: 'Compare 15-year PPF vs loan prepayment', savings: '7.1%', time: '15yr' },
+                { name: 'Partial Tenure Reduction', category: 'Tax & Investment', description: 'Reduce tenure vs EMI - hybrid approach', savings: 'Balanced', time: 'Flexible' },
+                
+                // Behavioral Motivation
+                { name: 'Coffee-to-EMI Converter', category: 'Behavioral Motivation', description: '₹5.2L savings - Daily ₹150 coffee → prepayment', savings: '₹5.2L', time: '₹150' },
+                { name: 'Increment Allocator', category: 'Behavioral Motivation', description: 'Auto-allocate 50% of salary increments to loan', savings: '50%', time: 'Annual' },
+                { name: 'Fixed vs Floating Optimizer', category: 'Behavioral Motivation', description: 'Switch timing based on rate trends', savings: 'Rate', time: 'Market' },
+                { name: 'Refinancing ROI Calculator', category: 'Behavioral Motivation', description: 'Calculate break-even for loan switching', savings: 'Variable', time: '2-3yr' },
+                
+                // Life Planning
+                { name: 'Marriage Dual-Income Strategy', category: 'Life Planning', description: 'Combine incomes for accelerated prepayment', savings: 'Double', time: 'Fast' },
+                { name: 'Job Change EMI Planner', category: 'Life Planning', description: 'Prepare for income transitions', savings: 'Safety', time: 'Risk' },
+                { name: "Children's Milestone Planner", category: 'Life Planning', description: 'Balance loan vs education/marriage savings', savings: 'Balance', time: '18-25yr' },
+                { name: 'Section 80C/24b Maximizer', category: 'Life Planning', description: 'Optimize tax benefits with EMI timing', savings: '₹1.5L', time: 'Annual' }
             ];
 
             // Strategy card interactions
@@ -908,35 +1101,7 @@
                 });
             });
 
-            // Load more categories
-            loadMoreBtn.addEventListener('click', function() {
-                if (!categoriesLoaded) {
-                    // Show additional categories with animation
-                    const hiddenCategories = document.querySelectorAll('.hidden-category');
-                    
-                    this.textContent = 'Loading...';
-                    this.disabled = true;
-                    
-                    setTimeout(() => {
-                        hiddenCategories.forEach((category, index) => {
-                            setTimeout(() => {
-                                category.classList.add('show');
-                            }, index * 200);
-                        });
-                        
-                        setTimeout(() => {
-                            loadMoreSection.style.display = 'none';
-                            categoriesLoaded = true;
-                            
-                            // Scroll to new content
-                            hiddenCategories[0].scrollIntoView({ 
-                                behavior: 'smooth', 
-                                block: 'start' 
-                            });
-                        }, hiddenCategories.length * 200 + 500);
-                    }, 800);
-                }
-            });
+            // All strategies are now visible by default - no load more needed
 
             // Search functionality
             searchBtn.addEventListener('click', function() {

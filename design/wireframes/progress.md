@@ -7,7 +7,7 @@ Dual-mode progress tracking that adapts based on loan status: "Planning to Buy" 
 
 ```
 ┌─────────────────────────────────────┐
-│ 📈 Your Loan Journey      [📤][⭐] │
+│ ₹30L @ 8.5% • Planning        [⚙️] │
 ├─────────────────────────────────────┤
 │                                     │
 │ ℹ️ LOAN STATUS: Planning to Buy     │
@@ -68,7 +68,7 @@ Dual-mode progress tracking that adapts based on loan status: "Planning to Buy" 
 
 ```
 ┌─────────────────────────────────────┐
-│ 📈 Your Loan Journey      [📤][⭐] │
+│ ₹30L @ 8.5% • 12/240 paid      [⚙️] │
 ├─────────────────────────────────────┤
 │                                     │
 │ ℹ️ LOAN STATUS: Already Taken       │
@@ -121,12 +121,13 @@ Dual-mode progress tracking that adapts based on loan status: "Planning to Buy" 
 
 ## Component Breakdown
 
-### Header
-- No back arrow - this is a primary tab
-- Screen title "📈 Your Loan Journey" 
-- Share button (share progress with family/advisors)
-- Star button (bookmark important milestones)
-- Status indicator shows "Planning" or "Taken"
+### Header (Smart Compact - Status Aware)
+- For "Planning" status: "₹30L @ 8.5% • Planning"
+- For "Already taken" status: "₹30L @ 8.5% • 12/240 paid" (shows months paid)
+- Settings gear icon (navigates to Calculator tab)
+- Entire header is tappable → Goes to Calculator tab
+- Height: 48px (compact design)
+- Share and star functionality moved to screen content or context menu
 
 ### Current Progress (Primary Motivation)
 - **Money Saved So Far**: ₹2,47,350 (cumulative savings)

@@ -82,50 +82,25 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Header */
-        .header {
+        /* Smart Header */
+        .smart-header {
+            height: 48px;
             background: var(--surface);
-            padding: var(--space-lg) var(--space-md);
+            border-bottom: 1px solid var(--divider);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--divider);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        .menu-button {
-            background: none;
-            border: none;
-            font-size: 24px;
+            padding: 0 16px;
             cursor: pointer;
-            padding: var(--space-sm);
-            margin-right: var(--space-md);
-            border-radius: var(--radius-sm);
-            transition: background-color var(--transition-fast);
         }
 
-        .menu-button:hover {
-            background-color: var(--surface-variant);
+        .loan-summary {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
         }
 
-        .header h1 {
-            font-size: var(--font-size-title);
-            font-weight: 600;
-        }
-
-        .header-right {
-            display: flex;
-            gap: var(--space-sm);
-        }
-
-        .header-icon {
-            background: none;
-            border: none;
+        .settings-icon {
             font-size: 20px;
             cursor: pointer;
             padding: var(--space-sm);
@@ -133,7 +108,7 @@
             transition: background-color var(--transition-fast);
         }
 
-        .header-icon:hover {
+        .settings-icon:hover {
             background-color: var(--surface-variant);
         }
 
@@ -539,29 +514,14 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <div class="header-left">
-                <h1>🏠 Home Loan Advisor</h1>
-            </div>
-            <div class="header-right">
-                <a href="calculator.html" class="header-icon" aria-label="Settings">⚙️</a>
-            </div>
+        <!-- Smart Header -->
+        <header class="smart-header" onclick="window.location.href='calculator.html'">
+            <div class="loan-summary">₹30L @ 8.5% • 20yr</div>
+            <div class="settings-icon">⚙️</div>
         </header>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Sample Data Info Message -->
-            <section class="info-message" role="banner">
-                <div class="info-content">
-                    <div class="info-icon">ℹ️</div>
-                    <div class="info-text">
-                        <strong>Using sample data</strong><br>
-                        Update your details in Calculator to see personalized insights
-                    </div>
-                    <a href="calculator.html" class="info-action">Update Now</a>
-                </div>
-            </section>
 
             <!-- Daily Interest Burn Counter -->
             <section class="burn-counter" role="banner">
@@ -579,7 +539,7 @@
                     <h3>YOUR LOAN HEALTH SCORE</h3>
                 </div>
                 <div class="health-score">
-                    <div class="score-number">6.2/10</div>
+                    <div class="score-number">5.0/10</div>
                     <div class="score-bar">
                         <div class="score-progress">
                             <div class="score-dot filled"></div>
@@ -587,13 +547,13 @@
                             <div class="score-dot filled"></div>
                             <div class="score-dot filled"></div>
                             <div class="score-dot filled"></div>
-                            <div class="score-dot filled"></div>
+                            <div class="score-dot"></div>
                             <div class="score-dot"></div>
                             <div class="score-dot"></div>
                             <div class="score-dot"></div>
                             <div class="score-dot"></div>
                         </div>
-                        <div class="score-label">Fair - Room for improvement</div>
+                        <div class="score-label">Poor - Significant room for improvement</div>
                     </div>
                 </div>
                 <button class="score-action">See How to Improve</button>
@@ -700,7 +660,7 @@
             setTimeout(() => {
                 const dots = document.querySelectorAll('.score-dot');
                 dots.forEach((dot, index) => {
-                    if (index < 6) {
+                    if (index < 5) {
                         setTimeout(() => {
                             dot.classList.add('filled');
                         }, index * 200);

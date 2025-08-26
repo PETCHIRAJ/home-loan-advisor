@@ -7,7 +7,7 @@ Main screen showing daily interest loss with smart defaults on first launch, per
 
 ```
 ┌─────────────────────────────────────┐
-│ 🏠 Home Loan Advisor            [⚙️] │
+│ ₹30L @ 8.5% • 20yr            [⚙️] │
 ├─────────────────────────────────────┤
 │                                     │
 │ ℹ️ Using sample data - Tap ⚙️ to    │
@@ -55,11 +55,13 @@ Main screen showing daily interest loss with smart defaults on first launch, per
 
 ## Component Breakdown
 
-### Header (Clean & Simple)
-- App title "🏠 Home Loan Advisor"
+### Header (Smart Compact)
+- Loan summary "₹30L @ 8.5% • 20yr" (shows key loan parameters)
 - Settings gear icon (navigates to Calculator tab)
-- No hamburger menu or notifications
-- Minimal, distraction-free design
+- Entire header is tappable → Goes to Calculator tab
+- Height: 48px (compact design)
+- For "Already taken" status: Shows "₹30L @ 8.5% • 12/240 paid"
+- For "Planning" status: Shows "₹30L @ 8.5% • Planning"
 
 ### Daily Burn Counter (Hero Element)
 - **Purpose**: Create emotional urgency, shock value
