@@ -1,0 +1,97 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Brand Colors -->
+    <linearGradient id="houseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1565C0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D47A1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="calculatorGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00796B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004D40;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle for app icon -->
+  <circle cx="256" cy="256" r="240" fill="#FAFAFA" stroke="#E0E0E0" stroke-width="2"/>
+  
+  <!-- House structure -->
+  <g id="house">
+    <!-- Roof -->
+    <path d="M 156 220 L 256 140 L 356 220 L 340 220 L 256 160 L 172 220 Z" 
+          fill="url(#houseGradient)" 
+          stroke="#0D47A1" 
+          stroke-width="3"/>
+    
+    <!-- House body -->
+    <rect x="172" y="220" width="168" height="140" 
+          fill="url(#houseGradient)" 
+          opacity="0.8"
+          stroke="#0D47A1" 
+          stroke-width="3"/>
+    
+    <!-- Door -->
+    <rect x="236" y="300" width="40" height="60" 
+          fill="#FAFAFA" 
+          stroke="#0D47A1" 
+          stroke-width="2"/>
+    
+    <!-- Door handle -->
+    <circle cx="270" cy="330" r="3" fill="#FFD700"/>
+  </g>
+  
+  <!-- Calculator keypad overlay -->
+  <g id="calculator" transform="translate(190, 240)">
+    <!-- Calculator buttons -->
+    <!-- Row 1: 7, 8, 9 -->
+    <rect x="20" y="20" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="34" y="38" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">7</text>
+    
+    <rect x="56" y="20" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="70" y="38" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">8</text>
+    
+    <rect x="92" y="20" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="106" y="38" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">9</text>
+    
+    <!-- Row 2: 4, 5, 6 -->
+    <rect x="20" y="56" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="34" y="74" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">4</text>
+    
+    <rect x="56" y="56" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="70" y="74" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">5</text>
+    
+    <rect x="92" y="56" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="106" y="74" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">6</text>
+    
+    <!-- Row 3: 1, 2, 3 -->
+    <rect x="20" y="92" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="34" y="110" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">1</text>
+    
+    <rect x="56" y="92" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="70" y="110" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">2</text>
+    
+    <rect x="92" y="92" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="106" y="110" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">3</text>
+    
+    <!-- Row 4: 0, = (gold accent) -->
+    <rect x="56" y="128" width="28" height="28" rx="4" 
+          fill="url(#calculatorGradient)" stroke="#004D40" stroke-width="1"/>
+    <text x="70" y="146" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="16" font-weight="bold">0</text>
+    
+    <!-- Equals button with gold accent -->
+    <rect x="92" y="128" width="28" height="28" rx="4" 
+          fill="#FFD700" stroke="#FFB000" stroke-width="1"/>
+    <text x="106" y="146" text-anchor="middle" fill="#1A1A1A" font-family="Arial, sans-serif" font-size="16" font-weight="bold">=</text>
+  </g>
+  
+  <!-- Subtle shadow for depth -->
+  <ellipse cx="256" cy="380" rx="120" ry="20" fill="#000000" opacity="0.1"/>
+</svg>
