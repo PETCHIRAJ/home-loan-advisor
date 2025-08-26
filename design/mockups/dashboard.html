@@ -216,6 +216,56 @@
             transform: translateY(-2px);
         }
 
+        /* Info Message */
+        .info-message {
+            background: var(--surface);
+            border: 2px solid var(--primary-blue);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-content {
+            display: flex;
+            align-items: center;
+            padding: var(--space-lg);
+            gap: var(--space-md);
+        }
+
+        .info-icon {
+            font-size: 20px;
+            color: var(--primary-blue);
+            flex-shrink: 0;
+        }
+
+        .info-text {
+            flex: 1;
+            font-size: var(--font-size-label);
+            line-height: 1.4;
+        }
+
+        .info-text strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .info-action {
+            background: var(--primary-blue);
+            color: white;
+            text-decoration: none;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-caption);
+            font-weight: 500;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+        }
+
+        .info-action:hover {
+            background: #0D47A1;
+            transform: translateY(-1px);
+        }
+
         /* Card Styles */
         .card {
             background: var(--surface);
@@ -493,23 +543,33 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <button class="menu-button" aria-label="Menu">☰</button>
-                <h1>Home Loan Advisor <span style="font-size: 12px; color: var(--success-green); font-weight: 500;">📴 100% Offline</span></h1>
+                <h1>🏠 Home Loan Advisor</h1>
             </div>
             <div class="header-right">
-                <button class="header-icon" aria-label="Notifications">🔔</button>
-                <button class="header-icon" aria-label="Settings">⚙</button>
+                <a href="calculator.html" class="header-icon" aria-label="Settings">⚙️</a>
             </div>
         </header>
 
         <!-- Main Content -->
         <main class="main-content">
+            <!-- Sample Data Info Message -->
+            <section class="info-message" role="banner">
+                <div class="info-content">
+                    <div class="info-icon">ℹ️</div>
+                    <div class="info-text">
+                        <strong>Using sample data</strong><br>
+                        Update your details in Calculator to see personalized insights
+                    </div>
+                    <a href="calculator.html" class="info-action">Update Now</a>
+                </div>
+            </section>
+
             <!-- Daily Interest Burn Counter -->
             <section class="burn-counter" role="banner">
                 <h2>⚡ LIVE MONEY BURN COUNTER ⚡</h2>
-                <div class="burn-amount">₹847</div>
+                <div class="burn-amount">₹696</div>
                 <div class="burn-secondary">LOST TODAY</div>
-                <div class="burn-secondary">₹25,410 this month</div>
+                <div class="burn-secondary">₹20,880 this month</div>
                 <button class="burn-action">View Breakdown</button>
             </section>
 
@@ -589,21 +649,17 @@
                 <span class="nav-icon">🏠</span>
                 <span>Home</span>
             </a>
-            <a href="calculator.html" class="nav-item">
-                <span class="nav-icon">📊</span>
-                <span>Calc</span>
-            </a>
             <a href="strategies.html" class="nav-item">
-                <span class="nav-icon">🎯</span>
-                <span>Strategy</span>
+                <span class="nav-icon">💰</span>
+                <span>Strategies</span>
             </a>
             <a href="progress.html" class="nav-item">
                 <span class="nav-icon">📈</span>
                 <span>Progress</span>
             </a>
-            <a href="profile.html" class="nav-item">
-                <span class="nav-icon">👤</span>
-                <span>Profile</span>
+            <a href="calculator.html" class="nav-item">
+                <span class="nav-icon">📊</span>
+                <span>Calculator</span>
             </a>
         </nav>
     </div>
@@ -613,7 +669,7 @@
             // Animate the burn counter on load
             const burnAmount = document.querySelector('.burn-amount');
             let start = 0;
-            const end = 847;
+            const end = 696;
             const duration = 2000;
             const increment = end / (duration / 16);
 
@@ -623,7 +679,7 @@
                     burnAmount.textContent = '₹' + Math.floor(start);
                     requestAnimationFrame(animateCounter);
                 } else {
-                    burnAmount.textContent = '₹847';
+                    burnAmount.textContent = '₹696';
                 }
             }
             
@@ -667,7 +723,7 @@
 
             // Announce burn counter update
             setTimeout(() => {
-                announcer.textContent = 'Daily interest burn counter updated to 847 rupees';
+                announcer.textContent = 'Daily interest burn counter updated to 696 rupees';
             }, 2500);
 
             // Keyboard navigation

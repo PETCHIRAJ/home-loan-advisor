@@ -1,27 +1,29 @@
 # Flutter Developer Handover Package
 
-## 📦 What You Have - Complete Deliverables
+## 📦 What You Have - Complete Deliverables (Updated Architecture)
 
 ### 🎨 Design System (Ready to Code)
 
 #### 1. Screen Wireframes (`design/wireframes/`)
-**5 screens with exact layouts**:
-- `dashboard.md` - Main screen with Daily Interest Burn Counter
-- `calculator.md` - EMI calculation interface  
-- `strategies.md` - 20 money-saving strategies listing
-- `progress.md` - Achievement and progress tracking
-- `user-flows.md` - Complete navigation between screens
+**6 screens with exact layouts**:
+- `onboarding.md` - Welcome screen for first-time users
+- `dashboard.md` - Main screen with Daily Interest Burn Counter (₹696/day default)
+- `calculator.md` - Control center for ALL settings (loan + personal)
+- `strategies.md` - 20 Indian-specific money-saving strategies
+- `progress.md` - Dual mode: Planning vs Already Taken
+- `user-flows.md` - Complete navigation with 4-tab system
 
 **What wireframes give you**: Exact component placement, content hierarchy, user flows
 
 #### 2. Visual Design (`design/mockups/`)
-**6 interactive HTML prototypes**:
-- `index.html` - Navigation hub (start here to see all screens)
-- `dashboard.html` - Pixel-perfect main screen design
-- `calculator.html` - Complete calculator interface with styling  
-- `strategies.html` - Strategy listing with Material 3 design
-- `progress.html` - Achievement system with visual elements
-- `profile.html` - Simple settings and preferences
+**7 interactive HTML prototypes**:
+- `onboarding.html` - Welcome screen with value proposition
+- `index.html` - Navigation hub showing new 4-tab structure
+- `dashboard.html` - Main screen with "sample data" message
+- `calculator.html` - Comprehensive control center (all settings)
+- `strategies.html` - 20 Indian strategies with categories
+- `progress.html` - Dual-mode progress tracking
+- `profile.html` - (Deprecated - settings moved to Calculator tab)
 
 **What mockups give you**: Colors, typography, spacing, interactions, Material 3 system
 

@@ -1,20 +1,25 @@
 # Dashboard Screen Wireframe
 
 ## Purpose
-Main entry point that creates immediate emotional impact through the Daily Interest Burn Counter, shows loan health gamification, and provides quick access to key features.
+Main screen showing daily interest loss with smart defaults on first launch, personalized data on return visits. Serves as the emotional hook and summary view of loan status.
 
 ## Layout Structure
 
 ```
 ┌─────────────────────────────────────┐
-│ [☰] Home Loan Advisor      [🔔][⚙] │
+│ 🏠 Home Loan Advisor            [⚙️] │
+├─────────────────────────────────────┤
+│                                     │
+│ ℹ️ Using sample data - Tap ⚙️ to    │
+│   customize for your loan           │
 ├─────────────────────────────────────┤
 │                                     │
 │ ⚡ LIVE MONEY BURN COUNTER ⚡       │
 │ ┌─────────────────────────────────┐ │
-│ │ ₹847                           │ │
+│ │ ₹696                           │ │
 │ │ LOST TODAY                     │ │
-│ │ ₹25,410 this month            │ │
+│ │ ₹21,000 this month            │ │
+│ │ Loan: ₹30L @ 8.5% (20yr)      │ │
 │ │ [View Breakdown]               │ │
 │ └─────────────────────────────────┘ │
 │                                     │
@@ -33,34 +38,35 @@ Main entry point that creates immediate emotional impact through the Daily Inter
 │ └─────────────────────────────────┘ │
 │                                     │
 │ 🚀 QUICK ACTIONS                   │
-│ ┌───────────┐ ┌───────────────────┐ │
-│ │ Calculate │ │ View Strategies   │ │
-│ │ Savings   │ │                   │ │
-│ └───────────┘ └───────────────────┘ │
-│ ┌───────────┐ ┌───────────────────┐ │
-│ │ EMI       │ │ Track Progress    │ │
-│ │ Calculator│ │                   │ │
-│ └───────────┘ └───────────────────┘ │
+│ ┌─────────────────────────────────┐ │
+│ │ [💡 Explore Strategies]         │ │
+│ │ Discover 20 ways to save        │ │
+│ └─────────────────────────────────┘ │
+│ ┌─────────────────────────────────┐ │
+│ │ [📊 View Full Calculator]       │ │
+│ │ Customize all loan details      │ │
+│ └─────────────────────────────────┘ │
 │                                     │
 ├─────────────────────────────────────┤
-│ [🏠] [📊] [🎯] [⚙️] [👤]           │
-│ Home Calc Strategy Progress Profile │
+│ [🏠] [💰] [📈] [📊]               │
+│ Home Strategies Progress Calculator │
 └─────────────────────────────────────┘
 ```
 
 ## Component Breakdown
 
-### Header (High Priority)
-- Hamburger menu (navigation drawer)
-- App title "Home Loan Advisor"
-- Notifications bell icon
-- Settings gear icon
+### Header (Clean & Simple)
+- App title "🏠 Home Loan Advisor"
+- Settings gear icon (navigates to Calculator tab)
+- No hamburger menu or notifications
+- Minimal, distraction-free design
 
 ### Daily Burn Counter (Hero Element)
 - **Purpose**: Create emotional urgency, shock value
-- **Content**: Live updating amount lost today (₹847)
-- **Secondary**: Monthly loss amount (₹25,410)
-- **Action**: "View Breakdown" button
+- **Content**: Live updating amount lost today (₹696 for ₹30L loan)
+- **Secondary**: Monthly loss amount (₹21,000)
+- **Context**: Shows loan parameters "₹30L @ 8.5% (20yr)"
+- **Sample Data Notice**: Clear indication when using defaults
 - **Psychology**: Fear of loss motivates action
 
 ### Loan Health Score (Gamification)
@@ -79,18 +85,18 @@ Main entry point that creates immediate emotional impact through the Daily Inter
 - **Psychology**: Specific numbers feel achievable
 
 ### Quick Actions (Task-Oriented)
-- **Purpose**: Direct access to key features
-- **Layout**: 2x2 grid of action cards
-- **Options**: 
-  - Calculate Savings (primary action)
-  - View Strategies (offline optimization)
-  - EMI Calculator (offline calculations)
-  - Track Progress (motivation)
+- **Purpose**: Direct navigation to main features
+- **Layout**: 2 large action cards
+- **Primary CTA**: "Explore Strategies" - drives engagement
+- **Secondary CTA**: "View Full Calculator" - customization
+- **Streamlined**: Focused on most important actions
+- **Navigation**: Complements bottom tab bar
 
-### Bottom Navigation (Persistent)
+### Bottom Navigation (4-Tab System)
 - **Purpose**: Always-accessible main navigation
-- **Icons**: Home, Calculator, Strategy, Progress, Profile
+- **Tabs**: [🏠 Home] [💰 Strategies] [📈 Progress] [📊 Calculator]
 - **Active State**: Home tab highlighted
+- **Calculator**: Primary control center for all settings
 - **Psychology**: Familiar mobile navigation pattern
 
 ## Information Hierarchy

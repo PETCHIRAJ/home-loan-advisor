@@ -1,105 +1,98 @@
 # Calculator Screen Wireframe
 
 ## Purpose
-Core tool for loan calculations with simple 3-input form, instant shocking results, and top money-saving strategies. Creates "aha moment" through total interest revelation.
+Control center for ALL loan and personal settings. 4th tab in bottom navigation where users customize their complete profile including loan details, personal information, and view comprehensive calculation results with amortization schedule.
 
 ## Layout Structure
 
 ```
 ┌─────────────────────────────────────┐
-│ [←] Smart Loan Calculator    [🔔][?] │
+│ 📊 Calculator (Control Center)  [?] │
 ├─────────────────────────────────────┤
 │                                     │
 │ 💰 LOAN DETAILS                     │
 │ ┌─────────────────────────────────┐ │
 │ │ Loan Amount                     │ │
-│ │ ₹ [50,00,000________] [₹]       │ │
+│ │ ₹ [30,00,000________] [Edit]    │ │
 │ │                                 │ │
 │ │ Interest Rate                   │ │
-│ │ [8.5_______] % per year         │ │
+│ │ [8.5_______] % per year [Edit]  │ │
 │ │                                 │ │
 │ │ Loan Tenure                     │ │
-│ │ [20_______] years               │ │
-│ │                                 │ │
-│ │ [📱 CALCULATE IMPACT]           │ │
+│ │ [20_______] years [Edit]        │ │
 │ └─────────────────────────────────┘ │
 │                                     │
-│ ⚡ INSTANT REALITY CHECK            │
+│ 👤 PERSONAL DETAILS                 │
 │ ┌─────────────────────────────────┐ │
-│ │ Current EMI: ₹41,822           │ │
-│ │ Total Interest: ₹50,37,280     │ │
-│ │ 👆 You'll pay DOUBLE!          │ │
+│ │ Monthly Income                  │ │
+│ │ ₹ [1,00,000_____] [Edit]        │ │
 │ │                                 │ │
-│ │ Daily Interest Burn: ₹1,147    │ │
-│ │ Per Hour Loss: ₹48             │ │
+│ │ Current Age                     │ │
+│ │ [30_______] years [Edit]        │ │
+│ │                                 │ │
+│ │ Loan Status                     │ │
+│ │ ○ Planning to buy ● Taken       │ │
+│ │ Months paid: [0___] [Edit]      │ │
 │ └─────────────────────────────────┘ │
 │                                     │
-│ 🎯 SMART STRATEGIES (Tap to Apply) │
-│ ┌───────────────────────────────┐   │
-│ │ ✅ Bi-Weekly Payments         │   │
-│ │ Save ₹7,23,450 | 3.2yr early │   │
-│ └───────────────────────────────┘   │
-│ ┌───────────────────────────────┐   │
-│ │ ✅ One Extra EMI/Year         │   │
-│ │ Save ₹5,89,120 | 2.8yr early │   │
-│ └───────────────────────────────┘   │
-│ ┌───────────────────────────────┐   │
-│ │ ✅ Round Up to ₹45,000        │   │
-│ │ Save ₹4,12,890 | 2.1yr early │   │
-│ └───────────────────────────────┘   │
+│ 📈 CALCULATION RESULTS              │
+│ ┌─────────────────────────────────┐ │
+│ │ Monthly EMI: ₹25,415           │ │
+│ │ Total Payment: ₹61,00,000      │ │
+│ │ Total Interest: ₹31,00,000     │ │
+│ │ Daily Interest: ₹696           │ │
+│ └─────────────────────────────────┘ │
 │                                     │
-│ [📊 VIEW ALL 20 STRATEGIES]        │
+│ [📊 View Amortization Schedule]    │
+│ [💰 Explore Strategies]            │
 │                                     │
 ├─────────────────────────────────────┤
-│ [🏠] [📊] [🎯] [⚙️] [👤]           │
+│ [🏠] [💰] [📈] [📊]               │
+│ Home Strategies Progress Calculator │
 └─────────────────────────────────────┘
 ```
 
 ## Component Breakdown
 
-### Header (Navigation)
-- Back arrow (return to previous screen)
-- Screen title "Smart Loan Calculator"
-- Notification bell
+### Header (Tab Navigation)
+- Screen title "📊 Calculator (Control Center)"
 - Help icon (calculation explanations)
+- No back arrow - this is a primary tab
+- Positions calculator as central control hub
 
-### Loan Details Input (Primary Form)
-- **Purpose**: Minimal friction data entry
-- **Fields**: Only 3 required inputs
-  - Loan Amount: ₹50,00,000 (Indian formatting)
-  - Interest Rate: 8.5% per year
-  - Loan Tenure: 20 years
-- **Input Style**: Large, clear input fields
-- **CTA Button**: "CALCULATE IMPACT" (action-oriented)
-- **Psychology**: Simple form reduces abandonment
+### Loan Details Section
+- **Purpose**: Core loan parameter configuration
+- **Fields**: 3 primary loan inputs
+  - Loan Amount: ₹30,00,000 (realistic Tamil Nadu default)
+  - Interest Rate: 8.5% per year (market average)
+  - Loan Tenure: 20 years (common choice)
+- **Input Style**: Inline editing with [Edit] buttons
+- **Real-time Updates**: Calculations update as values change
+- **Psychology**: Always-accessible editing reduces friction
 
-### Instant Reality Check (Shock Value)
-- **Purpose**: Create emotional impact through harsh reality
-- **Current EMI**: ₹41,822 (monthly payment)
-- **Total Interest**: ₹50,37,280 (lifetime cost)
-- **Emphasis**: "You'll pay DOUBLE!" (shocking revelation)
-- **Granular Impact**: 
-  - Daily Interest Burn: ₹1,147
-  - Per Hour Loss: ₹48
-- **Psychology**: Specific numbers create urgency
+### Personal Details Section (NEW)
+- **Purpose**: Complete user profile for personalized insights
+- **Monthly Income**: ₹1,00,000 (for EMI-to-income ratio)
+- **Current Age**: 30 years (for life planning)
+- **Loan Status**: Planning vs Already Taken (changes app behavior)
+- **Months Paid**: For existing loan holders (affects calculations)
+- **Benefit**: Enables personalized strategies and progress tracking
 
-### Smart Strategies (Actionable Solutions)
-- **Purpose**: Provide immediate actionable solutions
-- **Layout**: Top 3 strategies as cards
-- **Content Per Strategy**:
-  - Strategy name (Bi-Weekly Payments)
-  - Savings amount (₹7,23,450)
-  - Time saved (3.2 years early)
-  - Check mark (visual approval)
-- **CTA**: "VIEW ALL 20 STRATEGIES" button
-- **Psychology**: Solutions immediately after problem creates hope
+### Calculation Results (NEW)
+- **Purpose**: Comprehensive loan impact summary
+- **Monthly EMI**: ₹25,415 (for ₹30L loan)
+- **Total Payment**: ₹61,00,000 (EMI × tenure)
+- **Total Interest**: ₹31,00,000 (shocking reality)
+- **Daily Interest**: ₹696 (daily burn counter input)
+- **Clean Layout**: Clear, digestible financial summary
 
 ## Information Hierarchy
 
-1. **Input Form** (User provides data)
-2. **Reality Check** (Shocking revelation)
-3. **Top Solutions** (Immediate hope/action)
-4. **All Strategies** (Further exploration)
+1. **Loan Details** (Core financial parameters)
+2. **Personal Details** (User profile for personalization)
+3. **Calculation Results** (Immediate financial impact)
+4. **Action Buttons** (Navigate to deeper features)
+5. **Bottom Navigation** (Access other app sections)
 
 ## User Flow
 
@@ -123,10 +116,13 @@ Core tool for loan calculations with simple 3-input form, instant shocking resul
 
 ## Content Requirements
 
-### Default Values (Indian Market)
-- Loan Amount: ₹50,00,000 (average home loan)
-- Interest Rate: 8.5% (current market average)
-- Tenure: 20 years (popular choice)
+### Smart Default Values (Tamil Nadu Context)
+- **Loan Amount**: ₹30,00,000 (realistic for Chennai/Coimbatore)
+- **Interest Rate**: 8.5% (current market average)
+- **Tenure**: 20 years (popular choice)
+- **Income**: ₹1,00,000 (healthy EMI-to-income ratio)
+- **Age**: 30 (typical first-time buyer)
+- **Status**: Planning to buy (most common entry point)
 
 ### Calculation Formulas
 - EMI = P × R × (1+R)^N / ((1+R)^N - 1)

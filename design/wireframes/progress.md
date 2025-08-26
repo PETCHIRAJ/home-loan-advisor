@@ -1,20 +1,84 @@
 # Progress Screen Wireframe
 
 ## Purpose
-Motivation hub that tracks user's savings journey, shows active strategies, gamifies progress with achievements, and maintains long-term engagement through consistent progress visualization.
+Dual-mode progress tracking that adapts based on loan status: "Planning to Buy" shows preparation milestones and readiness, while "Already Taken" shows actual savings progress and active strategy performance.
 
-## Layout Structure
+## Layout Structure (Planning to Buy)
 
 ```
 ┌─────────────────────────────────────┐
-│ [←] Your Savings Journey     [📤][⭐] │
+│ 📈 Your Loan Journey      [📤][⭐] │
 ├─────────────────────────────────────┤
 │                                     │
-│ 🎯 CURRENT PROGRESS                 │
+│ ℹ️ LOAN STATUS: Planning to Buy     │
+│ [⚙️] Switch to "Already Taken"      │
+├─────────────────────────────────────┤
+│                                     │
+│ 🏠 PLANNING MILESTONES               │
+│ ┌─────────────────────────────────┐ │
+│ │ ✅ Loan research completed       │ │
+│ │ ✅ EMI calculations done          │ │
+│ │ 🔄 Exploring strategies (now)      │ │
+│ │ ⏳ Rate comparison pending        │ │
+│ │ ⏳ Documentation prep pending     │ │
+│ │                                 │ │
+│ │ Potential Savings: ₹5,89,120   │ │
+│ │ When you implement strategies   │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ 🏆 PLANNING ACHIEVEMENTS             │
+│ ┌─────────────────────────────────┐ │
+│ │ 🥉 First Calculator    🥈 Explorer  │ │
+│ │ 🏅 Strategy Seeker  🎖️ Researcher │ │
+│ │                                 │ │
+│ │ Next: 🏆 Loan Applicant          │ │
+│ │ Start your loan application     │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ 📊 PREPARATION CHECKLIST            │
+│ ┌─────────────────────────────────┐ │
+│ │ ✅ Income documents ready       │ │
+│ │ ✅ CIBIL score checked          │ │
+│ │ 🔄 Property shortlisted (ongoing) │ │
+│ │ ⏳ Bank comparison pending        │ │
+│ │ ⏳ Legal verification pending     │ │
+│ │                                 │ │
+│ │ [View Complete Checklist]      │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ 💡 SMART RECOMMENDATIONS           │
+│ ┌─────────────────────────────────┐ │
+│ │ Based on your ₹1L income:        │ │
+│ │ Your EMI-to-income ratio is     │ │
+│ │ optimal at 25% - Great choice!  │ │
+│ │                                 │ │
+│ │ 🎯 Best Strategy: Extra EMI     │ │
+│ │ 🏆 Readiness Score: 8.5/10      │ │
+│ │                                 │ │
+│ │ [Set Timeline] [Share Progress] │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+├─────────────────────────────────────┤
+│ [🏠] [💰] [📈] [📊]               │
+│ Home Strategies Progress Calculator │
+└─────────────────────────────────────┘
+```
+
+## Alternative Layout (Already Taken)
+
+```
+┌─────────────────────────────────────┐
+│ 📈 Your Loan Journey      [📤][⭐] │
+├─────────────────────────────────────┤
+│                                     │
+│ ℹ️ LOAN STATUS: Already Taken       │
+│ [⚙️] 8 months paid | Switch status   │
+├─────────────────────────────────────┤
+│ 🎯 ACTUAL PROGRESS                  │
 │ ┌─────────────────────────────────┐ │
 │ │ Money Saved So Far              │ │
 │ │ ₹2,47,350                       │ │
-│ │ [●●●●●○○○○○] 45% to first goal   │ │
+│ │ [●●●●●○○○○○] 45% to goal     │ │
 │ │                                 │ │
 │ │ Time Reduced: 1.2 years         │ │
 │ │ Interest Saved: ₹1,89,420       │ │
@@ -22,46 +86,47 @@ Motivation hub that tracks user's savings journey, shows active strategies, gami
 │                                     │
 │ 🏆 ACHIEVEMENTS UNLOCKED            │
 │ ┌─────────────────────────────────┐ │
-│ │ 🥉 First Round-Up  🥈 Bi-Weekly │ │
-│ │ 🏅 Rate Checker    🎖️ 6mo Saver │ │
+│ │ 🥉 First Round-Up  🥈 Extra EMI  │ │
+│ │ 🏅 8-Month Streak  🎖️ Optimizer │ │
 │ │                                 │ │
 │ │ Next: 🏆 Prepayment Pro         │ │
 │ │ Make one prepayment to unlock   │ │
 │ └─────────────────────────────────┘ │
 │                                     │
-│ 📊 STRATEGY ADOPTION                │
+│ 📊 ACTIVE STRATEGIES                │
 │ ┌─────────────────────────────────┐ │
-│ │ ✅ Bi-Weekly Payments (Active)  │ │
-│ │ ✅ Round-Up to ₹45K (Active)    │ │
-│ │ ⏸️ Extra EMI (Paused)           │ │
-│ │ ❌ Prepayment (Not Started)     │ │
+│ │ ✅ Round-Up to ₹30K (Active)     │ │
+│ │ ✅ Extra EMI yearly (Active)      │ │
+│ │ ⏸️ Prepayment (Considering)       │ │
 │ │                                 │ │
 │ │ [Activate New Strategy]         │ │
 │ └─────────────────────────────────┘ │
 │                                     │
-│ 💡 PERSONALIZED INSIGHTS            │
+│ 💡 MONTH-OVER-MONTH INSIGHTS       │
 │ ┌─────────────────────────────────┐ │
-│ │ This month you're on track to   │ │
-│ │ save ₹18,450 more than before!  │ │
+│ │ This month you saved an extra   │ │
+│ │ ₹18,450 compared to regular EMI!  │ │
 │ │                                 │ │
 │ │ 📈 Consistency Score: 8.2/10    │ │
 │ │ 🎯 Goal Achievement: 78%        │ │
 │ │                                 │ │
-│ │ [Share Achievement] [Set Goals] │ │
+│ │ [Share Progress] [Set New Goal] │ │
 │ └─────────────────────────────────┘ │
 │                                     │
 ├─────────────────────────────────────┤
-│ [🏠] [📊] [🎯] [⚙️] [👤]           │
+│ [🏠] [💰] [📈] [📊]               │
+│ Home Strategies Progress Calculator │
 └─────────────────────────────────────┘
 ```
 
 ## Component Breakdown
 
 ### Header
-- Back navigation arrow
-- Screen title "Your Savings Journey"
-- Share button (share achievements on social media)
-- Star button (bookmark progress milestones)
+- No back arrow - this is a primary tab
+- Screen title "📈 Your Loan Journey" 
+- Share button (share progress with family/advisors)
+- Star button (bookmark important milestones)
+- Status indicator shows "Planning" or "Taken"
 
 ### Current Progress (Primary Motivation)
 - **Money Saved So Far**: ₹2,47,350 (cumulative savings)

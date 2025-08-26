@@ -581,12 +581,7 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <a href="dashboard.html" class="back-button" aria-label="Back">←</a>
-                <h1>Smart Loan Calculator <span style="font-size: 12px; color: var(--success-green); font-weight: 500;">📴 100% Offline</span></h1>
-            </div>
-            <div class="header-right">
-                <button class="header-icon" aria-label="Notifications">🔔</button>
-                <button class="header-icon" aria-label="Help">?</button>
+                <h1>📊 Calculator & Settings</h1>
             </div>
         </header>
 
@@ -608,8 +603,8 @@
                                 type="text" 
                                 id="loan-amount" 
                                 class="form-input" 
-                                value="50,00,000"
-                                placeholder="50,00,000"
+                                value="30,00,000"
+                                placeholder="30,00,000"
                                 maxlength="15"
                             >
                         </div>
@@ -650,6 +645,47 @@
                         </div>
                         <div class="error-message" id="tenure-error"></div>
                     </div>
+                </form>
+            </section>
+
+            <!-- Personal Details Section -->
+            <section class="card">
+                <div class="card-header">
+                    <span class="card-icon">👤</span>
+                    <h3>PERSONAL DETAILS</h3>
+                </div>
+                
+                <form id="personal-form">
+                    <div class="form-group">
+                        <label for="monthly-income" class="form-label">Monthly Income</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">₹</span>
+                            <input 
+                                type="text" 
+                                id="monthly-income" 
+                                class="form-input" 
+                                value="1,00,000"
+                                placeholder="1,00,000"
+                                maxlength="15"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="current-age" class="form-label">Current Age</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="number" 
+                                id="current-age" 
+                                class="form-input" 
+                                value="30"
+                                placeholder="30"
+                                min="18"
+                                max="65"
+                            >
+                            <span class="input-suffix">years</span>
+                        </div>
+                    </div>
 
                     <button type="submit" class="calculate-button" id="calculate-btn">
                         📱 CALCULATE IMPACT
@@ -668,11 +704,11 @@
                 
                 <div class="reality-metrics">
                     <div class="reality-metric">
-                        <div class="metric-value" id="current-emi">₹41,822</div>
+                        <div class="metric-value" id="current-emi">₹25,093</div>
                         <div class="metric-label">Current EMI</div>
                     </div>
                     <div class="reality-metric">
-                        <div class="metric-value" id="total-interest">₹50,37,280</div>
+                        <div class="metric-value" id="total-interest">₹30,22,368</div>
                         <div class="metric-label">Total Interest</div>
                     </div>
                 </div>
@@ -682,8 +718,8 @@
                 </div>
 
                 <div class="granular-impact">
-                    <div>Daily Interest Burn: <strong id="daily-burn">₹1,147</strong></div>
-                    <div>Per Hour Loss: <strong id="hourly-burn">₹48</strong></div>
+                    <div>Daily Interest Burn: <strong id="daily-burn">₹696</strong></div>
+                    <div>Per Hour Loss: <strong id="hourly-burn">₹29</strong></div>
                     <div style="font-size: var(--font-size-caption); color: var(--text-secondary); margin-top: var(--space-sm);">📴 Calculated offline • No internet required</div>
                 </div>
             </section>
@@ -698,21 +734,10 @@
                 <div class="strategy-card" tabindex="0" role="button">
                     <div class="strategy-header">
                         <span class="strategy-check">✅</span>
-                        <div class="strategy-name">Bi-Weekly Payments</div>
-                    </div>
-                    <div class="strategy-savings">
-                        <span class="savings-amount">Save ₹7,23,450</span>
-                        <span class="time-saved">3.2yr early</span>
-                    </div>
-                </div>
-
-                <div class="strategy-card" tabindex="0" role="button">
-                    <div class="strategy-header">
-                        <span class="strategy-check">✅</span>
                         <div class="strategy-name">One Extra EMI/Year</div>
                     </div>
                     <div class="strategy-savings">
-                        <span class="savings-amount">Save ₹5,89,120</span>
+                        <span class="savings-amount">Save ₹4,35,800</span>
                         <span class="time-saved">2.8yr early</span>
                     </div>
                 </div>
@@ -720,11 +745,22 @@
                 <div class="strategy-card" tabindex="0" role="button">
                     <div class="strategy-header">
                         <span class="strategy-check">✅</span>
-                        <div class="strategy-name">Round Up to ₹45,000</div>
+                        <div class="strategy-name">Round Up EMI to ₹30,000</div>
                     </div>
                     <div class="strategy-savings">
-                        <span class="savings-amount">Save ₹4,12,890</span>
+                        <span class="savings-amount">Save ₹3,12,450</span>
                         <span class="time-saved">2.1yr early</span>
+                    </div>
+                </div>
+
+                <div class="strategy-card" tabindex="0" role="button">
+                    <div class="strategy-header">
+                        <span class="strategy-check">✅</span>
+                        <div class="strategy-name">Salary Credit Advantage</div>
+                    </div>
+                    <div class="strategy-savings">
+                        <span class="savings-amount">Save ₹2,85,000</span>
+                        <span class="time-saved">Interest reduction</span>
                     </div>
                 </div>
 
@@ -740,21 +776,17 @@
                 <span class="nav-icon">🏠</span>
                 <span>Home</span>
             </a>
-            <a href="calculator.html" class="nav-item active">
-                <span class="nav-icon">📊</span>
-                <span>Calc</span>
-            </a>
             <a href="strategies.html" class="nav-item">
-                <span class="nav-icon">🎯</span>
-                <span>Strategy</span>
+                <span class="nav-icon">💰</span>
+                <span>Strategies</span>
             </a>
             <a href="progress.html" class="nav-item">
                 <span class="nav-icon">📈</span>
                 <span>Progress</span>
             </a>
-            <a href="profile.html" class="nav-item">
-                <span class="nav-icon">👤</span>
-                <span>Profile</span>
+            <a href="calculator.html" class="nav-item active">
+                <span class="nav-icon">📊</span>
+                <span>Calculator</span>
             </a>
         </nav>
     </div>
