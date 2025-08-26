@@ -25,8 +25,7 @@ Home Loan Advisor is a Flutter mobile application that helps Indian home loan bo
 home_loan_advisor/
 ├── design/                          # Complete UI/UX design system
 │   ├── wireframes/                 # Phase 1: Text wireframes (5 screens)
-│   ├── mockups/                   # Phase 2: HTML visual designs (6 screens)  
-│   └── UX_DESIGN_STANDARDS.md    # Design workflow standards
+│   └── mockups/                   # Phase 2: HTML visual designs (6 screens)
 ├── docs/                          # Project documentation
 │   ├── analytics/                 # Analytics requirements
 │   ├── legal/                    # Privacy policy & terms
@@ -157,8 +156,7 @@ The lib/ folder has been intentionally removed. Flutter developers should:
 
 ### For Design Reference  
 - **`design/wireframes/`**: Text-based layout specifications
-- **`design/mockups/`**: Interactive HTML prototypes
-- **`design/UX_DESIGN_STANDARDS.md`**: Design consistency guidelines
+- **`design/mockups/`**: Interactive HTML prototypes with embedded design standards
 
 ## Success Metrics
 

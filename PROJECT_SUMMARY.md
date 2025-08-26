@@ -10,7 +10,7 @@ All design, documentation, and specifications are complete. The project is ready
 ### ✅ Complete Design System
 - **Phase 1 Wireframes** (5 screens, updated for offline-first) → `design/wireframes/`
 - **Phase 2 HTML Mockups** (6 interactive screens) → `design/mockups/`
-- **Design Standards** for consistent development → `design/UX_DESIGN_STANDARDS.md`
+- **Design Standards** embedded in HTML mockups and wireframe documentation
 - **Professional SVG logos ready for use** → `assets/logos/` (4 concept variations)
 
 ### ✅ Technical Documentation

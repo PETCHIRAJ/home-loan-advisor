@@ -23,10 +23,10 @@
 - `profile.html` - Simple user preferences
 
 ### Design Standards
-**Location**: `design/UX_DESIGN_STANDARDS.md`
-- Complete workflow standards for consistent development
-- Material 3 design system guidelines
-- Component specifications and patterns
+**Embedded in deliverables**:
+- Material 3 design system defined in HTML mockups
+- Component specifications in wireframe documentation
+- Consistent patterns demonstrated across all screens
 
 ## 📋 Technical Documentation
 
