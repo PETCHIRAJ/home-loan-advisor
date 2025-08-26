@@ -41,8 +41,8 @@ START → Dashboard → Calculator → Strategies → Progress → REPEAT
 ```
 Dashboard → Quick Actions → Direct Feature Access
     ↓              ↓              ↓
-Compare Rates → Market Data → Rate Negotiation Tips
-Balance Transfer → Calculator → Net Savings Analysis  
+View Strategies → Strategy Hub → Savings Optimization
+EMI Calculator → Advanced Calc → Scenario Analysis  
 Track Progress → Progress Screen → Achievement View
 ```
 
@@ -111,7 +111,7 @@ App Root
 ├── 🎯 Strategies
 │   ├── Core Calculators (4)
 │   ├── Eye-Openers (4) 
-│   ├── Smart Comparisons (3)
+│   ├── Smart Analysis (3)
 │   ├── Behavioral Motivators (3)
 │   ├── Life Event Planning (3)
 │   └── Advanced Predictions (3)

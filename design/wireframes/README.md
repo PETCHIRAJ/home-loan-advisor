@@ -25,7 +25,7 @@ App
 ├── Strategies
 │   ├── Core Savings Calculators (4 features)
 │   ├── Instant Eye-Openers (4 features)
-│   ├── Smart Comparisons (3 features)
+│   ├── Smart Analysis (3 features)
 │   ├── Behavioral Motivators (3 features)
 │   ├── Life Event Planning (3 features)
 │   └── Advanced Predictions (3 features)

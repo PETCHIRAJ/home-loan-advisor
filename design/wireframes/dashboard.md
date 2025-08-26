@@ -34,12 +34,12 @@ Main entry point that creates immediate emotional impact through the Daily Inter
 │                                     │
 │ 🚀 QUICK ACTIONS                   │
 │ ┌───────────┐ ┌───────────────────┐ │
-│ │ Calculate │ │ Compare Rates     │ │
+│ │ Calculate │ │ View Strategies   │ │
 │ │ Savings   │ │                   │ │
 │ └───────────┘ └───────────────────┘ │
 │ ┌───────────┐ ┌───────────────────┐ │
-│ │ Balance   │ │ Track Progress    │ │
-│ │ Transfer  │ │                   │ │
+│ │ EMI       │ │ Track Progress    │ │
+│ │ Calculator│ │                   │ │
 │ └───────────┘ └───────────────────┘ │
 │                                     │
 ├─────────────────────────────────────┤
@@ -83,8 +83,8 @@ Main entry point that creates immediate emotional impact through the Daily Inter
 - **Layout**: 2x2 grid of action cards
 - **Options**: 
   - Calculate Savings (primary action)
-  - Compare Rates (market intelligence)
-  - Balance Transfer (optimization)
+  - View Strategies (offline optimization)
+  - EMI Calculator (offline calculations)
   - Track Progress (motivation)
 
 ### Bottom Navigation (Persistent)
@@ -113,14 +113,18 @@ Main entry point that creates immediate emotional impact through the Daily Inter
 - Tap notification → view alerts/updates
 - Tap settings → app preferences
 - Tap health score → improvement strategies
-- Tap quick actions → direct feature access
+- Tap "View Strategies" → 20 offline strategies
+- Tap "EMI Calculator" → advanced calculations
+- Tap "Track Progress" → savings journey
 
 ## Content Requirements
 
-- Real-time calculation based on user's loan data
-- Personalized tips based on user behavior
+- Offline calculation based on user's loan data
+- Personalized tips based on user behavior patterns
 - Achievement badges for gamification
 - Cultural elements (Indian festivals, local context)
+- All features work without internet connectivity
+- Data stored locally for privacy and speed
 
 ## Accessibility Considerations
 

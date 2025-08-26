@@ -127,8 +127,8 @@ Motivation hub that tracks user's savings journey, shows active strategies, gami
 
 #### Tier 3 Achievements (Mastery)
 - **🏅 6-Month Streak**: Maintained strategies for 6 months
-- **🏅 Rate Optimizer**: Successfully negotiated better rate
-- **🏅 Balance Transfer**: Completed beneficial balance transfer
+- **🏅 Rate Strategist**: Completed comprehensive rate analysis
+- **🏅 Optimization Expert**: Implemented advanced offline strategies
 - **🏅 Tax Maximizer**: Optimized all available tax benefits
 
 #### Tier 4 Achievements (Expert)
@@ -158,7 +158,7 @@ Motivation hub that tracks user's savings journey, shows active strategies, gami
 - **Progress Velocity**: "You're saving 23% faster this quarter"
 - **Comparative Analysis**: "Users like you typically save ₹4.2L"
 - **Trend Analysis**: "Your consistency has improved 15% this month"
-- **Opportunity Alerts**: "You could save ₹45K more with balance transfer"
+- **Opportunity Alerts**: "You could save ₹45K more with available strategies"
 
 #### Goal Setting
 - **Savings Target**: Set total savings goals (₹1L, ₹5L, ₹10L milestones)

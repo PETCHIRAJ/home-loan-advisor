@@ -105,16 +105,16 @@ Hub for all 20 money-saving features organized by impact categories. Allows user
    - Impact: Milestone awareness (typically year 12-15)
    - Purpose: Progress visualization
 
-### 🧠 Smart Comparisons (Market Intelligence)
-9. **Rate Reality Check**
-   - Description: Compare your rate vs market average
-   - Impact: Negotiation potential (0.5-1% reduction possible)
-   - Action: Bank negotiation or switching
+### 🧠 Smart Analysis (Offline Tools)
+9. **Rate Awareness Guide**
+   - Description: Learn about market rates and negotiation tactics
+   - Impact: Knowledge for future negotiations
+   - Action: Educational content and preparation tips
 
-10. **Balance Transfer Calculator**
-    - Description: Calculate net savings after all costs
-    - Impact: Potential ₹2-5L savings
-    - Consideration: Processing fees, legal costs
+10. **Transfer Analysis Tool**
+    - Description: Calculate potential savings scenarios offline
+    - Impact: Understand transfer economics without server dependency
+    - Consideration: Offline cost-benefit modeling
 
 11. **Tenure vs Interest Optimizer**
     - Description: Compare total interest for different tenure options
@@ -153,11 +153,11 @@ Hub for all 20 money-saving features organized by impact categories. Allows user
     - Impact: Optimize between child's future and loan freedom
     - Strategy: Life goal prioritization
 
-### 🔮 Advanced Predictions (Forward-Looking)
-18. **RBI Rate Impact Predictor**
-    - Description: Shows how rate changes affect EMI and total interest
+### 🔮 Advanced Analysis (Forward-Looking)
+18. **Rate Change Impact Calculator**
+    - Description: Model different rate scenarios offline
     - Impact: ±0.5% rate change = ±₹2-3L over loan life
-    - Planning: Interest rate cycle awareness
+    - Planning: Scenario-based planning tools
 
 19. **Tax Benefit Maximizer**
     - Description: Optimize Section 80C and 24b benefits with co-borrower
@@ -197,7 +197,7 @@ Hub for all 20 money-saving features organized by impact categories. Allows user
 
 1. **Core Calculators** (Highest value, universal applicability)
 2. **Eye-Openers** (Emotional engagement, motivational)
-3. **Smart Comparisons** (Market-based optimization)
+3. **Smart Analysis** (Offline optimization tools)
 4. **Behavioral Motivators** (Lifestyle integration)
 5. **Life Event Planning** (Situational applicability)
 6. **Advanced Predictions** (Power user features)
