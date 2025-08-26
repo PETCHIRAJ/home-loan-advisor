@@ -143,6 +143,7 @@ class TextStyles {
     fontWeight: FontWeight.w700, // Bold
     letterSpacing: -0.5,
     height: 1.25,
+    // Optimized for Indian currency display like ₹50,00,000
   );
 
   static const TextStyle currencyMedium = TextStyle(
@@ -151,6 +152,7 @@ class TextStyles {
     fontWeight: FontWeight.w700, // Bold
     letterSpacing: -0.25,
     height: 1.33,
+    // Perfect for EMI amounts and savings displays
   );
 
   static const TextStyle currencySmall = TextStyle(
@@ -159,6 +161,7 @@ class TextStyles {
     fontWeight: FontWeight.w500, // Medium
     letterSpacing: 0.0,
     height: 1.22,
+    // Ideal for percentage displays and smaller amounts
   );
 
   // Navigation Styles
