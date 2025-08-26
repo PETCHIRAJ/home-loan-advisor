@@ -218,7 +218,74 @@
             margin-top: var(--space-xs);
         }
 
-        /* Calculate Button */
+        /* Update Button Styles */
+        .update-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-blue), #1976D2);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: var(--space-lg);
+            font-size: var(--font-size-body);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-md);
+            margin-top: var(--space-lg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .update-button:hover {
+            background: linear-gradient(135deg, #1976D2, #1565C0);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .update-button:active {
+            transform: translateY(0);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .update-button:disabled {
+            background: var(--text-disabled);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .button-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+        }
+
+        .loading-spinner {
+            font-size: var(--font-size-label);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .update-button.loading .button-text {
+            opacity: 0.7;
+        }
+
+        .update-button.success {
+            background: linear-gradient(135deg, var(--success-green), #4CAF50);
+            animation: successPulse 0.6s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         /* Radio Button Styles */
         .radio-group {
             display: flex;
@@ -609,6 +676,30 @@
                             </label>
                         </div>
                     </div>
+
+                    <div class="form-group months-paid-group" style="display: none;">
+                        <label for="months-paid" class="form-label">Months Already Paid</label>
+                        <div class="input-wrapper">
+                            <input 
+                                type="number" 
+                                id="months-paid" 
+                                class="form-input" 
+                                value="0"
+                                placeholder="0"
+                                min="0"
+                                max="360"
+                            >
+                            <span class="input-suffix">months</span>
+                        </div>
+                        <div class="error-message" id="months-paid-error"></div>
+                    </div>
+
+                    <button type="button" class="update-button" id="update-calculations">
+                        <span class="button-content">
+                            <span class="button-text">Update Calculations</span>
+                            <span class="loading-spinner" style="display: none;">⏳</span>
+                        </span>
+                    </button>
                 </form>
             </section>
 
@@ -801,25 +892,72 @@
                     loanTenureInput.classList.add('error');
                     isValid = false;
                 }
+                
+                // Validate months paid if loan is already taken
+                const loanStatus = document.querySelector('input[name="loan-status"]:checked').value;
+                if (loanStatus === 'taken') {
+                    const monthsPaid = parseInt(monthsPaidInput.value);
+                    const maxMonths = tenure * 12;
+                    
+                    if (isNaN(monthsPaid) || monthsPaid < 0) {
+                        document.getElementById('months-paid-error').textContent = 'Please enter valid months paid';
+                        monthsPaidInput.classList.add('error');
+                        isValid = false;
+                    } else if (monthsPaid >= maxMonths) {
+                        document.getElementById('months-paid-error').textContent = `Months paid cannot be more than ${maxMonths - 1} for ${tenure} year tenure`;
+                        monthsPaidInput.classList.add('error');
+                        isValid = false;
+                    }
+                }
 
                 return isValid;
             }
 
-            // Update results
-            function updateResults(principal, rate, tenure) {
-                const emi = calculateEMI(principal, rate, tenure);
-                const totalAmount = emi * tenure * 12;
-                const totalInterest = totalAmount - principal;
+            // Update results with loan status consideration
+            function updateResults(principal, rate, tenure, monthsPaid = 0, loanStatus = 'planning') {
+                const totalMonths = tenure * 12;
+                let emi, totalAmount, totalInterest, remainingBalance;
+                
+                if (loanStatus === 'taken' && monthsPaid > 0) {
+                    // Calculate for already taken loan
+                    emi = calculateEMI(principal, rate, tenure);
+                    const totalOriginalAmount = emi * totalMonths;
+                    const paidAmount = emi * monthsPaid;
+                    
+                    // Calculate remaining balance using amortization
+                    remainingBalance = calculateRemainingBalance(principal, rate, tenure, monthsPaid);
+                    const remainingMonths = totalMonths - monthsPaid;
+                    const remainingAmount = emi * remainingMonths;
+                    
+                    totalAmount = paidAmount + remainingAmount;
+                    totalInterest = totalAmount - principal;
+                    
+                    // Update display for remaining loan
+                    document.getElementById('emi-amount').textContent = '₹' + emi.toLocaleString('en-IN');
+                    document.getElementById('total-payable').textContent = '₹' + remainingAmount.toLocaleString('en-IN') + ' (Remaining)';
+                    document.getElementById('total-interest').textContent = '₹' + (remainingAmount - remainingBalance).toLocaleString('en-IN') + ' (Remaining)';
+                } else {
+                    // Calculate for new loan
+                    emi = calculateEMI(principal, rate, tenure);
+                    totalAmount = emi * totalMonths;
+                    totalInterest = totalAmount - principal;
+                    remainingBalance = principal;
+                    
+                    document.getElementById('emi-amount').textContent = '₹' + emi.toLocaleString('en-IN');
+                    document.getElementById('total-payable').textContent = '₹' + totalAmount.toLocaleString('en-IN');
+                    document.getElementById('total-interest').textContent = '₹' + totalInterest.toLocaleString('en-IN');
+                }
+                
                 const interestPercentage = ((totalInterest / principal) * 100).toFixed(1);
-
-                document.getElementById('emi-amount').textContent = '₹' + emi.toLocaleString('en-IN');
-                document.getElementById('total-payable').textContent = '₹' + totalAmount.toLocaleString('en-IN');
-                document.getElementById('total-interest').textContent = '₹' + totalInterest.toLocaleString('en-IN');
                 document.getElementById('interest-percentage').textContent = interestPercentage + '%';
                 
                 // Update pie chart
-                const principalPercentage = (principal / totalAmount) * 360;
-                const interestPercentage = (totalInterest / totalAmount) * 360;
+                const displayPrincipal = loanStatus === 'taken' && monthsPaid > 0 ? remainingBalance : principal;
+                const displayInterest = loanStatus === 'taken' && monthsPaid > 0 ? 
+                    (emi * (totalMonths - monthsPaid)) - remainingBalance : totalInterest;
+                const displayTotal = displayPrincipal + displayInterest;
+                
+                const principalPercentage = (displayPrincipal / displayTotal) * 360;
                 
                 const pieChart = document.querySelector('.pie-chart');
                 pieChart.style.background = `conic-gradient(
@@ -830,52 +968,106 @@
                 // Update legend amounts
                 document.querySelector('.principal-color').parentNode.innerHTML = `
                     <div class="legend-color principal-color"></div>
-                    <span>Principal (₹${(principal / 100000).toFixed(1)}L)</span>
+                    <span>Principal (₹${(displayPrincipal / 100000).toFixed(1)}L)</span>
                 `;
                 document.querySelector('.interest-color').parentNode.innerHTML = `
                     <div class="legend-color interest-color"></div>
-                    <span>Interest (₹${(totalInterest / 100000).toFixed(1)}L)</span>
+                    <span>Interest (₹${(displayInterest / 100000).toFixed(1)}L)</span>
                 `;
             }
+            
+            // Calculate remaining balance for partially paid loans
+            function calculateRemainingBalance(principal, rate, tenure, monthsPaid) {
+                const monthlyRate = rate / 12 / 100;
+                const totalMonths = tenure * 12;
+                const emi = calculateEMI(principal, rate, tenure);
+                
+                let balance = principal;
+                for (let i = 0; i < monthsPaid; i++) {
+                    const interestPayment = balance * monthlyRate;
+                    const principalPayment = emi - interestPayment;
+                    balance -= principalPayment;
+                }
+                
+                return Math.max(0, Math.round(balance));
+            }
+            
+            // Update header summary
+            function updateHeaderSummary(principal, rate, tenure, loanStatus) {
+                const principalInLakhs = (principal / 100000).toFixed(0);
+                const statusText = loanStatus === 'taken' ? 'Active' : 'Planned';
+                const summary = `₹${principalInLakhs}L @ ${rate}% • ${tenure}yr (${statusText})`;
+                document.querySelector('.loan-summary').textContent = summary;
+            }
 
-            // Real-time calculation
+            // Loan status radio buttons
+            const loanStatusRadios = document.querySelectorAll('input[name="loan-status"]');
+            const monthsPaidGroup = document.querySelector('.months-paid-group');
+            const monthsPaidInput = document.getElementById('months-paid');
+            const updateButton = document.getElementById('update-calculations');
+
+            // Handle loan status change
+            loanStatusRadios.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    if (this.value === 'taken') {
+                        monthsPaidGroup.style.display = 'block';
+                        monthsPaidInput.setAttribute('required', 'true');
+                    } else {
+                        monthsPaidGroup.style.display = 'none';
+                        monthsPaidInput.removeAttribute('required');
+                        monthsPaidInput.value = '0';
+                    }
+                });
+            });
+
+            // Update button click handler
+            updateButton.addEventListener('click', function() {
+                performCalculation();
+            });
+
+            // Perform calculation with loading state
             function performCalculation() {
                 if (!validateForm()) return;
                 
+                // Show loading state
+                updateButton.classList.add('loading');
+                updateButton.querySelector('.loading-spinner').style.display = 'inline';
+                updateButton.querySelector('.button-text').textContent = 'Calculating...';
+                updateButton.disabled = true;
+
+                // Simulate brief calculation time for better UX
+                setTimeout(() => {
+                    const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
+                    const rate = parseFloat(interestRateInput.value);
+                    const tenure = parseInt(loanTenureInput.value);
+                    const monthsPaid = parseInt(monthsPaidInput.value) || 0;
+                    const loanStatus = document.querySelector('input[name="loan-status"]:checked').value;
+                    
+                    updateResults(principal, rate, tenure, monthsPaid, loanStatus);
+                    updateHeaderSummary(principal, rate, tenure, loanStatus);
+                    
+                    // Show success state
+                    updateButton.classList.remove('loading');
+                    updateButton.classList.add('success');
+                    updateButton.querySelector('.loading-spinner').style.display = 'none';
+                    updateButton.querySelector('.button-text').textContent = 'Updated! ✓';
+                    
+                    setTimeout(() => {
+                        updateButton.classList.remove('success');
+                        updateButton.querySelector('.button-text').textContent = 'Update Calculations';
+                        updateButton.disabled = false;
+                    }, 1500);
+                }, 800);
+            }
+            
+            // Initial calculation on page load
+            setTimeout(() => {
                 const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
                 const rate = parseFloat(interestRateInput.value);
                 const tenure = parseInt(loanTenureInput.value);
                 
-                updateResults(principal, rate, tenure);
-            }
-            
-            // Calculate on input change
-            [loanAmountInput, interestRateInput, loanTenureInput].forEach(input => {
-                input.addEventListener('input', debounceCalculation);
-            });
-            
-            // Initial calculation
-            setTimeout(performCalculation, 500);
-
-
-            // Real-time calculation (debounced)
-            let calculationTimer;
-            function debounceCalculation() {
-                clearTimeout(calculationTimer);
-                calculationTimer = setTimeout(() => {
-                    if (validateForm()) {
-                        const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
-                        const rate = parseFloat(interestRateInput.value);
-                        const tenure = parseInt(loanTenureInput.value);
-                        
-                        updateResults(principal, rate, tenure);
-                    }
-                }, 500);
-            }
-
-            [loanAmountInput, interestRateInput, loanTenureInput].forEach(input => {
-                input.addEventListener('input', debounceCalculation);
-            });
+                updateResults(principal, rate, tenure, 0, 'planning');
+            }, 500);
 
             // Accessibility announcements
             function announceResults(principal, rate, tenure) {

@@ -122,16 +122,17 @@
 
         /* Category Section */
         .category-section {
-            margin-bottom: var(--space-xl);
+            margin-bottom: var(--space-lg);
         }
 
         .category-header {
             background: linear-gradient(135deg, var(--surface), var(--surface-variant));
-            padding: var(--space-lg) var(--space-md);
+            padding: var(--space-md) var(--space-md);
             border-bottom: 3px solid;
             position: sticky;
             top: 48px;
             z-index: 90;
+            margin-bottom: var(--space-sm);
         }
 
         .category-header.core { border-bottom-color: var(--primary-blue); }
@@ -141,14 +142,14 @@
         .category-title {
             display: flex;
             align-items: center;
-            font-size: var(--font-size-title);
+            font-size: var(--font-size-body);
             font-weight: 600;
             color: var(--text-primary);
         }
 
         .category-icon {
-            font-size: 28px;
-            margin-right: var(--space-md);
+            font-size: 20px;
+            margin-right: var(--space-sm);
         }
 
         .category-subtitle {
@@ -160,6 +161,7 @@
         /* Strategy Cards */
         .strategies-grid {
             padding: 0 var(--space-md);
+            margin-top: 0;
         }
 
         .strategy-card {
@@ -472,7 +474,8 @@
             }
             
             .category-header {
-                padding: var(--space-lg) var(--space-sm);
+                padding: var(--space-md) var(--space-sm);
+                margin-bottom: var(--space-xs);
             }
             
             .strategy-impact {
@@ -628,7 +631,7 @@
                 </div>
                 
                 <div class="strategies-grid">
-                    <div class="strategy-card" tabindex="0" role="button">
+                    <div class="strategy-card" tabindex="0" role="button" onclick="window.location.href='strategy-detail-extra-emi.html'">
                         <div class="effort-badge low">Low Effort</div>
                         <div class="strategy-header">
                             <span class="strategy-icon">💸</span>
@@ -1207,7 +1210,13 @@
 
             // Strategy details modal (placeholder)
             function showStrategyDetails(strategyName) {
-                // This would open a detailed view or modal
+                // Handle Extra EMI Strategy specifically
+                if (strategyName.includes('Extra EMI Strategy')) {
+                    window.location.href = 'strategy-detail-extra-emi.html';
+                    return;
+                }
+                
+                // For other strategies, show placeholder
                 alert(`${strategyName} details would open here.\n\nIn the full app, this would show:\n• Detailed explanation\n• Step-by-step implementation\n• Calculator specific to this strategy\n• Success stories\n• Related strategies`);
             }
 
