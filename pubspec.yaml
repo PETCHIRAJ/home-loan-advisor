@@ -1,0 +1,75 @@
+name: home_loan_advisor
+description: Save lakhs on your home loan with 20 proven strategies
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=3.10.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management (Riverpod)
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # Charts & Visualizations
+  fl_chart: ^0.68.0
+
+  # Local Storage (Offline-First)
+  shared_preferences: ^2.2.2
+
+  # File Operations (Export)
+  csv: ^6.0.0
+  pdf: ^3.10.7
+  path_provider: ^2.1.2
+  share_plus: ^7.2.2
+
+  # Analytics (Opt-in)
+  firebase_analytics: ^10.8.0
+  firebase_core: ^2.24.2
+
+  # Utilities
+  intl: ^0.19.0          # Indian currency formatting
+  equatable: ^2.0.5      # Value equality
+  freezed_annotation: ^2.4.1  # Immutable models
+
+  # UI
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  
+  # Code Quality
+  flutter_lints: ^3.0.0
+  
+  # Code Generation (Riverpod + Freezed)
+  riverpod_generator: ^2.3.9
+  build_runner: ^2.4.7
+  freezed: ^2.4.6
+  json_annotation: ^4.8.1
+  json_serializable: ^6.7.1
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/fonts/
+    - assets/images/
+  
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
