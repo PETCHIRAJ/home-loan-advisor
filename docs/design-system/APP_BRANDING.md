@@ -83,10 +83,13 @@ HOME LOAN ADVISOR
 ## Typography System
 
 ### Brand Typeface
-**Primary**: Inter (Google Fonts)
-- **Reasoning**: Professional, highly legible, optimized for digital screens
-- **Fallback**: System fonts (-apple-system, BlinkMacSystemFont, Roboto)
+**Primary**: Inter (Self-hosted/Bundled)
+- **Implementation**: Manual font integration for 100% offline functionality
+- **Weights**: Regular (400), Medium (500), Bold (700)
+- **Reasoning**: Professional, highly legible, optimized for financial data display
+- **Fallback**: System fonts (Roboto, SF Pro Text, sans-serif)
 - **License**: Open Font License (free for all use)
+- **Currency Support**: Excellent ₹ symbol rendering and Indian number formatting
 
 ### Typography Hierarchy
 ```css
@@ -200,9 +203,14 @@ class AppBranding {
   static const Color prosperityGold = Color(0xFFFFD700);
   static const Color deepBlue = Color(0xFF0D47A1);
   
-  // Typography
+  // Typography - Offline-First Implementation
   static const String primaryFont = 'Inter';
   static const FontWeight logoWeight = FontWeight.w700;
+  
+  // Font Weights (bundled, not Google Fonts)
+  static const FontWeight regular = FontWeight.w400;
+  static const FontWeight medium = FontWeight.w500;
+  static const FontWeight bold = FontWeight.w700;
   
   // Logo Asset Paths
   static const String logoColor = 'assets/images/logo-color.svg';
@@ -210,12 +218,37 @@ class AppBranding {
   static const String logoMark = 'assets/images/logo-mark.svg';
 }
 
+// Theme configuration with bundled Inter font
+ThemeData(
+  fontFamily: AppBranding.primaryFont,
+  textTheme: const TextTheme(
+    headlineLarge: TextStyle(
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w700,
+      fontSize: 24,
+    ),
+    bodyLarge: TextStyle(
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w400,
+      fontSize: 16,
+    ),
+    labelLarge: TextStyle(
+      fontFamily: 'Inter',
+      fontWeight: FontWeight.w500,
+      fontSize: 16,
+    ),
+  ),
+)
+
 // Usage in app
 AppBar(
-  title: SvgPicture.asset(
-    AppBranding.logoColor,
-    height: 32,
-    semanticsLabel: 'Home Loan Advisor',
+  title: Text(
+    'HOME LOAN ADVISOR',
+    style: TextStyle(
+      fontFamily: AppBranding.primaryFont,
+      fontWeight: AppBranding.logoWeight,
+      letterSpacing: 0.02,
+    ),
   ),
   backgroundColor: Colors.white,
 )
