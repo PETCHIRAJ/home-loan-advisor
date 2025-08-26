@@ -214,6 +214,7 @@
 
         .strategy-content {
             flex: 1;
+            padding-right: 60px; /* Space for effort badge */
         }
 
         .strategy-name {
@@ -274,14 +275,16 @@
 
         .effort-badge {
             position: absolute;
-            top: var(--space-md);
-            right: var(--space-md);
+            top: var(--space-sm);
+            right: var(--space-sm);
             background: var(--surface-variant);
             color: var(--text-secondary);
-            padding: var(--space-xs) var(--space-sm);
+            padding: 2px var(--space-xs);
             border-radius: var(--radius-sm);
-            font-size: var(--font-size-small);
+            font-size: 10px;
             font-weight: 500;
+            line-height: 1.2;
+            z-index: 1;
         }
 
         .effort-badge.low { background: #E8F5E8; color: var(--success-green); }
@@ -295,6 +298,10 @@
 
         .strategy-card.eye-opener .strategy-icon {
             color: var(--error-red);
+        }
+
+        .strategy-card.eye-opener .strategy-content {
+            padding-right: 0; /* Eye-opener cards don't have badges */
         }
 
         .strategy-card.eye-opener .strategy-impact {
@@ -476,6 +483,17 @@
             
             .impact-time {
                 align-items: flex-start;
+            }
+
+            .strategy-content {
+                padding-right: 50px; /* Reduced space on smaller screens */
+            }
+
+            .effort-badge {
+                font-size: 9px;
+                padding: 1px 4px;
+                top: 4px;
+                right: 4px;
             }
         }
 
