@@ -4,23 +4,26 @@
 ## ✅ Available Design Assets
 
 ### Phase 1: Wireframes (Updated for Offline-First)
-**Location**: `design/wireframes/`
+**Location**: `design/wireframes/` (8 files total)
+- `onboarding.md` - Welcome screen for first-time users
 - `dashboard.md` - Main screen with Daily Interest Burn Counter
-- `calculator.md` - 3-input EMI calculator screen  
+- `calculator.md` - Enhanced EMI calculator with charts and schedule
 - `strategies.md` - 20 money-saving strategies listing
+- `strategy-detail.md` - Template for strategy detail pages
 - `progress.md` - Achievement tracking and gamification
 - `user-flows.md` - Complete navigation flows
 - `README.md` - Wireframe overview and context
-- `CONSISTENCY_FIXES.md` - Documentation of offline-first updates
 
 ### Phase 2: Interactive HTML Mockups  
 **Location**: `design/mockups/`
 - `index.html` - Navigation hub for all mockups
+- `onboarding.html` - First-time user welcome screen
 - `dashboard.html` - Hero screen with burn counter
-- `calculator.html` - EMI calculation interface
+- `calculator.html` - EMI calculation interface + settings
 - `strategies.html` - Strategy exploration screen
+- `strategy-detail-extra-emi.html` - Example strategy detail page
 - `progress.html` - Achievement and progress tracking
-- `profile.html` - Simple user preferences
+**Note**: Profile settings moved to Calculator tab (offline-first architecture)
 
 ### Design Standards
 **Embedded in deliverables**:
