@@ -441,41 +441,35 @@
             background: white;
         }
 
-        /* Mode Selector */
-        .mode-selector {
+        /* Loan Status Indicator */
+        .loan-status-indicator {
             margin-bottom: var(--space-lg);
-        }
-
-        .mode-tabs {
-            display: flex;
             background: var(--surface-variant);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xs);
-            gap: var(--space-xs);
+            border-radius: var(--radius-md);
+            padding: var(--space-md);
         }
 
-        .mode-tab {
-            flex: 1;
-            background: transparent;
-            border: none;
-            padding: var(--space-md) var(--space-lg);
-            border-radius: var(--radius-md);
+        .status-message {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
             font-size: var(--font-size-label);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all var(--transition-normal);
             color: var(--text-secondary);
         }
 
-        .mode-tab.active {
-            background: var(--primary-blue);
-            color: white;
-            box-shadow: var(--shadow-sm);
+        .status-icon {
+            font-size: 18px;
         }
 
-        .mode-tab:hover:not(.active) {
-            background: var(--surface);
+        .status-text {
+            font-weight: 500;
             color: var(--text-primary);
+        }
+
+        .status-hint {
+            font-size: var(--font-size-caption);
+            opacity: 0.8;
         }
 
         .mode-content {
@@ -635,11 +629,12 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Mode Selector -->
-            <section class="mode-selector">
-                <div class="mode-tabs">
-                    <button class="mode-tab active" data-mode="planning">Planning Phase</button>
-                    <button class="mode-tab" data-mode="taken">Loan Taken</button>
+            <!-- Loan Status Indicator -->
+            <section class="loan-status-indicator">
+                <div class="status-message">
+                    <span class="status-icon">📊</span>
+                    <span class="status-text">Showing: Planning Phase</span>
+                    <span class="status-hint">(Change in Calculator)</span>
                 </div>
             </section>
 
@@ -896,27 +891,31 @@
                 if (planningProgressFill) planningProgressFill.style.width = '75%';
             }, 500);
 
-            // Mode switching functionality
-            const modeTabs = document.querySelectorAll('.mode-tab');
+            // Load correct view based on loan status from Calculator settings
+            // In production, this would check the app state/localStorage
+            const loanStatus = localStorage.getItem('loanStatus') || 'planning';
+            const statusText = document.querySelector('.status-text');
             const modeContents = document.querySelectorAll('.mode-content');
             
-            modeTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const targetMode = this.dataset.mode;
-                    
-                    // Update active tab
-                    modeTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Update active content
-                    modeContents.forEach(content => {
-                        content.classList.remove('active');
-                        if (content.id === targetMode + '-mode') {
-                            content.classList.add('active');
-                        }
-                    });
-                    
-                    // Announce mode change
+            // Show appropriate content based on loan status
+            if (loanStatus === 'taken') {
+                const monthsPaid = localStorage.getItem('monthsPaid') || '0';
+                statusText.textContent = `Showing: Loan Active (${monthsPaid} months paid)`;
+                
+                modeContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === 'taken-mode') {
+                        content.classList.add('active');
+                    }
+                });
+            } else {
+                statusText.textContent = 'Showing: Planning Phase';
+                
+                modeContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === 'planning-mode') {
+                        content.classList.add('active');
+                    }
                     const announcer = document.createElement('div');
                     announcer.setAttribute('aria-live', 'polite');
                     announcer.style.position = 'absolute';

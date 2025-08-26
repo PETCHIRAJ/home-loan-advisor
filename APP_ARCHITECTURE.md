@@ -200,9 +200,41 @@ Calculator Tab (Control Center)
 
 ### Phase 3: Polish
 1. Animations
-2. Charts and visualizations
-3. Export features
+2. Charts and visualizations ✅ (Added to Calculator)
+3. Export features ✅ (CSV/PDF in Calculator)
 4. Deep linking
+
+## 🧮 Enhanced Calculator Features
+
+### Visual Analytics
+- **Pie Chart**: Principal vs Interest breakdown
+- **Timeline Graph**: Loan balance reduction over years
+- **Interactive**: Touch/hover for details
+- **Library**: Chart.js or fl_chart for Flutter
+
+### Amortization Schedule
+- **Views**: Yearly (default), Monthly, Quarterly
+- **Expandable**: Click year to see monthly breakdown
+- **Full Schedule**: 240 months available
+- **Smart Display**: Current year expanded for active loans
+
+### Export Capabilities
+- **CSV Export**: 
+  - Full amortization schedule
+  - Opens in Excel/Google Sheets
+  - Includes summary statistics
+- **PDF Export**:
+  - Professional document format
+  - Includes charts and visualizations
+  - Suitable for CA/bank submission
+
+### EMI Health Indicators
+- **EMI-to-Income Ratio**: Automatic calculation
+- **Health Status**:
+  - Green (< 30%): Healthy
+  - Yellow (30-40%): Manageable  
+  - Red (> 40%): Risky
+- **Visual Indicator**: Color-coded badge
 
 ## 📱 Technical Specifications
 

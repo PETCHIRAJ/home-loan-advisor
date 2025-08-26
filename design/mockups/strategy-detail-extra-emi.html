@@ -98,53 +98,33 @@
             z-index: 100;
         }
 
-        .header-left {
-            display: flex;
-            align-items: center;
-        }
-
         .back-button {
             background: none;
             border: none;
-            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
             color: var(--primary-blue);
             cursor: pointer;
             padding: var(--space-sm);
             border-radius: var(--radius-sm);
             transition: background-color var(--transition-fast);
-            margin-right: var(--space-md);
+            font-size: var(--font-size-label);
+            font-weight: 500;
         }
 
         .back-button:hover {
             background-color: var(--surface-variant);
         }
 
-        .back-text {
-            color: var(--primary-blue);
-            font-size: var(--font-size-label);
-            font-weight: 500;
-            text-decoration: none;
-        }
-
-        .close-button {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: var(--space-sm);
-            border-radius: var(--radius-sm);
-            transition: background-color var(--transition-fast);
-        }
-
-        .close-button:hover {
-            background-color: var(--surface-variant);
+        .back-button span:first-child {
+            font-size: 24px;
         }
 
         /* Main Content */
         .main-content {
             padding: 0 var(--space-md);
-            padding-bottom: 140px; /* Space for action button + bottom nav (84px + 56px) */
+            padding-bottom: var(--space-xl);
             min-height: calc(100vh - 89px); /* Subtract header height */
             overflow-y: visible;
         }
@@ -244,6 +224,7 @@
             padding: var(--space-xl);
             margin: var(--space-lg) 0;
             box-shadow: var(--shadow-sm);
+            min-height: 280px;
         }
 
         .graph-title {
@@ -257,24 +238,29 @@
         .comparison-bars {
             display: flex;
             justify-content: space-around;
-            align-items: flex-end;
-            height: 150px;
-            margin-bottom: var(--space-lg);
+            align-items: stretch;
+            min-height: 200px;
+            position: relative;
+            padding-top: var(--space-lg);
         }
 
         .bar-container {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: flex-end;
             width: 45%;
+            position: relative;
+            padding-bottom: 50px;
         }
 
         .bar {
             width: 100%;
             border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-            margin-bottom: var(--space-md);
             position: relative;
             transition: all var(--transition-slow);
+            z-index: 1;
+            margin-top: auto;
         }
 
         .bar-before {
@@ -297,12 +283,33 @@
             font-size: var(--font-size-caption);
             font-weight: 600;
             text-align: center;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: var(--surface);
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            white-space: normal;
+            width: 90%;
+            line-height: 1.3;
         }
 
         .bar-value {
             font-size: var(--font-size-label);
             font-weight: 700;
-            margin-bottom: var(--space-xs);
+            margin-bottom: var(--space-sm);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            background: var(--surface);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow-sm);
+            white-space: nowrap;
         }
 
         .before .bar-value { color: var(--error-red); }
@@ -468,32 +475,25 @@
 
         /* Action Buttons */
         .action-buttons {
-            position: fixed;
-            bottom: 56px; /* Height of bottom nav */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 414px;
-            padding: var(--space-md);
-            background: var(--background);
-            border-top: 1px solid var(--divider);
+            position: static;
+            padding: var(--space-lg) var(--space-md);
+            background: transparent;
             display: flex;
             gap: var(--space-md);
-            z-index: 75;
-            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 56px; /* Space for bottom nav */
         }
 
         .action-button {
             flex: 1;
-            padding: var(--space-lg);
-            border-radius: var(--radius-lg);
-            font-size: var(--font-size-label);
+            padding: var(--space-md) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-body);
             font-weight: 600;
             cursor: pointer;
             transition: all var(--transition-normal);
             border: none;
             box-shadow: var(--shadow-md);
-            min-height: 44px; /* Minimum touch target */
+            min-height: 48px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -603,7 +603,7 @@
         @media (max-width: 375px) {
             .main-content {
                 padding: 0 var(--space-sm);
-                padding-bottom: 140px;
+                padding-bottom: var(--space-xl);
             }
             
             .impact-stats {
@@ -613,6 +613,7 @@
             
             .comparison-bars {
                 height: 120px;
+                margin-bottom: var(--space-xl);
             }
             
             .bar-before {
@@ -621,6 +622,16 @@
             
             .bar-after {
                 height: 70px;
+            }
+
+            .bar {
+                margin-bottom: var(--space-md);
+            }
+
+            .bar-value,
+            .bar-label {
+                font-size: var(--font-size-caption);
+                padding: var(--space-xs);
             }
             
             .action-buttons {
@@ -657,7 +668,6 @@
 
         .action-button:focus,
         .back-button:focus,
-        .close-button:focus,
         .nav-item:focus {
             outline: 2px solid var(--primary-blue);
             outline-offset: 2px;
@@ -666,7 +676,6 @@
         /* Better focus indicators for keyboard navigation */
         .action-button:focus-visible,
         .back-button:focus-visible,
-        .close-button:focus-visible,
         .nav-item:focus-visible {
             outline: 3px solid var(--primary-blue);
             outline-offset: 2px;
@@ -675,7 +684,6 @@
         /* Hide focus outline for mouse users */
         .action-button:focus:not(:focus-visible),
         .back-button:focus:not(:focus-visible),
-        .close-button:focus:not(:focus-visible),
         .nav-item:focus:not(:focus-visible) {
             outline: none;
         }
@@ -685,11 +693,10 @@
     <div class="container">
         <!-- Header -->
         <header class="detail-header">
-            <div class="header-left">
-                <button class="back-button" onclick="window.history.back()" aria-label="Go back">←</button>
-                <a href="strategies.html" class="back-text">Back to Strategies</a>
-            </div>
-            <button class="close-button" onclick="window.location.href='dashboard.html'" aria-label="Close">×</button>
+            <button onclick="window.history.back()" class="back-button">
+                <span>←</span>
+                <span>Back to Strategies</span>
+            </button>
         </header>
 
         <!-- Main Content -->
@@ -827,7 +834,7 @@
             document.body.style.overscrollBehavior = 'contain';
 
             // Add touch feedback for all interactive elements
-            const interactiveElements = document.querySelectorAll('button, .action-button, .nav-item, .back-text');
+            const interactiveElements = document.querySelectorAll('button, .action-button, .nav-item');
             
             interactiveElements.forEach(element => {
                 element.addEventListener('touchstart', function(e) {
@@ -858,7 +865,7 @@
                 
                 // Tab navigation enhancement
                 if (e.key === 'Tab') {
-                    const focusableElements = document.querySelectorAll('button, .action-button, .nav-item, .back-text, [href]');
+                    const focusableElements = document.querySelectorAll('button, .action-button, .nav-item, [href]');
                     const firstElement = focusableElements[0];
                     const lastElement = focusableElements[focusableElements.length - 1];
                     

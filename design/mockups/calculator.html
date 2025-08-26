@@ -225,7 +225,7 @@
             color: white;
             border: none;
             border-radius: var(--radius-md);
-            padding: var(--space-lg);
+            padding: var(--space-md) var(--space-xl);
             font-size: var(--font-size-body);
             font-weight: 600;
             cursor: pointer;
@@ -234,6 +234,10 @@
             margin-top: var(--space-lg);
             position: relative;
             overflow: hidden;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .update-button:hover {
@@ -375,6 +379,26 @@
             font-size: var(--font-size-body);
             font-weight: 600;
             color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .ratio-indicator {
+            font-size: var(--font-size-label);
+            font-weight: 600;
+        }
+
+        .ratio-indicator.healthy {
+            color: var(--success-green);
+        }
+
+        .ratio-indicator.manageable {
+            color: var(--warning-orange);
+        }
+
+        .ratio-indicator.risky {
+            color: var(--error-red);
         }
 
         /* Breakdown Styles */
@@ -427,13 +451,16 @@
 
         .schedule-table {
             border-radius: var(--radius-sm);
-            overflow: hidden;
+            overflow-x: auto;
+            overflow-y: visible;
             border: 1px solid var(--divider);
+            min-width: 100%;
         }
 
         .schedule-row {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: 80px minmax(110px, 1fr) minmax(110px, 1fr) minmax(110px, 1fr) minmax(120px, 1fr);
+            min-width: 540px;
         }
 
         .schedule-row.header {
@@ -446,14 +473,251 @@
         }
 
         .schedule-cell {
-            padding: var(--space-sm);
-            text-align: center;
+            padding: var(--space-sm) var(--space-xs);
+            text-align: right;
             font-size: var(--font-size-caption);
             border-right: 1px solid var(--divider);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .schedule-cell:first-child {
+            text-align: left;
+            padding-left: var(--space-md);
+            font-weight: 500;
         }
 
         .schedule-cell:last-child {
             border-right: none;
+        }
+
+        /* Input Sliders */
+        .slider-wrapper {
+            margin-top: var(--space-sm);
+        }
+
+        .input-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--divider);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .input-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .input-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            cursor: pointer;
+            border: none;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-caption);
+            color: var(--text-secondary);
+            margin-top: var(--space-xs);
+        }
+
+        /* Charts Section */
+        .charts-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .chart-toggle {
+            display: flex;
+            background: var(--surface-variant);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-lg);
+            overflow: hidden;
+        }
+
+        .toggle-button {
+            flex: 1;
+            padding: var(--space-md);
+            background: none;
+            border: none;
+            font-size: var(--font-size-label);
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+
+        .toggle-button.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .chart-container {
+            height: 300px;
+            background: var(--surface-variant);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-lg);
+            position: relative;
+        }
+
+        .chart-placeholder {
+            color: var(--text-secondary);
+            font-size: var(--font-size-label);
+        }
+
+        #pieChartCanvas, #timelineChartCanvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .chart-legend-new {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-lg);
+            margin-top: var(--space-md);
+        }
+
+        /* Amortization Schedule */
+        .schedule-section {
+            margin-bottom: var(--space-lg);
+        }
+
+        .schedule-toggle {
+            display: flex;
+            background: var(--surface-variant);
+            border-radius: var(--radius-sm);
+            margin-bottom: var(--space-lg);
+            overflow: hidden;
+        }
+
+        .schedule-toggle .toggle-button {
+            flex: 1;
+        }
+
+        .year-row {
+            cursor: pointer;
+            transition: background-color var(--transition-fast);
+        }
+
+        .year-row:hover {
+            background-color: rgba(21, 101, 192, 0.05);
+        }
+
+        .year-row.expandable::before {
+            content: '▶';
+            position: absolute;
+            left: var(--space-sm);
+            font-size: var(--font-size-caption);
+            color: var(--text-secondary);
+            transition: transform var(--transition-fast);
+        }
+
+        .year-row.expanded::before {
+            transform: rotate(90deg);
+        }
+
+        .monthly-rows {
+            display: none;
+            background-color: var(--surface-variant);
+        }
+
+        .monthly-rows.expanded {
+            display: block;
+            animation: slideDown var(--transition-normal) ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+            }
+        }
+
+        .month-row {
+            padding-left: var(--space-lg);
+            font-size: var(--font-size-caption);
+            color: var(--text-secondary);
+        }
+
+        /* Export Buttons */
+        .export-section {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--divider);
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: var(--space-md);
+        }
+
+        .export-button {
+            flex: 1;
+            padding: var(--space-md);
+            background: var(--surface);
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-label);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .export-button:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .export-button:active {
+            transform: translateY(1px);
+        }
+
+        /* Success Message */
+        .export-success {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--success-green);
+            color: white;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .export-success.show {
+            opacity: 1;
+        }
+
+        /* Section Dividers */
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--divider), transparent);
+            margin: var(--space-xl) 0;
+            border-radius: 1px;
         }
 
 
@@ -527,6 +791,14 @@
         }
 
         /* Responsive Design */
+        /* Responsive Table Wrapper */
+        .amortization-schedule {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 calc(-1 * var(--space-md));
+            padding: 0 var(--space-md);
+        }
+
         @media (max-width: 375px) {
             .header {
                 padding: var(--space-md) var(--space-sm);
@@ -592,6 +864,13 @@
                                 maxlength="15"
                             >
                         </div>
+                        <div class="slider-wrapper">
+                            <input type="range" id="loan-amount-slider" class="input-slider" min="500000" max="50000000" value="3000000" step="100000">
+                            <div class="slider-labels">
+                                <span>₹5L</span>
+                                <span>₹5Cr</span>
+                            </div>
+                        </div>
                         <div class="error-message" id="amount-error"></div>
                     </div>
 
@@ -610,6 +889,13 @@
                             >
                             <span class="input-suffix">% per year</span>
                         </div>
+                        <div class="slider-wrapper">
+                            <input type="range" id="interest-rate-slider" class="input-slider" min="6" max="15" value="8.5" step="0.1">
+                            <div class="slider-labels">
+                                <span>6%</span>
+                                <span>15%</span>
+                            </div>
+                        </div>
                         <div class="error-message" id="rate-error"></div>
                     </div>
 
@@ -626,6 +912,13 @@
                                 max="30"
                             >
                             <span class="input-suffix">years</span>
+                        </div>
+                        <div class="slider-wrapper">
+                            <input type="range" id="loan-tenure-slider" class="input-slider" min="5" max="30" value="20" step="1">
+                            <div class="slider-labels">
+                                <span>5 years</span>
+                                <span>30 years</span>
+                            </div>
                         </div>
                         <div class="error-message" id="tenure-error"></div>
                     </div>
@@ -691,6 +984,13 @@
                             >
                             <span class="input-suffix">months</span>
                         </div>
+                        <div class="slider-wrapper">
+                            <input type="range" id="months-paid-slider" class="input-slider" min="0" max="240" value="0" step="1">
+                            <div class="slider-labels">
+                                <span>0</span>
+                                <span id="max-months-label">240</span>
+                            </div>
+                        </div>
                         <div class="error-message" id="months-paid-error"></div>
                     </div>
 
@@ -730,75 +1030,95 @@
                         <div class="result-label">Interest Percentage</div>
                         <div class="result-value" id="interest-percentage">52.1%</div>
                     </div>
+                    <div class="result-item" id="emi-income-ratio" style="display: none;">
+                        <div class="result-label">EMI/Income Ratio</div>
+                        <div class="result-value" id="emi-ratio-value">
+                            <span id="emi-ratio-percentage">26%</span>
+                            <span class="ratio-indicator" id="ratio-indicator">✓</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- Breakdown Section -->
-            <section class="card">
+            <div class="section-divider"></div>
+
+            <!-- Enhanced Visual Charts Section -->
+            <section class="card charts-section">
                 <div class="card-header">
-                    <span class="card-icon">🥧</span>
-                    <h3>BREAKDOWN</h3>
+                    <span class="card-icon">📈</span>
+                    <h3>VISUAL BREAKDOWN</h3>
                 </div>
                 
-                <div class="breakdown-content">
-                    <div class="pie-chart-container">
-                        <div class="pie-chart">
-                            <div class="pie-slice principal"></div>
-                            <div class="pie-slice interest"></div>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <div class="legend-color principal-color"></div>
-                                <span>Principal (₹30L)</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color interest-color"></div>
-                                <span>Interest (₹32.6L)</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="chart-toggle">
+                    <button class="toggle-button active" id="pie-chart-btn" onclick="showChart('pie')">Pie Chart</button>
+                    <button class="toggle-button" id="timeline-btn" onclick="showChart('timeline')">Timeline</button>
+                </div>
 
-                    <div class="amortization-preview">
-                        <h4>First 5 Years Payment Schedule</h4>
-                        <div class="schedule-table">
-                            <div class="schedule-row header">
-                                <div class="schedule-cell">Year</div>
-                                <div class="schedule-cell">Principal</div>
-                                <div class="schedule-cell">Interest</div>
-                                <div class="schedule-cell">Balance</div>
-                            </div>
-                            <div class="schedule-row">
-                                <div class="schedule-cell">1</div>
-                                <div class="schedule-cell">₹63,420</div>
-                                <div class="schedule-cell">₹2,49,600</div>
-                                <div class="schedule-cell">₹29.4L</div>
-                            </div>
-                            <div class="schedule-row">
-                                <div class="schedule-cell">2</div>
-                                <div class="schedule-cell">₹68,900</div>
-                                <div class="schedule-cell">₹2,44,120</div>
-                                <div class="schedule-cell">₹28.7L</div>
-                            </div>
-                            <div class="schedule-row">
-                                <div class="schedule-cell">3</div>
-                                <div class="schedule-cell">₹74,800</div>
-                                <div class="schedule-cell">₹2,38,220</div>
-                                <div class="schedule-cell">₹28.0L</div>
-                            </div>
-                            <div class="schedule-row">
-                                <div class="schedule-cell">4</div>
-                                <div class="schedule-cell">₹81,200</div>
-                                <div class="schedule-cell">₹2,31,820</div>
-                                <div class="schedule-cell">₹27.2L</div>
-                            </div>
-                            <div class="schedule-row">
-                                <div class="schedule-cell">5</div>
-                                <div class="schedule-cell">₹88,100</div>
-                                <div class="schedule-cell">₹2,24,920</div>
-                                <div class="schedule-cell">₹26.3L</div>
-                            </div>
-                        </div>
+                <div class="chart-container" id="pie-chart-container">
+                    <canvas id="pieChartCanvas" width="280" height="280"></canvas>
+                </div>
+
+                <div class="chart-container" id="timeline-chart-container" style="display: none;">
+                    <canvas id="timelineChartCanvas" width="350" height="250"></canvas>
+                </div>
+
+                <div class="chart-legend-new" id="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color principal-color"></div>
+                        <span id="principal-legend">Principal (₹30L)</span>
                     </div>
+                    <div class="legend-item">
+                        <div class="legend-color interest-color"></div>
+                        <span id="interest-legend">Interest (₹32.6L)</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- Complete Amortization Schedule Section -->
+            <section class="card schedule-section">
+                <div class="card-header">
+                    <span class="card-icon">📋</span>
+                    <h3>PAYMENT SCHEDULE</h3>
+                </div>
+                
+                <div class="schedule-toggle">
+                    <button class="toggle-button active" id="yearly-btn" onclick="showSchedule('yearly')">Yearly</button>
+                    <button class="toggle-button" id="monthly-btn" onclick="showSchedule('monthly')">Monthly</button>
+                    <button class="toggle-button" id="quarterly-btn" onclick="showSchedule('quarterly')">Quarterly</button>
+                </div>
+
+                <div class="amortization-schedule">
+                    <div class="schedule-table" id="schedule-table">
+                        <div class="schedule-row header">
+                            <div class="schedule-cell">Year</div>
+                            <div class="schedule-cell">EMI</div>
+                            <div class="schedule-cell">Principal</div>
+                            <div class="schedule-cell">Interest</div>
+                            <div class="schedule-cell">Balance</div>
+                        </div>
+                        <!-- Schedule rows will be populated by JavaScript -->
+                    </div>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <!-- Export Section -->
+            <section class="card export-section">
+                <div class="card-header">
+                    <span class="card-icon">📄</span>
+                    <h3>EXPORT DATA</h3>
+                </div>
+                
+                <div class="export-buttons">
+                    <button class="export-button" id="export-csv" onclick="exportData('csv')" title="Download as CSV">
+                        📄 CSV
+                    </button>
+                    <button class="export-button" id="export-pdf" onclick="exportData('pdf')" title="Download as PDF">
+                        📁 PDF
+                    </button>
                 </div>
             </section>
 
@@ -1012,10 +1332,12 @@
                     if (this.value === 'taken') {
                         monthsPaidGroup.style.display = 'block';
                         monthsPaidInput.setAttribute('required', 'true');
+                        updateMonthsPaidSliderMax();
                     } else {
                         monthsPaidGroup.style.display = 'none';
                         monthsPaidInput.removeAttribute('required');
                         monthsPaidInput.value = '0';
+                        document.getElementById('months-paid-slider').value = '0';
                     }
                 });
             });
@@ -1045,6 +1367,8 @@
                     
                     updateResults(principal, rate, tenure, monthsPaid, loanStatus);
                     updateHeaderSummary(principal, rate, tenure, loanStatus);
+                    updateEMIIncomeRatio();
+                    updateCharts(principal, rate, tenure);
                     
                     // Show success state
                     updateButton.classList.remove('loading');
@@ -1060,6 +1384,226 @@
                 }, 800);
             }
             
+            // Add missing function declarations and implementations
+            function updateEMIIncomeRatio() {
+                const monthlyIncomeInput = document.getElementById('monthly-income');
+                const emiRatioElement = document.getElementById('emi-income-ratio');
+                const emiRatioPercentage = document.getElementById('emi-ratio-percentage');
+                const ratioIndicator = document.getElementById('ratio-indicator');
+                
+                if (monthlyIncomeInput && monthlyIncomeInput.value) {
+                    const monthlyIncome = parseInt(monthlyIncomeInput.value.replace(/,/g, ''));
+                    const currentEMI = parseInt(document.getElementById('emi-amount').textContent.replace(/[₹,]/g, ''));
+                    
+                    if (monthlyIncome > 0 && currentEMI > 0) {
+                        const ratio = ((currentEMI / monthlyIncome) * 100).toFixed(1);
+                        emiRatioPercentage.textContent = ratio + '%';
+                        
+                        // Update indicator based on ratio
+                        ratioIndicator.className = 'ratio-indicator';
+                        if (ratio < 30) {
+                            ratioIndicator.classList.add('healthy');
+                            ratioIndicator.textContent = '✓';
+                        } else if (ratio <= 40) {
+                            ratioIndicator.classList.add('manageable');
+                            ratioIndicator.textContent = '⚠️';
+                        } else {
+                            ratioIndicator.classList.add('risky');
+                            ratioIndicator.textContent = '❌';
+                        }
+                        
+                        emiRatioElement.style.display = 'flex';
+                    } else {
+                        emiRatioElement.style.display = 'none';
+                    }
+                } else {
+                    emiRatioElement.style.display = 'none';
+                }
+            }
+            
+            function updateCharts(principal, rate, tenure) {
+                updatePieChart(principal, rate, tenure);
+                updateTimelineChart(principal, rate, tenure);
+            }
+            
+            function updatePieChart(principal, rate, tenure) {
+                const canvas = document.getElementById('pieChartCanvas');
+                const ctx = canvas.getContext('2d');
+                const emi = calculateEMI(principal, rate, tenure);
+                const totalAmount = emi * tenure * 12;
+                const totalInterest = totalAmount - principal;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Calculate angles
+                const principalAngle = (principal / totalAmount) * 2 * Math.PI;
+                const interestAngle = (totalInterest / totalAmount) * 2 * Math.PI;
+                
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = Math.min(centerX, centerY) - 10;
+                
+                // Draw principal slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, 0, principalAngle);
+                ctx.closePath();
+                ctx.fillStyle = '#388E3C';
+                ctx.fill();
+                
+                // Draw interest slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, principalAngle, principalAngle + interestAngle);
+                ctx.closePath();
+                ctx.fillStyle = '#D32F2F';
+                ctx.fill();
+                
+                // Update legend
+                document.getElementById('principal-legend').textContent = `Principal (₹${(principal / 100000).toFixed(1)}L)`;
+                document.getElementById('interest-legend').textContent = `Interest (₹${(totalInterest / 100000).toFixed(1)}L)`;
+            }
+            
+            function updateTimelineChart(principal, rate, tenure) {
+                const canvas = document.getElementById('timelineChartCanvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                const emi = calculateEMI(principal, rate, tenure);
+                const monthlyRate = rate / 12 / 100;
+                const years = tenure;
+                const dataPoints = [];
+                
+                let balance = principal;
+                for (let year = 0; year <= years; year++) {
+                    dataPoints.push({year, balance});
+                    
+                    // Calculate balance after one year
+                    for (let month = 0; month < 12 && balance > 0; month++) {
+                        const interestPayment = balance * monthlyRate;
+                        const principalPayment = emi - interestPayment;
+                        balance = Math.max(0, balance - principalPayment);
+                    }
+                }
+                
+                // Draw timeline
+                const padding = 40;
+                const chartWidth = canvas.width - 2 * padding;
+                const chartHeight = canvas.height - 2 * padding;
+                const maxBalance = principal;
+                
+                ctx.strokeStyle = '#1565C0';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                
+                dataPoints.forEach((point, index) => {
+                    const x = padding + (point.year / years) * chartWidth;
+                    const y = padding + (1 - point.balance / maxBalance) * chartHeight;
+                    
+                    if (index === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                });
+                
+                ctx.stroke();
+                
+                // Add axis labels
+                ctx.fillStyle = '#757575';
+                ctx.font = '12px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'center';
+                
+                // X-axis labels (years)
+                for (let i = 0; i <= years; i += 5) {
+                    const x = padding + (i / years) * chartWidth;
+                    ctx.fillText(`${i}y`, x, canvas.height - 10);
+                }
+                
+                // Y-axis labels (balance)
+                ctx.textAlign = 'right';
+                for (let i = 0; i <= 4; i++) {
+                    const balance = (maxBalance / 4) * i;
+                    const y = padding + (1 - i / 4) * chartHeight;
+                    ctx.fillText(`₹${(balance / 100000).toFixed(0)}L`, padding - 10, y);
+                }
+            }
+            
+            // Slider event handlers
+            document.getElementById('loan-amount-slider').addEventListener('input', function(e) {
+                const value = parseInt(e.target.value);
+                loanAmountInput.value = formatIndianCurrency(value.toString());
+            });
+            
+            document.getElementById('interest-rate-slider').addEventListener('input', function(e) {
+                interestRateInput.value = parseFloat(e.target.value).toFixed(1);
+            });
+            
+            document.getElementById('loan-tenure-slider').addEventListener('input', function(e) {
+                loanTenureInput.value = e.target.value;
+                updateMonthsPaidSliderMax();
+            });
+            
+            document.getElementById('months-paid-slider').addEventListener('input', function(e) {
+                monthsPaidInput.value = e.target.value;
+            });
+            
+            // Update sliders when inputs change
+            loanAmountInput.addEventListener('input', function() {
+                const value = parseInt(this.value.replace(/,/g, ''));
+                if (!isNaN(value)) {
+                    document.getElementById('loan-amount-slider').value = value;
+                }
+            });
+            
+            interestRateInput.addEventListener('input', function() {
+                document.getElementById('interest-rate-slider').value = this.value;
+            });
+            
+            loanTenureInput.addEventListener('input', function() {
+                document.getElementById('loan-tenure-slider').value = this.value;
+                updateMonthsPaidSliderMax();
+            });
+            
+            monthsPaidInput.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                if (!isNaN(value)) {
+                    document.getElementById('months-paid-slider').value = value;
+                }
+            });
+            
+            // Function to update months paid slider max value
+            function updateMonthsPaidSliderMax() {
+                const tenure = parseInt(loanTenureInput.value) || 20;
+                const maxMonths = tenure * 12;
+                const monthsPaidSlider = document.getElementById('months-paid-slider');
+                const maxMonthsLabel = document.getElementById('max-months-label');
+                
+                if (monthsPaidSlider && maxMonthsLabel) {
+                    monthsPaidSlider.max = maxMonths;
+                    maxMonthsLabel.textContent = maxMonths;
+                    
+                    // Adjust current value if it exceeds new max
+                    const currentValue = parseInt(monthsPaidInput.value) || 0;
+                    if (currentValue >= maxMonths) {
+                        monthsPaidInput.value = Math.max(0, maxMonths - 1);
+                        monthsPaidSlider.value = Math.max(0, maxMonths - 1);
+                    }
+                }
+            }
+            
+            // Monthly income formatting
+            const monthlyIncomeInput = document.getElementById('monthly-income');
+            monthlyIncomeInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/[^\d]/g, '');
+                if (value) {
+                    e.target.value = formatIndianCurrency(value);
+                }
+            });
+
             // Initial calculation on page load
             setTimeout(() => {
                 const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
@@ -1067,6 +1611,9 @@
                 const tenure = parseInt(loanTenureInput.value);
                 
                 updateResults(principal, rate, tenure, 0, 'planning');
+                updateEMIIncomeRatio();
+                updateCharts(principal, rate, tenure);
+                generateScheduleData(principal, rate, tenure);
             }, 500);
 
             // Accessibility announcements
@@ -1091,6 +1638,183 @@
                 }, 5000);
             }
         });
+        
+        // Global functions for chart and schedule toggles
+        function showChart(chartType) {
+            const pieBtn = document.getElementById('pie-chart-btn');
+            const timelineBtn = document.getElementById('timeline-btn');
+            const pieContainer = document.getElementById('pie-chart-container');
+            const timelineContainer = document.getElementById('timeline-chart-container');
+            
+            if (chartType === 'pie') {
+                pieBtn.classList.add('active');
+                timelineBtn.classList.remove('active');
+                pieContainer.style.display = 'flex';
+                timelineContainer.style.display = 'none';
+            } else {
+                pieBtn.classList.remove('active');
+                timelineBtn.classList.add('active');
+                pieContainer.style.display = 'none';
+                timelineContainer.style.display = 'flex';
+            }
+        }
+        
+        function showSchedule(scheduleType) {
+            const yearlyBtn = document.getElementById('yearly-btn');
+            const monthlyBtn = document.getElementById('monthly-btn');
+            const quarterlyBtn = document.getElementById('quarterly-btn');
+            
+            // Remove active class from all buttons
+            [yearlyBtn, monthlyBtn, quarterlyBtn].forEach(btn => btn.classList.remove('active'));
+            
+            // Add active class to selected button
+            if (scheduleType === 'yearly') {
+                yearlyBtn.classList.add('active');
+            } else if (scheduleType === 'monthly') {
+                monthlyBtn.classList.add('active');
+            } else {
+                quarterlyBtn.classList.add('active');
+            }
+            
+            // Generate appropriate schedule
+            const loanAmountInput = document.getElementById('loan-amount');
+            const interestRateInput = document.getElementById('interest-rate');
+            const loanTenureInput = document.getElementById('loan-tenure');
+            
+            if (loanAmountInput && interestRateInput && loanTenureInput) {
+                const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
+                const rate = parseFloat(interestRateInput.value);
+                const tenure = parseInt(loanTenureInput.value);
+                
+                generateScheduleData(principal, rate, tenure, scheduleType);
+            }
+        }
+        
+        function generateScheduleData(principal, rate, tenure, scheduleType = 'yearly') {
+            const scheduleTable = document.getElementById('schedule-table');
+            const emi = calculateEMI(principal, rate, tenure);
+            const monthlyRate = rate / 12 / 100;
+            
+            // Clear existing rows except header
+            const existingRows = scheduleTable.querySelectorAll('.schedule-row:not(.header)');
+            existingRows.forEach(row => row.remove());
+            
+            let balance = principal;
+            let yearlyPrincipal = 0;
+            let yearlyInterest = 0;
+            
+            for (let year = 1; year <= tenure; year++) {
+                yearlyPrincipal = 0;
+                yearlyInterest = 0;
+                const startBalance = balance;
+                
+                for (let month = 1; month <= 12 && balance > 0; month++) {
+                    const interestPayment = balance * monthlyRate;
+                    const principalPayment = Math.min(emi - interestPayment, balance);
+                    balance = Math.max(0, balance - principalPayment);
+                    
+                    yearlyPrincipal += principalPayment;
+                    yearlyInterest += interestPayment;
+                }
+                
+                if (scheduleType === 'yearly') {
+                    const yearRow = document.createElement('div');
+                    yearRow.className = 'schedule-row year-row expandable';
+                    yearRow.style.position = 'relative';
+                    yearRow.innerHTML = `
+                        <div class="schedule-cell">${year}</div>
+                        <div class="schedule-cell">₹${(emi * 12).toLocaleString('en-IN')}</div>
+                        <div class="schedule-cell">₹${Math.round(yearlyPrincipal).toLocaleString('en-IN')}</div>
+                        <div class="schedule-cell">₹${Math.round(yearlyInterest).toLocaleString('en-IN')}</div>
+                        <div class="schedule-cell">₹${(balance / 100000).toFixed(1)}L</div>
+                    `;
+                    
+                    // Add click handler for expansion
+                    yearRow.addEventListener('click', function() {
+                        toggleYearExpansion(this, year, emi, startBalance, monthlyRate);
+                    });
+                    
+                    scheduleTable.appendChild(yearRow);
+                }
+                
+                if (balance <= 0) break;
+            }
+        }
+        
+        function toggleYearExpansion(yearRow, year, emi, startBalance, monthlyRate) {
+            const existingMonthlyRows = yearRow.nextElementSibling;
+            
+            if (existingMonthlyRows && existingMonthlyRows.classList.contains('monthly-rows')) {
+                // Toggle existing expansion
+                if (existingMonthlyRows.classList.contains('expanded')) {
+                    existingMonthlyRows.classList.remove('expanded');
+                    yearRow.classList.remove('expanded');
+                    setTimeout(() => {
+                        existingMonthlyRows.style.display = 'none';
+                    }, 250);
+                } else {
+                    existingMonthlyRows.style.display = 'block';
+                    existingMonthlyRows.classList.add('expanded');
+                    yearRow.classList.add('expanded');
+                }
+            } else {
+                // Create monthly rows
+                const monthlyContainer = document.createElement('div');
+                monthlyContainer.className = 'monthly-rows';
+                
+                let balance = startBalance;
+                for (let month = 1; month <= 12 && balance > 0; month++) {
+                    const interestPayment = balance * monthlyRate;
+                    const principalPayment = Math.min(emi - interestPayment, balance);
+                    balance = Math.max(0, balance - principalPayment);
+                    
+                    const monthRow = document.createElement('div');
+                    monthRow.className = 'schedule-row month-row';
+                    monthRow.innerHTML = `
+                        <div class="schedule-cell">Year ${year}, Month ${month}</div>
+                        <div class="schedule-cell">₹${emi.toLocaleString('en-IN')}</div>
+                        <div class="schedule-cell">₹${Math.round(principalPayment).toLocaleString('en-IN')}</div>
+                        <div class="schedule-cell">₹${Math.round(interestPayment).toLocaleString('en-IN')}</div>
+                        <div class="schedule-cell">₹${(balance / 100000).toFixed(1)}L</div>
+                    `;
+                    
+                    monthlyContainer.appendChild(monthRow);
+                }
+                
+                yearRow.parentNode.insertBefore(monthlyContainer, yearRow.nextSibling);
+                monthlyContainer.style.display = 'block';
+                monthlyContainer.classList.add('expanded');
+                yearRow.classList.add('expanded');
+            }
+        }
+        
+        function calculateEMI(principal, rate, tenure) {
+            const monthlyRate = rate / 12 / 100;
+            const numberOfPayments = tenure * 12;
+            
+            const emi = (principal * monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+                       (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+            
+            return Math.round(emi);
+        }
+        
+        function exportData(format) {
+            // Show success message
+            const successMessage = document.createElement('div');
+            successMessage.className = 'export-success show';
+            successMessage.textContent = `${format.toUpperCase()} export started! File will download shortly.`;
+            document.body.appendChild(successMessage);
+            
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(successMessage);
+                }, 250);
+            }, 2000);
+            
+            // In a real implementation, this would generate and download the file
+            console.log(`Exporting data in ${format} format...`);
+        }
     </script>
 </body>
 </html>

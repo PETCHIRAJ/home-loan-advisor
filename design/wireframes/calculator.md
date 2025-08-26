@@ -37,10 +37,36 @@ Control center for ALL loan and personal settings. 4th tab in bottom navigation 
 │                                     │
 │ 📈 CALCULATION RESULTS              │
 │ ┌─────────────────────────────────┐ │
-│ │ Monthly EMI: ₹25,415           │ │
-│ │ Total Payment: ₹61,00,000      │ │
-│ │ Total Interest: ₹31,00,000     │ │
+│ │ Monthly EMI: ₹26,085           │ │
+│ │ Total Payment: ₹62.6L          │ │
+│ │ Total Interest: ₹32.6L         │ │
 │ │ Daily Interest: ₹696           │ │
+│ │ EMI/Income: 26% ✓              │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ 📊 VISUAL BREAKDOWN                │
+│ ┌─────────────────────────────────┐ │
+│ │ [Pie Chart] [Timeline]         │ │
+│ │  ╭────────╮                    │ │
+│ │  │48% ■■■■│ Principal: ₹30L    │ │
+│ │  │52% ████│ Interest: ₹32.6L   │ │
+│ │  ╰────────╯                    │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ 📅 PAYMENT SCHEDULE                │
+│ ┌─────────────────────────────────┐ │
+│ │ [Yearly ✓] [Monthly] [Export]  │ │
+│ │                                 │ │
+│ │ Year 1 (2024) ▼     ₹3,13,020  │ │
+│ │  Principal: ₹58,020            │ │
+│ │  Interest:  ₹2,55,000          │ │
+│ │  Balance:   ₹29,41,980         │ │
+│ │                                 │ │
+│ │ Year 2 (2025) ▶     ₹3,13,020  │ │
+│ │ Year 3 (2026) ▶     ₹3,13,020  │ │
+│ │ [Show All 20 Years]             │ │
+│ │                                 │ │
+│ │ [📥 Download CSV] [📄 Download PDF] │ │
 │ └─────────────────────────────────┘ │
 │                                     │
 │ [📊 View Amortization Schedule]    │
@@ -80,13 +106,37 @@ Control center for ALL loan and personal settings. 4th tab in bottom navigation 
 - **Months Paid**: For existing loan holders (affects calculations)
 - **Benefit**: Enables personalized strategies and progress tracking
 
-### Calculation Results (NEW)
-- **Purpose**: Comprehensive loan impact summary
-- **Monthly EMI**: ₹25,415 (for ₹30L loan)
-- **Total Payment**: ₹61,00,000 (EMI × tenure)
-- **Total Interest**: ₹31,00,000 (shocking reality)
+### Calculation Results (ENHANCED)
+- **Purpose**: Comprehensive loan impact with visualization
+- **Monthly EMI**: ₹26,085 (for ₹30L loan)
+- **Total Payment**: ₹62.6L (EMI × tenure)
+- **Total Interest**: ₹32.6L (108% of loan amount!)
 - **Daily Interest**: ₹696 (daily burn counter input)
+- **EMI-to-Income Ratio**: 26% (healthy indicator)
 - **Clean Layout**: Clear, digestible financial summary
+
+### Visual Charts Section (NEW)
+- **Purpose**: Visual understanding of loan structure
+- **Pie Chart**: Principal vs Interest split (48% vs 52%)
+- **Line Graph**: Balance reduction over 20 years
+- **Toggle Options**: Switch between chart types
+- **Interactive**: Hover/tap for details
+- **Library**: Chart.js for smooth animations
+
+### Amortization Schedule (NEW)
+- **Purpose**: Detailed payment breakdown
+- **Default View**: Yearly summary (20 rows)
+- **Expandable**: Click year to see monthly details
+- **Toggle**: Switch to full 240-month view
+- **Smart Display**: Current year expanded for "Taken" loans
+- **Highlights**: High-interest years marked
+
+### Export Options (NEW)
+- **Purpose**: Professional documentation and planning
+- **CSV Export**: Opens in Excel for editing
+- **PDF Export**: Professional report with charts
+- **Content**: Full schedule + summary + charts
+- **One-Click**: Download buttons below schedule
 
 ## Information Hierarchy
 
