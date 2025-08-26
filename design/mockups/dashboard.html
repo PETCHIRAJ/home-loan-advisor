@@ -411,50 +411,52 @@
             background: white;
         }
 
-        /* Quick Actions */
-        .quick-actions {
+        /* Quick Insights */
+        .insights-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-md);
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
         }
 
-        .action-button {
-            background: var(--surface);
-            border: 2px solid var(--divider);
-            border-radius: var(--radius-lg);
-            padding: var(--space-xl);
+        .insight-item {
             text-align: center;
-            cursor: pointer;
-            transition: all var(--transition-normal);
+            padding: var(--space-lg) var(--space-md);
+            border-radius: var(--radius-md);
+            background: var(--surface-variant);
+            border: 1px solid var(--divider);
+        }
+
+        .insight-label {
+            font-size: var(--font-size-caption);
+            color: var(--text-secondary);
+            margin-bottom: var(--space-xs);
+            font-weight: 500;
+        }
+
+        .insight-value {
+            font-size: var(--font-size-body);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .primary-cta {
+            display: block;
+            background: linear-gradient(135deg, var(--primary-blue), var(--growth-teal));
+            color: white;
             text-decoration: none;
-            color: inherit;
+            padding: var(--space-lg) var(--space-xl);
+            border-radius: var(--radius-lg);
+            font-size: var(--font-size-body);
+            font-weight: 600;
+            text-align: center;
+            transition: all var(--transition-normal);
             box-shadow: var(--shadow-sm);
         }
 
-        .action-button:hover {
-            border-color: var(--primary-blue);
-            box-shadow: var(--shadow-md);
-            transform: translateY(-4px);
-        }
-
-        .action-button:active {
+        .primary-cta:hover {
             transform: translateY(-2px);
-        }
-
-        .action-icon {
-            font-size: 28px;
-            margin-bottom: var(--space-md);
-            display: block;
-        }
-
-        .action-button:nth-child(1) .action-icon { color: var(--primary-blue); }
-        .action-button:nth-child(2) .action-icon { color: var(--growth-teal); }
-        .action-button:nth-child(3) .action-icon { color: var(--warning-orange); }
-        .action-button:nth-child(4) .action-icon { color: var(--success-green); }
-
-        .action-text {
-            font-size: var(--font-size-label);
-            font-weight: 500;
+            box-shadow: var(--shadow-md);
         }
 
         /* Bottom Navigation */
@@ -511,12 +513,9 @@
                 padding-bottom: 100px;
             }
             
-            .quick-actions {
-                gap: var(--space-sm);
-            }
-            
-            .action-button {
-                padding: var(--space-lg);
+            .insights-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
             }
         }
 
@@ -616,30 +615,29 @@
                 </div>
             </section>
 
-            <!-- Quick Actions -->
+            <!-- Quick Insights -->
             <section class="card">
                 <div class="card-header">
-                    <span class="card-icon">🚀</span>
-                    <h3>QUICK ACTIONS</h3>
+                    <span class="card-icon">📊</span>
+                    <h3>QUICK INSIGHTS</h3>
                 </div>
-                <div class="quick-actions">
-                    <a href="calculator.html" class="action-button">
-                        <span class="action-icon">📊</span>
-                        <div class="action-text">Calculate<br>Savings</div>
-                    </a>
-                    <button class="action-button">
-                        <span class="action-icon">📈</span>
-                        <div class="action-text">Rate<br>Awareness</div>
-                    </button>
-                    <button class="action-button">
-                        <span class="action-icon">💰</span>
-                        <div class="action-text">Rate<br>Analysis</div>
-                    </button>
-                    <a href="progress.html" class="action-button">
-                        <span class="action-icon">📋</span>
-                        <div class="action-text">Track<br>Progress</div>
-                    </a>
+                <div class="insights-grid">
+                    <div class="insight-item">
+                        <div class="insight-label">Monthly EMI</div>
+                        <div class="insight-value">₹26,085</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Total Interest</div>
+                        <div class="insight-value">₹32.6L</div>
+                    </div>
+                    <div class="insight-item">
+                        <div class="insight-label">Break-even</div>
+                        <div class="insight-value">Year 12</div>
+                    </div>
                 </div>
+                <a href="strategies.html" class="primary-cta">
+                    Explore Money-Saving Strategies →
+                </a>
             </section>
         </main>
 

@@ -468,6 +468,104 @@
             background: white;
         }
 
+        /* Mode Selector */
+        .mode-selector {
+            margin-bottom: var(--space-lg);
+        }
+
+        .mode-tabs {
+            display: flex;
+            background: var(--surface-variant);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xs);
+            gap: var(--space-xs);
+        }
+
+        .mode-tab {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-label);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            color: var(--text-secondary);
+        }
+
+        .mode-tab.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mode-tab:hover:not(.active) {
+            background: var(--surface);
+            color: var(--text-primary);
+        }
+
+        .mode-content {
+            display: none;
+        }
+
+        .mode-content.active {
+            display: block;
+        }
+
+        /* Checklist Styles */
+        .checklist-items {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: var(--space-lg);
+            border-radius: var(--radius-md);
+            background: var(--surface-variant);
+            transition: all var(--transition-normal);
+        }
+
+        .checklist-item.completed {
+            background: rgba(56, 142, 60, 0.1);
+            border-left: 4px solid var(--success-green);
+        }
+
+        .checklist-item.in-progress {
+            background: rgba(255, 143, 0, 0.1);
+            border-left: 4px solid var(--warning-orange);
+        }
+
+        .checklist-item.pending {
+            background: rgba(189, 189, 189, 0.1);
+            border-left: 4px solid var(--text-disabled);
+        }
+
+        .checklist-icon {
+            font-size: 20px;
+            margin-right: var(--space-md);
+            flex-shrink: 0;
+        }
+
+        .checklist-content {
+            flex: 1;
+        }
+
+        .checklist-title {
+            font-size: var(--font-size-label);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .checklist-status {
+            font-size: var(--font-size-caption);
+            color: var(--text-secondary);
+        }
+
         /* Bottom Navigation */
         .bottom-nav {
             position: fixed;
@@ -559,18 +657,104 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <h1>📈 Your Progress</h1>
+                <h1>🏠 Home Loan Advisor</h1>
+            </div>
+            <div class="header-right">
+                <a href="calculator.html" class="header-icon" aria-label="Settings">⚙️</a>
             </div>
         </header>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Current Progress -->
-            <section class="card">
-                <div class="card-header">
-                    <span class="card-icon">🎯</span>
-                    <h3>CURRENT PROGRESS</h3>
+            <!-- Mode Selector -->
+            <section class="mode-selector">
+                <div class="mode-tabs">
+                    <button class="mode-tab active" data-mode="planning">Planning Phase</button>
+                    <button class="mode-tab" data-mode="taken">Loan Taken</button>
                 </div>
+            </section>
+
+            <!-- Planning Mode Content -->
+            <div class="mode-content active" id="planning-mode">
+                <!-- Preparation Progress -->
+                <section class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🎯</span>
+                        <h3>PREPARATION PROGRESS</h3>
+                    </div>
+                    
+                    <div class="progress-hero">
+                        <div class="progress-amount">₹3,75,000</div>
+                        <div class="progress-label">Down Payment Saved</div>
+                        
+                        <div class="progress-bar-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="planning-progress-fill" style="width: 75%"></div>
+                            </div>
+                            <div class="progress-percentage">75% to goal</div>
+                        </div>
+                    </div>
+
+                    <div class="progress-metrics">
+                        <div class="metric">
+                            <div class="metric-value time">₹1,25,000</div>
+                            <div class="metric-label">Still to Save</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value savings">8 months</div>
+                            <div class="metric-label">Time to Goal</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Readiness Checklist -->
+                <section class="card">
+                    <div class="card-header">
+                        <span class="card-icon">📋</span>
+                        <h3>LOAN READINESS CHECKLIST</h3>
+                    </div>
+                    
+                    <div class="checklist-items">
+                        <div class="checklist-item completed">
+                            <span class="checklist-icon">✅</span>
+                            <div class="checklist-content">
+                                <div class="checklist-title">Credit Score Check</div>
+                                <div class="checklist-status">Excellent (780+)</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item completed">
+                            <span class="checklist-icon">✅</span>
+                            <div class="checklist-content">
+                                <div class="checklist-title">Income Documentation</div>
+                                <div class="checklist-status">Ready</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item in-progress">
+                            <span class="checklist-icon">⏳</span>
+                            <div class="checklist-content">
+                                <div class="checklist-title">Property Shortlisting</div>
+                                <div class="checklist-status">3 properties identified</div>
+                            </div>
+                        </div>
+                        <div class="checklist-item pending">
+                            <span class="checklist-icon">⭕</span>
+                            <div class="checklist-content">
+                                <div class="checklist-title">Rate Comparison</div>
+                                <div class="checklist-status">Not started</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Taken Mode Content -->
+            <div class="mode-content" id="taken-mode">
+                <!-- Current Loan Progress -->
+                <section class="card">
+                    <div class="card-header">
+                        <span class="card-icon">🎯</span>
+                        <h3>CURRENT PROGRESS</h3>
+                    </div>
                 
                 <div class="progress-hero">
                     <div class="progress-amount">₹2,47,350</div>
@@ -678,35 +862,36 @@
                 <button class="activate-button">Activate New Strategy</button>
             </section>
 
-            <!-- Personalized Insights -->
-            <section class="card">
-                <div class="card-header">
-                    <span class="card-icon">💡</span>
-                    <h3>PERSONALIZED INSIGHTS</h3>
-                </div>
-
-                <div class="insights-content">
-                    <div class="insights-text">
-                        This month you're on track to save ₹18,450 more than before!
+                <!-- Personalized Insights -->
+                <section class="card">
+                    <div class="card-header">
+                        <span class="card-icon">💡</span>
+                        <h3>PERSONALIZED INSIGHTS</h3>
                     </div>
 
-                    <div class="insights-metrics">
-                        <div class="insight-metric">
-                            <div class="insight-score">8.2/10</div>
-                            <div class="insight-label">Consistency Score</div>
+                    <div class="insights-content">
+                        <div class="insights-text">
+                            This month you're on track to save ₹18,450 more than before!
                         </div>
-                        <div class="insight-metric">
-                            <div class="insight-score">78%</div>
-                            <div class="insight-label">Goal Achievement</div>
+
+                        <div class="insights-metrics">
+                            <div class="insight-metric">
+                                <div class="insight-score">8.2/10</div>
+                                <div class="insight-label">Consistency Score</div>
+                            </div>
+                            <div class="insight-metric">
+                                <div class="insight-score">78%</div>
+                                <div class="insight-label">Goal Achievement</div>
+                            </div>
+                        </div>
+
+                        <div class="insights-actions">
+                            <button class="insight-button primary">Share Achievement</button>
+                            <button class="insight-button">Set Goals</button>
                         </div>
                     </div>
-
-                    <div class="insights-actions">
-                        <button class="insight-button primary">Share Achievement</button>
-                        <button class="insight-button">Set Goals</button>
-                    </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </main>
 
         <!-- Bottom Navigation -->
@@ -734,29 +919,77 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Animate progress bar on load
             const progressFill = document.getElementById('progress-fill');
+            const planningProgressFill = document.getElementById('planning-progress-fill');
+            
+            // Set initial progress
             setTimeout(() => {
-                progressFill.style.width = '45%';
+                if (progressFill) progressFill.style.width = '45%';
+                if (planningProgressFill) planningProgressFill.style.width = '75%';
             }, 500);
 
-            // Animate savings amount counter
-            const progressAmount = document.querySelector('.progress-amount');
-            let start = 0;
-            const end = 247350;
-            const duration = 2000;
-            const increment = end / (duration / 16);
+            // Mode switching functionality
+            const modeTabs = document.querySelectorAll('.mode-tab');
+            const modeContents = document.querySelectorAll('.mode-content');
+            
+            modeTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetMode = this.dataset.mode;
+                    
+                    // Update active tab
+                    modeTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update active content
+                    modeContents.forEach(content => {
+                        content.classList.remove('active');
+                        if (content.id === targetMode + '-mode') {
+                            content.classList.add('active');
+                        }
+                    });
+                    
+                    // Announce mode change
+                    const announcer = document.createElement('div');
+                    announcer.setAttribute('aria-live', 'polite');
+                    announcer.style.position = 'absolute';
+                    announcer.style.left = '-10000px';
+                    document.body.appendChild(announcer);
+                    announcer.textContent = `Switched to ${targetMode === 'planning' ? 'Planning Phase' : 'Loan Taken'} view`;
+                    
+                    setTimeout(() => {
+                        document.body.removeChild(announcer);
+                    }, 1000);
+                });
+            });
 
-            function animateCounter() {
-                if (start < end) {
-                    start += increment;
-                    progressAmount.textContent = '₹' + Math.floor(start).toLocaleString('en-IN');
-                    requestAnimationFrame(animateCounter);
-                } else {
-                    progressAmount.textContent = '₹2,47,350';
+            // Animate amounts in both modes
+            function animateCounter(element, targetValue, prefix = '₹') {
+                if (!element) return;
+                
+                let start = 0;
+                const duration = 2000;
+                const increment = targetValue / (duration / 16);
+
+                function animate() {
+                    if (start < targetValue) {
+                        start += increment;
+                        element.textContent = prefix + Math.floor(start).toLocaleString('en-IN');
+                        requestAnimationFrame(animate);
+                    } else {
+                        element.textContent = prefix + targetValue.toLocaleString('en-IN');
+                    }
                 }
+                
+                animate();
             }
             
             setTimeout(() => {
-                animateCounter();
+                // Animate savings amount for taken mode
+                const takenAmount = document.querySelector('#taken-mode .progress-amount');
+                if (takenAmount) animateCounter(takenAmount, 247350);
+                
+                // Animate down payment for planning mode  
+                const planningAmount = document.querySelector('#planning-mode .progress-amount');
+                if (planningAmount) animateCounter(planningAmount, 375000);
             }, 800);
 
             // Achievement badge interactions
@@ -890,14 +1123,20 @@
 
             // Periodic progress updates simulation
             setInterval(() => {
-                const currentAmount = parseInt(progressAmount.textContent.replace(/[₹,]/g, ''));
-                const newAmount = currentAmount + Math.floor(Math.random() * 100) + 50;
-                progressAmount.textContent = '₹' + newAmount.toLocaleString('en-IN');
+                const activeContent = document.querySelector('.mode-content.active');
+                const progressAmount = activeContent?.querySelector('.progress-amount');
+                const progressFill = activeContent?.querySelector('.progress-fill');
                 
-                // Update progress bar slightly
-                const currentWidth = parseFloat(progressFill.style.width);
-                if (currentWidth < 50) {
-                    progressFill.style.width = (currentWidth + 0.1) + '%';
+                if (progressAmount && progressFill) {
+                    const currentAmount = parseInt(progressAmount.textContent.replace(/[₹,]/g, ''));
+                    const newAmount = currentAmount + Math.floor(Math.random() * 100) + 50;
+                    progressAmount.textContent = '₹' + newAmount.toLocaleString('en-IN');
+                    
+                    // Update progress bar slightly
+                    const currentWidth = parseFloat(progressFill.style.width);
+                    if (currentWidth < 80) {
+                        progressFill.style.width = (currentWidth + 0.1) + '%';
+                    }
                 }
             }, 30000); // Update every 30 seconds for demo
 

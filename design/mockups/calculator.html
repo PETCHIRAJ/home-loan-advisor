@@ -140,6 +140,15 @@
             background-color: var(--surface-variant);
         }
 
+        .header-icon.active {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .header-icon.active:hover {
+            background-color: #1A73E8;
+        }
+
         /* Main Content */
         .main-content {
             padding: var(--space-lg) var(--space-md);
@@ -243,236 +252,178 @@
         }
 
         /* Calculate Button */
-        .calculate-button {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary-blue), var(--growth-teal));
-            color: white;
-            border: none;
-            padding: var(--space-xl);
-            border-radius: var(--radius-md);
-            font-size: var(--font-size-body);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .calculate-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-            transition: opacity var(--transition-normal);
-            opacity: 0;
-        }
-
-        .calculate-button:hover::before {
-            opacity: 1;
-        }
-
-        .calculate-button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .calculate-button:active {
-            transform: translateY(0);
-        }
-
-        .calculate-button:disabled {
-            background: var(--text-disabled);
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* Reality Check */
-        .reality-check {
-            background: linear-gradient(135deg, var(--error-red), #FF5722);
-            color: white;
-            padding: var(--space-xl);
-            border-radius: var(--radius-lg);
-            text-align: center;
-            transform: scale(0);
-            opacity: 0;
-            transition: all var(--transition-slow);
-            margin-bottom: var(--space-lg);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .reality-check.show {
-            transform: scale(1);
-            opacity: 1;
-        }
-
-        .reality-check::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        .reality-check h3 {
-            font-size: var(--font-size-title);
-            margin-bottom: var(--space-lg);
-            position: relative;
-            z-index: 1;
-        }
-
-        .reality-metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-lg);
-            margin-bottom: var(--space-lg);
-            position: relative;
-            z-index: 1;
-        }
-
-        .reality-metric {
-            text-align: center;
-        }
-
-        .metric-value {
-            font-size: var(--font-size-large);
-            font-weight: 700;
-            margin-bottom: var(--space-xs);
-        }
-
-        .metric-label {
-            font-size: var(--font-size-caption);
-            opacity: 0.9;
-        }
-
-        .shock-message {
-            background: rgba(255, 255, 255, 0.2);
-            padding: var(--space-md);
-            border-radius: var(--radius-sm);
-            font-size: var(--font-size-body);
-            font-weight: 600;
-            margin-bottom: var(--space-lg);
-            position: relative;
-            z-index: 1;
-        }
-
-        .granular-impact {
+        /* Radio Button Styles */
+        .radio-group {
             display: flex;
-            justify-content: space-between;
-            font-size: var(--font-size-label);
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
+            gap: var(--space-lg);
         }
 
-        /* Smart Strategies */
-        .strategies-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all var(--transition-slow);
-        }
-
-        .strategies-section.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .strategy-card {
-            background: var(--surface);
-            border: 2px solid var(--success-green);
-            border-radius: var(--radius-lg);
-            padding: var(--space-lg);
-            margin-bottom: var(--space-md);
+        .radio-option {
+            display: flex;
+            align-items: center;
             cursor: pointer;
-            transition: all var(--transition-normal);
+            font-size: var(--font-size-label);
+        }
+
+        .radio-option input[type="radio"] {
+            display: none;
+        }
+
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--divider);
+            border-radius: 50%;
+            margin-right: var(--space-sm);
             position: relative;
-            overflow: hidden;
+            transition: border-color var(--transition-fast);
         }
 
-        .strategy-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(56, 142, 60, 0.1), transparent);
-            transition: left var(--transition-slow);
-        }
-
-        .strategy-card:hover::before {
-            left: 100%;
-        }
-
-        .strategy-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+        .radio-option input[type="radio"]:checked + .radio-custom {
             border-color: var(--primary-blue);
         }
 
-        .strategy-header {
-            display: flex;
-            align-items: center;
+        .radio-option input[type="radio"]:checked + .radio-custom::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Results Styles */
+        .results-hero {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+            padding: var(--space-xl);
+            background: linear-gradient(135deg, var(--primary-blue), var(--growth-teal));
+            border-radius: var(--radius-lg);
+            color: white;
+        }
+
+        .emi-label {
+            font-size: var(--font-size-label);
+            opacity: 0.9;
             margin-bottom: var(--space-sm);
         }
 
-        .strategy-check {
-            font-size: 20px;
-            color: var(--success-green);
-            margin-right: var(--space-md);
+        .emi-amount {
+            font-size: var(--font-size-huge);
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .strategy-name {
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-md);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-md);
+            background: var(--surface-variant);
+            border-radius: var(--radius-sm);
+        }
+
+        .result-label {
+            font-size: var(--font-size-label);
+            color: var(--text-secondary);
+        }
+
+        .result-value {
             font-size: var(--font-size-body);
             font-weight: 600;
             color: var(--text-primary);
         }
 
-        .strategy-savings {
+        /* Breakdown Styles */
+        .breakdown-content {
+            display: grid;
+            gap: var(--space-xl);
+        }
+
+        .pie-chart-container {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: var(--font-size-label);
-            color: var(--text-secondary);
+            justify-content: center;
+            gap: var(--space-xl);
         }
 
-        .savings-amount {
-            color: var(--success-green);
-            font-weight: 600;
+        .pie-chart {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success-green) 0deg 173deg, var(--error-red) 173deg 360deg);
+            position: relative;
         }
 
-        .time-saved {
-            color: var(--warning-orange);
-            font-weight: 600;
+        .chart-legend {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
         }
 
-        /* View All Button */
-        .view-all-button {
-            width: 100%;
-            background: var(--growth-teal);
-            color: white;
-            border: none;
-            padding: var(--space-xl);
-            border-radius: var(--radius-md);
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+
+        .principal-color { background: var(--success-green); }
+        .interest-color { background: var(--error-red); }
+
+        .amortization-preview h4 {
             font-size: var(--font-size-body);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--transition-normal);
-            margin-top: var(--space-lg);
+            margin-bottom: var(--space-md);
+            color: var(--text-primary);
         }
 
-        .view-all-button:hover {
-            background: #00695C;
-            transform: translateY(-2px);
+        .schedule-table {
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--divider);
         }
+
+        .schedule-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+
+        .schedule-row.header {
+            background: var(--surface-variant);
+            font-weight: 600;
+        }
+
+        .schedule-row:nth-child(even):not(.header) {
+            background: var(--surface-variant);
+        }
+
+        .schedule-cell {
+            padding: var(--space-sm);
+            text-align: center;
+            font-size: var(--font-size-caption);
+            border-right: 1px solid var(--divider);
+        }
+
+        .schedule-cell:last-child {
+            border-right: none;
+        }
+
+
+
 
         /* Bottom Navigation */
         .bottom-nav {
@@ -581,7 +532,10 @@
         <!-- Header -->
         <header class="header">
             <div class="header-left">
-                <h1>📊 Calculator & Settings</h1>
+                <h1>🏠 Home Loan Advisor</h1>
+            </div>
+            <div class="header-right">
+                <span class="header-icon active" aria-label="Settings">⚙️</span>
             </div>
         </header>
 
@@ -645,19 +599,9 @@
                         </div>
                         <div class="error-message" id="tenure-error"></div>
                     </div>
-                </form>
-            </section>
 
-            <!-- Personal Details Section -->
-            <section class="card">
-                <div class="card-header">
-                    <span class="card-icon">👤</span>
-                    <h3>PERSONAL DETAILS</h3>
-                </div>
-                
-                <form id="personal-form">
                     <div class="form-group">
-                        <label for="monthly-income" class="form-label">Monthly Income</label>
+                        <label for="monthly-income" class="form-label">Monthly Income <span style="color: var(--text-secondary); font-weight: 400;">(Optional)</span></label>
                         <div class="input-wrapper">
                             <span class="currency-symbol">₹</span>
                             <input 
@@ -672,7 +616,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="current-age" class="form-label">Current Age</label>
+                        <label for="current-age" class="form-label">Age <span style="color: var(--text-secondary); font-weight: 400;">(Optional)</span></label>
                         <div class="input-wrapper">
                             <input 
                                 type="number" 
@@ -687,87 +631,123 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="calculate-button" id="calculate-btn">
-                        📱 CALCULATE IMPACT
-                    </button>
-
-                    <div class="loading" id="loading">
-                        <div class="spinner"></div>
-                        <span>Calculating...</span>
+                    <div class="form-group">
+                        <label class="form-label">Loan Status</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="loan-status" value="planning" checked>
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Planning to Take</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="loan-status" value="taken">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Already Taken</span>
+                            </label>
+                        </div>
                     </div>
                 </form>
             </section>
 
-            <!-- Reality Check Results -->
-            <section class="reality-check" id="reality-check">
-                <h3>⚡ INSTANT CALCULATION RESULTS</h3>
-                
-                <div class="reality-metrics">
-                    <div class="reality-metric">
-                        <div class="metric-value" id="current-emi">₹25,093</div>
-                        <div class="metric-label">Current EMI</div>
-                    </div>
-                    <div class="reality-metric">
-                        <div class="metric-value" id="total-interest">₹30,22,368</div>
-                        <div class="metric-label">Total Interest</div>
-                    </div>
-                </div>
-
-                <div class="shock-message">
-                    👆 You'll pay DOUBLE your loan amount!
-                </div>
-
-                <div class="granular-impact">
-                    <div>Daily Interest Burn: <strong id="daily-burn">₹696</strong></div>
-                    <div>Per Hour Loss: <strong id="hourly-burn">₹29</strong></div>
-                    <div style="font-size: var(--font-size-caption); color: var(--text-secondary); margin-top: var(--space-sm);">📴 Calculated offline • No internet required</div>
-                </div>
-            </section>
-
-            <!-- Smart Strategies -->
-            <section class="card strategies-section" id="strategies-section">
+            <!-- EMI Results Section -->
+            <section class="card">
                 <div class="card-header">
-                    <span class="card-icon">🎯</span>
-                    <h3>SMART STRATEGIES (Tap to Apply)</h3>
+                    <span class="card-icon">📈</span>
+                    <h3>CALCULATION RESULTS</h3>
                 </div>
-
-                <div class="strategy-card" tabindex="0" role="button">
-                    <div class="strategy-header">
-                        <span class="strategy-check">✅</span>
-                        <div class="strategy-name">One Extra EMI/Year</div>
-                    </div>
-                    <div class="strategy-savings">
-                        <span class="savings-amount">Save ₹4,35,800</span>
-                        <span class="time-saved">2.8yr early</span>
+                
+                <div class="results-hero">
+                    <div class="emi-result">
+                        <div class="emi-label">Monthly EMI</div>
+                        <div class="emi-amount" id="emi-amount">₹26,085</div>
                     </div>
                 </div>
 
-                <div class="strategy-card" tabindex="0" role="button">
-                    <div class="strategy-header">
-                        <span class="strategy-check">✅</span>
-                        <div class="strategy-name">Round Up EMI to ₹30,000</div>
+                <div class="results-grid">
+                    <div class="result-item">
+                        <div class="result-label">Total Amount Payable</div>
+                        <div class="result-value" id="total-payable">₹62,60,400</div>
                     </div>
-                    <div class="strategy-savings">
-                        <span class="savings-amount">Save ₹3,12,450</span>
-                        <span class="time-saved">2.1yr early</span>
+                    <div class="result-item">
+                        <div class="result-label">Total Interest</div>
+                        <div class="result-value" id="total-interest">₹32,60,400</div>
                     </div>
-                </div>
-
-                <div class="strategy-card" tabindex="0" role="button">
-                    <div class="strategy-header">
-                        <span class="strategy-check">✅</span>
-                        <div class="strategy-name">Salary Credit Advantage</div>
-                    </div>
-                    <div class="strategy-savings">
-                        <span class="savings-amount">Save ₹2,85,000</span>
-                        <span class="time-saved">Interest reduction</span>
+                    <div class="result-item">
+                        <div class="result-label">Interest Percentage</div>
+                        <div class="result-value" id="interest-percentage">52.1%</div>
                     </div>
                 </div>
-
-                <button class="view-all-button">
-                    📊 VIEW ALL 20 STRATEGIES
-                </button>
             </section>
+
+            <!-- Breakdown Section -->
+            <section class="card">
+                <div class="card-header">
+                    <span class="card-icon">🥧</span>
+                    <h3>BREAKDOWN</h3>
+                </div>
+                
+                <div class="breakdown-content">
+                    <div class="pie-chart-container">
+                        <div class="pie-chart">
+                            <div class="pie-slice principal"></div>
+                            <div class="pie-slice interest"></div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color principal-color"></div>
+                                <span>Principal (₹30L)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color interest-color"></div>
+                                <span>Interest (₹32.6L)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="amortization-preview">
+                        <h4>First 5 Years Payment Schedule</h4>
+                        <div class="schedule-table">
+                            <div class="schedule-row header">
+                                <div class="schedule-cell">Year</div>
+                                <div class="schedule-cell">Principal</div>
+                                <div class="schedule-cell">Interest</div>
+                                <div class="schedule-cell">Balance</div>
+                            </div>
+                            <div class="schedule-row">
+                                <div class="schedule-cell">1</div>
+                                <div class="schedule-cell">₹63,420</div>
+                                <div class="schedule-cell">₹2,49,600</div>
+                                <div class="schedule-cell">₹29.4L</div>
+                            </div>
+                            <div class="schedule-row">
+                                <div class="schedule-cell">2</div>
+                                <div class="schedule-cell">₹68,900</div>
+                                <div class="schedule-cell">₹2,44,120</div>
+                                <div class="schedule-cell">₹28.7L</div>
+                            </div>
+                            <div class="schedule-row">
+                                <div class="schedule-cell">3</div>
+                                <div class="schedule-cell">₹74,800</div>
+                                <div class="schedule-cell">₹2,38,220</div>
+                                <div class="schedule-cell">₹28.0L</div>
+                            </div>
+                            <div class="schedule-row">
+                                <div class="schedule-cell">4</div>
+                                <div class="schedule-cell">₹81,200</div>
+                                <div class="schedule-cell">₹2,31,820</div>
+                                <div class="schedule-cell">₹27.2L</div>
+                            </div>
+                            <div class="schedule-row">
+                                <div class="schedule-cell">5</div>
+                                <div class="schedule-cell">₹88,100</div>
+                                <div class="schedule-cell">₹2,24,920</div>
+                                <div class="schedule-cell">₹26.3L</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </main>
 
         <!-- Bottom Navigation -->
@@ -794,10 +774,6 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('loan-form');
-            const calculateBtn = document.getElementById('calculate-btn');
-            const loading = document.getElementById('loading');
-            const realityCheck = document.getElementById('reality-check');
-            const strategiesSection = document.getElementById('strategies-section');
             
             // Form inputs
             const loanAmountInput = document.getElementById('loan-amount');
@@ -871,78 +847,53 @@
                 const emi = calculateEMI(principal, rate, tenure);
                 const totalAmount = emi * tenure * 12;
                 const totalInterest = totalAmount - principal;
-                const dailyInterest = Math.round(totalInterest / (tenure * 365));
-                const hourlyInterest = Math.round(dailyInterest / 24);
+                const interestPercentage = ((totalInterest / principal) * 100).toFixed(1);
 
-                document.getElementById('current-emi').textContent = '₹' + emi.toLocaleString('en-IN');
+                document.getElementById('emi-amount').textContent = '₹' + emi.toLocaleString('en-IN');
+                document.getElementById('total-payable').textContent = '₹' + totalAmount.toLocaleString('en-IN');
                 document.getElementById('total-interest').textContent = '₹' + totalInterest.toLocaleString('en-IN');
-                document.getElementById('daily-burn').textContent = '₹' + dailyInterest.toLocaleString('en-IN');
-                document.getElementById('hourly-burn').textContent = '₹' + hourlyInterest.toLocaleString('en-IN');
+                document.getElementById('interest-percentage').textContent = interestPercentage + '%';
+                
+                // Update pie chart
+                const principalPercentage = (principal / totalAmount) * 360;
+                const interestPercentage = (totalInterest / totalAmount) * 360;
+                
+                const pieChart = document.querySelector('.pie-chart');
+                pieChart.style.background = `conic-gradient(
+                    var(--success-green) 0deg ${principalPercentage}deg,
+                    var(--error-red) ${principalPercentage}deg 360deg
+                )`;
+                
+                // Update legend amounts
+                document.querySelector('.principal-color').parentNode.innerHTML = `
+                    <div class="legend-color principal-color"></div>
+                    <span>Principal (₹${(principal / 100000).toFixed(1)}L)</span>
+                `;
+                document.querySelector('.interest-color').parentNode.innerHTML = `
+                    <div class="legend-color interest-color"></div>
+                    <span>Interest (₹${(totalInterest / 100000).toFixed(1)}L)</span>
+                `;
             }
 
-            // Form submission
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
+            // Real-time calculation
+            function performCalculation() {
                 if (!validateForm()) return;
-
-                // Show loading
-                calculateBtn.style.display = 'none';
-                loading.style.display = 'flex';
-
-                // Simulate calculation delay
-                setTimeout(() => {
-                    const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
-                    const rate = parseFloat(interestRateInput.value);
-                    const tenure = parseInt(loanTenureInput.value);
-
-                    updateResults(principal, rate, tenure);
-
-                    // Hide loading
-                    loading.style.display = 'none';
-                    calculateBtn.style.display = 'block';
-
-                    // Show results with animation
-                    setTimeout(() => {
-                        realityCheck.classList.add('show');
-                    }, 300);
-
-                    setTimeout(() => {
-                        strategiesSection.classList.add('show');
-                    }, 800);
-
-                    // Scroll to results
-                    setTimeout(() => {
-                        realityCheck.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 1000);
-
-                    // Accessibility announcement
-                    announceResults(principal, rate, tenure);
-                }, 1500);
+                
+                const principal = parseInt(loanAmountInput.value.replace(/,/g, ''));
+                const rate = parseFloat(interestRateInput.value);
+                const tenure = parseInt(loanTenureInput.value);
+                
+                updateResults(principal, rate, tenure);
+            }
+            
+            // Calculate on input change
+            [loanAmountInput, interestRateInput, loanTenureInput].forEach(input => {
+                input.addEventListener('input', debounceCalculation);
             });
+            
+            // Initial calculation
+            setTimeout(performCalculation, 500);
 
-            // Strategy card interactions
-            document.querySelectorAll('.strategy-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = 'translateY(-4px)';
-                        alert('Strategy details will open here');
-                    }, 150);
-                });
-
-                card.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-            });
-
-            // View all strategies button
-            document.querySelector('.view-all-button').addEventListener('click', function() {
-                window.location.href = 'strategies.html';
-            });
 
             // Real-time calculation (debounced)
             let calculationTimer;
@@ -978,19 +929,12 @@
                 const emi = calculateEMI(principal, rate, tenure);
                 const totalInterest = (emi * tenure * 12) - principal;
                 
-                announcer.textContent = `Calculation complete. Monthly EMI is ${emi.toLocaleString('en-IN')} rupees. Total interest is ${totalInterest.toLocaleString('en-IN')} rupees. Three money-saving strategies are now available.`;
+                announcer.textContent = `EMI calculation updated. Monthly payment is ${emi.toLocaleString('en-IN')} rupees. Total interest over loan term is ${totalInterest.toLocaleString('en-IN')} rupees.`;
                 
                 setTimeout(() => {
                     document.body.removeChild(announcer);
                 }, 5000);
             }
-
-            // Initialize with default calculation
-            setTimeout(() => {
-                if (validateForm()) {
-                    form.dispatchEvent(new Event('submit'));
-                }
-            }, 1000);
         });
     </script>
 </body>
