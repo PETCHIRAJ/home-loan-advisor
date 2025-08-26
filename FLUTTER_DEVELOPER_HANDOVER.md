@@ -25,12 +25,52 @@
 
 **What mockups give you**: Colors, typography, spacing, interactions, Material 3 system
 
-#### 3. Logo Assets (`assets/logos/`)
-**4 professional SVG logos**:
-- `concept-1-house-calculator.svg` - House with calculator element
-- `concept-2-house-rupee.svg` - House with rupee symbol
-- `concept-3-shield-home.svg` - Security-focused design
-- `logo-simplified.svg` - Clean version for app icon
+#### 🎨 **WHERE TO FIND DESIGN SYSTEM COMPONENTS**
+
+**All design specifications are in the HTML mockups CSS:**
+
+**Colors** (`design/mockups/dashboard.html` lines 9-25):
+```css
+:root {
+  --primary-blue: #1565C0;    /* Primary brand color */
+  --growth-teal: #00796B;     /* Success/growth */
+  --warning-orange: #FF8F00;  /* Warnings */
+  --success-green: #388E3C;   /* Success states */
+  --error-red: #D32F2F;       /* Error states */
+  --background: #FAFAFA;      /* App background */
+  --surface: #FFFFFF;         /* Card backgrounds */
+  --text-primary: #212121;    /* Main text */
+  --text-secondary: #757575;  /* Secondary text */
+}
+```
+
+**Typography** (`design/mockups/dashboard.html` lines 27-34):
+```css
+--font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+--font-size-headline: 32px;  /* Page titles */
+--font-size-title: 24px;     /* Section headers */
+--font-size-body: 18px;      /* Main content */
+--font-size-label: 16px;     /* Form labels */
+--font-size-caption: 14px;   /* Small text */
+```
+
+**Spacing** (`design/mockups/dashboard.html` lines 36-42):
+```css
+--space-xs: 4px;    /* Tight spacing */
+--space-sm: 8px;    /* Small gaps */
+--space-md: 16px;   /* Standard spacing */
+--space-lg: 24px;   /* Large gaps */
+--space-xl: 32px;   /* Extra large spacing */
+```
+
+**Components**: Look at card styles, buttons, and interactive elements in each HTML file
+
+#### 3. Branding (To Be Created)
+**App logo and branding**:
+- Create professional app icon suitable for Play Store
+- Design simple, recognizable logo for home loan advisory
+- Consider house/rupee symbolism for Indian context
+- Test at multiple sizes (512px down to 48px)
 
 ### 📋 Technical Specifications
 
@@ -80,7 +120,6 @@ open design/mockups/index.html  # See all screens visually
 - ✅ Complete visual design (HTML mockups)  
 - ✅ Color system and typography
 - ✅ User experience flows
-- ✅ Logo concepts
 
 ### Already Written  
 - ✅ Privacy policy and terms

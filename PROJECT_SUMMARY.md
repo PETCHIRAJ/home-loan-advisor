@@ -11,7 +11,7 @@ All design, documentation, and specifications are complete. The project is ready
 - **Phase 1 Wireframes** (5 screens, updated for offline-first) → `design/wireframes/`
 - **Phase 2 HTML Mockups** (6 interactive screens) → `design/mockups/`
 - **Design Standards** embedded in HTML mockups and wireframe documentation
-- **Professional SVG logos ready for use** → `assets/logos/` (4 concept variations)
+- **App logo and branding** (to be created during Flutter development)
 
 ### ✅ Technical Documentation
 - **Analytics Requirements** → `docs/analytics/ANALYTICS_REQUIREMENTS.md`
@@ -145,7 +145,7 @@ All design, documentation, and specifications are complete. The project is ready
 - [x] HTML mockups (6 interactive screens)  
 - [x] Color system and typography (defined in HTML mockups)
 - [x] Design standards documentation
-- [x] App logos (4 SVG concepts ready for implementation)
+- [ ] App logos and branding (to be created during Flutter development)
 
 ### Technical Documentation ✅
 - [x] Analytics requirements (what to track)

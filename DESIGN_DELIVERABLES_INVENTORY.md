@@ -44,21 +44,11 @@
 - Complete store listing content (title, description, keywords)
 - Screenshot specifications and requirements
 
-## ✅ Additional Assets Available
-
-### Logo Concepts
-**Location**: `assets/logos/`
-- `concept-1-house-calculator.svg` - House with calculator element
-- `concept-2-house-rupee.svg` - House with rupee symbol integration
-- `concept-3-shield-home.svg` - Security-focused home protection design
-- `logo-simplified.svg` - Clean, minimalist version for app icon
-
-**Note**: These are professional SVG logos ready for Flutter implementation
-
 ## ❌ Intentionally Removed Assets
 
 ### Development Assets (For Clean Start)
-- **App icons**: Will be generated from SVG logos during Flutter development
+- **App logos and branding**: To be created during Flutter development
+- **App icons**: Will be generated during Flutter development
 - **Screenshots**: Will be created from actual Flutter app screens
 - **lib/ folder**: Clean slate for flutter-developer to create with `flutter create .`
 

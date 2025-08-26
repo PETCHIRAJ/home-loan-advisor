@@ -30,7 +30,6 @@ home_loan_advisor/
 │   ├── analytics/                 # Analytics requirements
 │   ├── legal/                    # Privacy policy & terms
 │   └── playstore/               # Store listing content
-├── assets/logos/                  # App logo concepts (4 variations)
 ├── PROJECT_SUMMARY.md            # Implementation overview
 └── README.md                     # This file
 ```
@@ -102,9 +101,16 @@ open PROJECT_SUMMARY.md
 ### Development Setup
 The lib/ folder has been intentionally removed. Flutter developers should:
 1. Initialize new Flutter project: `flutter create .`
-2. Use HTML mockups as visual reference
+2. **Extract design system from HTML mockups**: Open `design/mockups/dashboard.html` and copy CSS variables (colors, typography, spacing) to create Flutter theme
 3. Follow wireframes for layout structure
-4. Implement analytics per docs/analytics requirements
+4. Use HTML mockups for pixel-perfect visual implementation
+5. Implement analytics per docs/analytics requirements
+
+### 🎨 Design System Location
+**All design specifications are embedded in HTML mockups:**
+- **Colors & Typography**: `design/mockups/dashboard.html` (lines 9-34)  
+- **Spacing & Shadows**: `design/mockups/dashboard.html` (lines 36-54)
+- **Components**: Interactive elements demonstrated in each HTML file
 
 ### Performance Requirements
 - ⚡ Instant calculations (< 100ms)
