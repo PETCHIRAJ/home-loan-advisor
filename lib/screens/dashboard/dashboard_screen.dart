@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/loan_calculations.dart';
+import '../../providers/loan_provider.dart';
+import '../../widgets/charts/loan_composition_chart.dart';
+import '../../widgets/charts/test_chart.dart';
 
 /// Dashboard screen with daily interest burn counter and loan overview
 /// 
@@ -9,22 +13,22 @@ import '../../core/utils/loan_calculations.dart';
 /// - Current loan health summary
 /// - Quick insights and key metrics
 /// - Progress indicators and visual feedback
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  ConsumerState<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
+class _DashboardScreenState extends ConsumerState<DashboardScreen>
     with TickerProviderStateMixin {
   late AnimationController _burnController;
   late Animation<double> _burnAnimation;
   
-  // Sample loan data - will be replaced with actual data management
-  final double _loanAmount = 5000000; // ₹50 lakhs
-  final double _interestRate = 8.5;
-  final int _tenureYears = 20;
+  // Chart toggle state
+  bool _showCompositionChart = true;
+  
+  // Sample progress data - in real app this would come from payment history
   final int _monthsCompleted = 24; // 2 years completed
 
   @override
@@ -55,27 +59,66 @@ class _DashboardScreenState extends State<DashboardScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loanAsync = ref.watch(loanNotifierProvider);
+    
+    return loanAsync.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      ),
+      error: (error, stack) => Scaffold(
+        appBar: AppBar(title: const Text('Dashboard')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error,
+                size: 64,
+                color: theme.colorScheme.error,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Error loading loan data',
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                error.toString(),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+      data: (loan) => _buildDashboardContent(context, theme, loan),
+    );
+  }
+  
+  Widget _buildDashboardContent(BuildContext context, ThemeData theme, loan) {
     final emi = LoanCalculations.calculateEMI(
-      loanAmount: _loanAmount,
-      annualInterestRate: _interestRate,
-      tenureYears: _tenureYears,
+      loanAmount: loan.loanAmount,
+      annualInterestRate: loan.annualInterestRate,
+      tenureYears: loan.tenureYears,
     );
     
     final currentBalance = LoanCalculations.calculateOutstandingBalance(
-      loanAmount: _loanAmount,
-      annualInterestRate: _interestRate,
-      tenureYears: _tenureYears,
+      loanAmount: loan.loanAmount,
+      annualInterestRate: loan.annualInterestRate,
+      tenureYears: loan.tenureYears,
       paymentsMade: _monthsCompleted,
     );
     
-    final dailyInterest = (currentBalance * _interestRate / 100) / 365;
+    final dailyInterest = (currentBalance * loan.annualInterestRate / 100) / 365;
     final totalInterest = LoanCalculations.calculateTotalInterest(
-      loanAmount: _loanAmount,
+      loanAmount: loan.loanAmount,
       monthlyEMI: emi,
-      tenureYears: _tenureYears,
+      tenureYears: loan.tenureYears,
     );
     
-    final progressPercentage = ((_loanAmount - currentBalance) / _loanAmount);
+    final progressPercentage = ((loan.loanAmount - currentBalance) / loan.loanAmount);
 
     return Scaffold(
       appBar: AppBar(
@@ -114,14 +157,19 @@ class _DashboardScreenState extends State<DashboardScreen>
               
               const SizedBox(height: 24),
               
+              // Loan Composition Chart or Progress Summary
+              _buildChartSection(theme, loan),
+              
+              const SizedBox(height: 24),
+              
               // Loan Health Summary
               _buildLoanHealthSummary(
                 theme,
                 currentBalance,
-                _loanAmount,
+                loan.loanAmount,
                 progressPercentage,
                 _monthsCompleted,
-                _tenureYears,
+                loan.tenureYears,
               ),
               
               const SizedBox(height: 24),
@@ -505,6 +553,205 @@ class _DashboardScreenState extends State<DashboardScreen>
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildChartSection(ThemeData theme, loan) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Chart toggle header
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _showCompositionChart ? 'Loan Breakdown' : 'Progress Overview',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _showCompositionChart = !_showCompositionChart;
+                        });
+                      },
+                      icon: Icon(
+                        _showCompositionChart 
+                            ? Icons.bar_chart 
+                            : Icons.pie_chart,
+                      ),
+                      tooltip: _showCompositionChart 
+                          ? 'Switch to Progress View' 
+                          : 'Switch to Composition View',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Chart content
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: _showCompositionChart
+                  ? const LoanCompositionChart(
+                      key: ValueKey('composition'),
+                      height: 280,
+                    )
+                  : _buildProgressVisualization(theme, loan),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget _buildProgressVisualization(ThemeData theme, loan) {
+    // Calculate progress data
+    final emi = LoanCalculations.calculateEMI(
+      loanAmount: loan.loanAmount,
+      annualInterestRate: loan.annualInterestRate,
+      tenureYears: loan.tenureYears,
+    );
+    final totalAmount = emi * loan.tenureYears * 12;
+    final paidSoFar = (emi * _monthsCompleted);
+    final progressPercentage = (paidSoFar / totalAmount).clamp(0.0, 1.0);
+    
+    return Container(
+      key: const ValueKey('progress'),
+      height: 280,
+      child: Column(
+        children: [
+          // Circular progress indicator
+          Expanded(
+            flex: 3,
+            child: Center(
+              child: SizedBox(
+                width: 160,
+                height: 160,
+                child: Stack(
+                  children: [
+                    // Background circle
+                    SizedBox(
+                      width: 160,
+                      height: 160,
+                      child: CircularProgressIndicator(
+                        value: 1.0,
+                        strokeWidth: 12,
+                        backgroundColor: theme.colorScheme.surfaceVariant,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          theme.colorScheme.surfaceVariant,
+                        ),
+                      ),
+                    ),
+                    // Progress circle
+                    SizedBox(
+                      width: 160,
+                      height: 160,
+                      child: CircularProgressIndicator(
+                        value: progressPercentage,
+                        strokeWidth: 12,
+                        backgroundColor: Colors.transparent,
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          theme.colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                    // Center content
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${(progressPercentage * 100).toStringAsFixed(1)}%',
+                            style: theme.textTheme.headlineMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          Text(
+                            'Completed',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          
+          const SizedBox(height: 20),
+          
+          // Progress details
+          Expanded(
+            flex: 2,
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.check_circle,
+                        color: theme.colorScheme.primary,
+                        size: 24,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Paid',
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      Text(
+                        CurrencyFormatter.formatCurrencyCompact(paidSoFar),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: 1,
+                  height: 40,
+                  color: theme.colorScheme.outline.withOpacity(0.3),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.schedule,
+                        color: theme.colorScheme.onSurfaceVariant,
+                        size: 24,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Remaining',
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      Text(
+                        CurrencyFormatter.formatCurrencyCompact(totalAmount - paidSoFar),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

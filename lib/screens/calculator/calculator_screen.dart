@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../providers/loan_provider.dart';
 import '../../providers/settings_provider.dart';
+import '../../models/loan_model.dart';
+import '../../widgets/charts/emi_breakdown_chart.dart';
 import 'dart:async';
 
 /// Calculator screen for EMI calculations and loan analysis with Riverpod
@@ -481,8 +483,11 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
             
             const SizedBox(height: 16),
             
-            // Visual representation
-            _buildAmountVisualization(theme, loan.loanAmount, totalAmount, totalInterest),
+            // EMI Breakdown Chart
+            const EMIBreakdownChart(
+              height: 250,
+              showMonths: 12, // Show first year breakdown
+            ),
             
             const SizedBox(height: 16),
             
@@ -698,20 +703,24 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
     
     Color riskColor;
     IconData riskIcon;
+    String riskDisplayName;
+    String riskDescription;
     
-    switch (riskLevel) {
-      case LoanRiskLevel.low:
-        riskColor = theme.colorScheme.tertiary;
-        riskIcon = Icons.check_circle;
-        break;
-      case LoanRiskLevel.medium:
-        riskColor = Colors.orange;
-        riskIcon = Icons.warning;
-        break;
-      case LoanRiskLevel.high:
-        riskColor = theme.colorScheme.error;
-        riskIcon = Icons.error;
-        break;
+    if (riskLevel == LoanRiskLevel.low) {
+      riskColor = theme.colorScheme.tertiary;
+      riskIcon = Icons.check_circle;
+      riskDisplayName = 'Low Risk';
+      riskDescription = 'Comfortable loan parameters';
+    } else if (riskLevel == LoanRiskLevel.medium) {
+      riskColor = Colors.orange;
+      riskIcon = Icons.warning;
+      riskDisplayName = 'Medium Risk';
+      riskDescription = 'Moderate risk, manageable with discipline';
+    } else {
+      riskColor = theme.colorScheme.error;
+      riskIcon = Icons.error;
+      riskDisplayName = 'High Risk';
+      riskDescription = 'High risk, consider reducing loan amount or tenure';
     }
     
     return Container(
@@ -731,7 +740,7 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
               Icon(riskIcon, color: riskColor, size: 20),
               const SizedBox(width: 8),
               Text(
-                'Risk Assessment: ${riskLevel.displayName}',
+                'Risk Assessment: $riskDisplayName',
                 style: theme.textTheme.titleSmall?.copyWith(
                   color: riskColor,
                   fontWeight: FontWeight.bold,
@@ -743,7 +752,7 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
           const SizedBox(height: 8),
           
           Text(
-            riskLevel.description,
+            riskDescription,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: riskColor.withOpacity(0.8),
             ),
