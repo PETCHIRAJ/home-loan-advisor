@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../models/loan_model.dart';
 import '../models/strategy_model.dart';
 import 'loan_provider.dart';

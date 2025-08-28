@@ -2,14 +2,89 @@ import 'package:flutter/material.dart';
 import '../constants/color_constants.dart';
 import '../constants/text_styles.dart';
 
+/// Extension for financial-specific colors in the theme
+@immutable
+class FinancialColors extends ThemeExtension<FinancialColors> {
+  const FinancialColors({
+    required this.savingsGreen,
+    required this.warningAmber,
+    required this.loanHealthGood,
+    required this.loanHealthExcellent,
+    required this.achievementGold,
+    required this.currencyPositive,
+    required this.currencyNegative,
+    required this.principalGreen,
+    required this.interestRed,
+  });
+
+  final Color savingsGreen;
+  final Color warningAmber;
+  final Color loanHealthGood;
+  final Color loanHealthExcellent;
+  final Color achievementGold;
+  final Color currencyPositive;
+  final Color currencyNegative;
+  final Color principalGreen;
+  final Color interestRed;
+
+  @override
+  FinancialColors copyWith({
+    Color? savingsGreen,
+    Color? warningAmber,
+    Color? loanHealthGood,
+    Color? loanHealthExcellent,
+    Color? achievementGold,
+    Color? currencyPositive,
+    Color? currencyNegative,
+    Color? principalGreen,
+    Color? interestRed,
+  }) {
+    return FinancialColors(
+      savingsGreen: savingsGreen ?? this.savingsGreen,
+      warningAmber: warningAmber ?? this.warningAmber,
+      loanHealthGood: loanHealthGood ?? this.loanHealthGood,
+      loanHealthExcellent: loanHealthExcellent ?? this.loanHealthExcellent,
+      achievementGold: achievementGold ?? this.achievementGold,
+      currencyPositive: currencyPositive ?? this.currencyPositive,
+      currencyNegative: currencyNegative ?? this.currencyNegative,
+      principalGreen: principalGreen ?? this.principalGreen,
+      interestRed: interestRed ?? this.interestRed,
+    );
+  }
+
+  @override
+  FinancialColors lerp(ThemeExtension<FinancialColors>? other, double t) {
+    if (other is! FinancialColors) {
+      return this;
+    }
+    return FinancialColors(
+      savingsGreen: Color.lerp(savingsGreen, other.savingsGreen, t)!,
+      warningAmber: Color.lerp(warningAmber, other.warningAmber, t)!,
+      loanHealthGood: Color.lerp(loanHealthGood, other.loanHealthGood, t)!,
+      loanHealthExcellent: Color.lerp(loanHealthExcellent, other.loanHealthExcellent, t)!,
+      achievementGold: Color.lerp(achievementGold, other.achievementGold, t)!,
+      currencyPositive: Color.lerp(currencyPositive, other.currencyPositive, t)!,
+      currencyNegative: Color.lerp(currencyNegative, other.currencyNegative, t)!,
+      principalGreen: Color.lerp(principalGreen, other.principalGreen, t)!,
+      interestRed: Color.lerp(interestRed, other.interestRed, t)!,
+    );
+  }
+}
+
+/// Helper extension to access financial colors from theme
+extension ThemeFinancialColors on ThemeData {
+  FinancialColors get financialColors => extension<FinancialColors>()!;
+}
+
 /// Complete Material 3 theme system for Home Loan Advisor
 /// 
 /// Implements professional, trustworthy design system with:
 /// - Inter font family for excellent readability
 /// - Trust blue color scheme suitable for financial apps
 /// - Indian market-aware design choices
-/// - Full light and dark mode support
+/// - Light mode only for consistency
 /// - Accessibility-compliant color contrast
+/// - Custom financial colors integrated into theme
 class AppTheme {
   // Private constructor to prevent instantiation
   AppTheme._();
@@ -33,16 +108,17 @@ class AppTheme {
         onSecondaryContainer: ColorConstants.onSecondaryContainer,
         surface: ColorConstants.surface,
         onSurface: ColorConstants.onSurface,
-        surfaceVariant: ColorConstants.surfaceVariant,
+        surfaceContainerHighest: ColorConstants.surfaceVariant,
         onSurfaceVariant: ColorConstants.onSurfaceVariant,
-        background: ColorConstants.background,
-        onBackground: ColorConstants.onBackground,
         error: ColorConstants.error,
         onError: ColorConstants.onError,
         errorContainer: ColorConstants.errorContainer,
         onErrorContainer: ColorConstants.onErrorContainer,
         outline: ColorConstants.outline,
         outlineVariant: ColorConstants.outlineVariant,
+      ).copyWith(
+        // Add custom financial colors as extensions
+        surfaceContainerHighest: ColorConstants.surfaceVariant,
       ),
 
       // Typography using Inter font
@@ -89,6 +165,21 @@ class AppTheme {
       
       // Progress indicator theme
       progressIndicatorTheme: _buildProgressIndicatorTheme(Brightness.light),
+      
+      // Financial colors extension
+      extensions: <ThemeExtension<dynamic>>[
+        const FinancialColors(
+          savingsGreen: ColorConstants.savingsGreen,
+          warningAmber: ColorConstants.warningAmber,
+          loanHealthGood: ColorConstants.loanHealthGood,
+          loanHealthExcellent: ColorConstants.loanHealthExcellent,
+          achievementGold: ColorConstants.achievementGold,
+          currencyPositive: ColorConstants.currencyPositive,
+          currencyNegative: ColorConstants.currencyNegative,
+          principalGreen: Color(0xFF388E3C), // Green for Principal from mockup
+          interestRed: Color(0xFFD32F2F), // Red for Interest from mockup
+        ),
+      ],
     );
   }
 
@@ -111,10 +202,8 @@ class AppTheme {
         onSecondaryContainer: Color(0xFFF1F8E9), // Light green text
         surface: Color(0xFF121212), // Dark surface
         onSurface: Color(0xFFE0E0E0), // Light text
-        surfaceVariant: Color(0xFF1E1E1E), // Darker surface variant
-        onSurfaceVariant: Color(0xFFBDBDBD), // Medium light text
-        background: Color(0xFF121212), // Dark background
-        onBackground: Color(0xFFE0E0E0), // Light text
+        surfaceContainerHighest: Color(0xFF1E1E1E), // Darker surface variant
+        onSurfaceVariant: Color(0xFFBDBDBD), // Light text
         error: Color(0xFFEF5350), // Lighter red for dark mode
         onError: Color(0xFF000000), // Black text on error
         errorContainer: Color(0xFFD32F2F), // Medium red container
@@ -396,8 +485,8 @@ class AppTheme {
           ? ColorConstants.surface 
           : const Color(0xFF121212),
       indicatorColor: ColorConstants.primaryContainer,
-      labelTextStyle: MaterialStateProperty.resolveWith<TextStyle?>((states) {
-        if (states.contains(MaterialState.selected)) {
+      labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
+        if (states.contains(WidgetState.selected)) {
           return TextStyles.navigationLabel.copyWith(color: ColorConstants.primary);
         }
         return TextStyles.navigationLabel.copyWith(
@@ -406,8 +495,8 @@ class AppTheme {
               : const Color(0xFFBDBDBD),
         );
       }),
-      iconTheme: MaterialStateProperty.resolveWith<IconThemeData?>((states) {
-        if (states.contains(MaterialState.selected)) {
+      iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
+        if (states.contains(WidgetState.selected)) {
           return const IconThemeData(color: ColorConstants.onPrimaryContainer, size: 24);
         }
         return IconThemeData(
@@ -487,16 +576,16 @@ class AppTheme {
 
   static SwitchThemeData _buildSwitchTheme(Brightness brightness) {
     return SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>((states) {
-        if (states.contains(MaterialState.selected)) {
+      thumbColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.selected)) {
           return ColorConstants.onPrimary;
         }
         return brightness == Brightness.light 
             ? ColorConstants.outline 
             : const Color(0xFF424242);
       }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>((states) {
-        if (states.contains(MaterialState.selected)) {
+      trackColor: WidgetStateProperty.resolveWith<Color?>((states) {
+        if (states.contains(WidgetState.selected)) {
           return ColorConstants.primary;
         }
         return brightness == Brightness.light 

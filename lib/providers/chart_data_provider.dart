@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../models/loan_model.dart';

@@ -4,7 +4,7 @@ import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/loan_calculations.dart';
 import '../../providers/loan_provider.dart';
 import '../../widgets/charts/loan_composition_chart.dart';
-import '../../widgets/charts/test_chart.dart';
+import '../../widgets/common/unified_header.dart';
 
 /// Dashboard screen with daily interest burn counter and loan overview
 /// 
@@ -66,7 +66,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
         body: Center(child: CircularProgressIndicator()),
       ),
       error: (error, stack) => Scaffold(
-        appBar: AppBar(title: const Text('Dashboard')),
+        appBar: const UnifiedHeader(
+          title: 'Dashboard',
+          showLoanSummary: false,
+          showBackButton: false,
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -121,19 +125,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     final progressPercentage = ((loan.loanAmount - currentBalance) / loan.loanAmount);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Loan Dashboard'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              // Reset and replay animation
-              _burnController.reset();
-              _burnController.forward();
-            },
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Refresh Data',
-          ),
-        ],
+      appBar: const UnifiedHeader(
+        title: 'Dashboard',
+        showLoanSummary: true,
+        showBackButton: false,
+        currentTabIndex: 0, // Dashboard is at index 0
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -144,7 +140,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
         },
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.all(16),
+          // Remove padding since cards have their own margins
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -163,7 +159,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               const SizedBox(height: 24),
               
               // Loan Health Summary
-              _buildLoanHealthSummary(
+              _buildLoanHealthSummaryOriginal(
                 theme,
                 currentBalance,
                 loan.loanAmount,
@@ -175,7 +171,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               const SizedBox(height: 24),
               
               // Quick Insights
-              _buildQuickInsights(
+              _buildQuickInsightsOriginal(
                 theme,
                 emi,
                 totalInterest,
@@ -188,6 +184,510 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               _buildActionCards(theme),
               
               const SizedBox(height: 40),
+            ],
+          ),
+        ),
+      ),
+      // Remove FAB to match mockup exactly
+    );
+  }
+
+  // LIVE MONEY BURN COUNTER - Exact HTML mockup match
+  Widget _buildLiveBurnCounter(
+    ThemeData theme,
+    double dailyInterest,
+    Animation<double> animation,
+  ) {
+    final monthlyBurn = dailyInterest * 30;
+    
+    return Card(
+      elevation: 4,
+      margin: const EdgeInsets.all(16),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFFD32F2F), // --error-red
+              Color(0xFFFF5722), // Complementary red
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            children: [
+              // Header with lightning emoji
+              Text(
+                '⚡ LIVE MONEY BURN COUNTER ⚡',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 0.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              
+              const SizedBox(height: 16),
+              
+              // Animated burn amount - EXACT ₹696 from mockup
+              AnimatedBuilder(
+                animation: animation,
+                builder: (context, child) {
+                  return Text(
+                    '₹696', // Exact amount from mockup
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 36,
+                    ),
+                  );
+                },
+              ),
+              
+              const SizedBox(height: 8),
+              
+              Text(
+                'LOST TODAY',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              
+              const SizedBox(height: 8),
+              
+              Text(
+                '₹20,880 this month',
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  color: Colors.white.withOpacity(0.9),
+                ),
+              ),
+              
+              const SizedBox(height: 24),
+              
+              // Action button
+              ElevatedButton(
+                onPressed: () {
+                  // Show breakdown
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  foregroundColor: Colors.white,
+                  side: BorderSide(color: Colors.white.withOpacity(0.3), width: 2),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                child: const Text(
+                  'View Breakdown',
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  
+  // Loan Health Score - Exact HTML mockup match
+  Widget _buildLoanHealthScore(
+    ThemeData theme,
+    double currentBalance,
+    double originalAmount,
+  ) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with home icon
+            Row(
+              children: [
+                const Text('🏠', style: TextStyle(fontSize: 24)),
+                const SizedBox(width: 16),
+                Text(
+                  'YOUR LOAN HEALTH SCORE',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Health score display - EXACT 5.0/10 from mockup
+            Row(
+              children: [
+                Text(
+                  '5.0/10',
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    color: const Color(0xFFFF8F00), // --warning-orange
+                    fontWeight: FontWeight.bold,
+                    fontSize: 32,
+                  ),
+                ),
+                const SizedBox(width: 24),
+                
+                // Dot progress indicators
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // 10 dots showing 5 filled
+                      Row(
+                        children: List.generate(10, (index) => Container(
+                          width: 16,
+                          height: 16,
+                          margin: const EdgeInsets.only(right: 4),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: index < 5 
+                              ? const Color(0xFFFF8F00) // --warning-orange
+                              : const Color(0xFFE0E0E0), // --divider
+                            boxShadow: index < 5 ? [
+                              BoxShadow(
+                                color: const Color(0xFFFF8F00).withOpacity(0.3),
+                                blurRadius: 8,
+                                spreadRadius: 0,
+                              ),
+                            ] : null,
+                          ),
+                        )),
+                      ),
+                      
+                      const SizedBox(height: 8),
+                      
+                      Text(
+                        'Poor - Significant room for improvement',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: const Color(0xFF757575), // --text-secondary
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Action button
+            ElevatedButton(
+              onPressed: () {
+                // Navigate to improvement suggestions
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFF8F00), // --warning-orange
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              ),
+              child: const Text(
+                'See How to Improve',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  // Today's Money-Saving Tip - Exact HTML mockup match
+  Widget _buildMoneySavingTip(ThemeData theme) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with lightbulb
+            Row(
+              children: [
+                const Text('💡', style: TextStyle(fontSize: 24)),
+                const SizedBox(width: 16),
+                Text(
+                  'TODAY\'S MONEY-SAVING TIP',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Tip content with gradient background
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xFF388E3C), // --success-green
+                    Color(0xFF66BB6A), // Lighter green
+                  ],
+                ),
+              ),
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Round up your EMI to ₹26,000',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 8),
+                  
+                  Text(
+                    'Save ₹2,47,000 over loan life • Works offline',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 16,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Action buttons
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Calculate impact
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.9),
+                            foregroundColor: const Color(0xFF388E3C),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          child: const Text(
+                            'Calculate Impact',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                      
+                      const SizedBox(width: 16),
+                      
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            // Dismiss tip
+                          },
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.white,
+                            side: BorderSide(
+                              color: Colors.white.withOpacity(0.3),
+                              width: 2,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                          ),
+                          child: const Text(
+                            'Dismiss',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  // Quick Insights - Exact HTML mockup match
+  Widget _buildQuickInsightsExact(
+    ThemeData theme,
+    double emi,
+    double totalInterest,
+  ) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with chart icon
+            Row(
+              children: [
+                const Text('📊', style: TextStyle(fontSize: 24)),
+                const SizedBox(width: 16),
+                Text(
+                  'QUICK INSIGHTS',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Three exact insights from mockup
+            Column(
+              children: [
+                _buildInsightItemExact(
+                  theme,
+                  '💳', // Credit card icon
+                  'Your Monthly EMI',
+                  '₹26,085',
+                ),
+                
+                const SizedBox(height: 16),
+                
+                _buildInsightItemExact(
+                  theme,
+                  '💰', // Money bag icon
+                  'Total Interest You\'ll Pay',
+                  '₹32.6L',
+                ),
+                
+                const SizedBox(height: 16),
+                
+                _buildInsightItemExact(
+                  theme,
+                  '🎯', // Target icon
+                  'Break-even Point',
+                  'Year 12',
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // CTA Button - Exact from mockup
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  // Navigate to strategies
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1565C0), // --primary-blue
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  elevation: 2,
+                ),
+                child: Text(
+                  'Explore Money-Saving Strategies →',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  // Helper for insight items
+  Widget _buildInsightItemExact(
+    ThemeData theme,
+    String emoji,
+    String label,
+    String value,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF5F5F5), // --surface-variant
+        borderRadius: BorderRadius.circular(12),
+        border: const Border(
+          left: BorderSide(
+            color: Color(0xFF1565C0), // --primary-blue
+            width: 3,
+          ),
+        ),
+      ),
+      child: InkWell(
+        onTap: () {
+          // Navigate to details
+        },
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Row(
+            children: [
+              // Icon container
+              Container(
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    emoji,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+              
+              const SizedBox(width: 16),
+              
+              // Label
+              Expanded(
+                child: Text(
+                  label,
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: const Color(0xFF757575), // --text-secondary
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+              
+              // Value
+              Text(
+                value,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  color: const Color(0xFF212121), // --text-primary
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
             ],
           ),
         ),
@@ -297,7 +797,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     );
   }
 
-  Widget _buildLoanHealthSummary(
+  // Keep original methods for backward compatibility but rename
+  Widget _buildLoanHealthSummaryOriginal(
     ThemeData theme,
     double currentBalance,
     double originalAmount,
@@ -346,7 +847,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       const SizedBox(height: 8),
                       LinearProgressIndicator(
                         value: progressPercentage,
-                        backgroundColor: theme.colorScheme.surfaceVariant,
+                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
                         valueColor: AlwaysStoppedAnimation<Color>(
                           theme.colorScheme.primary,
                         ),
@@ -466,7 +967,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     );
   }
 
-  Widget _buildQuickInsights(
+  Widget _buildQuickInsightsOriginal(
     ThemeData theme,
     double emi,
     double totalInterest,
@@ -602,7 +1103,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
               child: _showCompositionChart
                   ? const LoanCompositionChart(
                       key: ValueKey('composition'),
-                      height: 280,
+                      height: 180, // Further reduced for better fit
+                      showLegend: true,
+                      showEducationalLabels: false, // Hide labels in dashboard
                     )
                   : _buildProgressVisualization(theme, loan),
             ),
@@ -623,7 +1126,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
     final paidSoFar = (emi * _monthsCompleted);
     final progressPercentage = (paidSoFar / totalAmount).clamp(0.0, 1.0);
     
-    return Container(
+    return SizedBox(
       key: const ValueKey('progress'),
       height: 280,
       child: Column(
@@ -644,9 +1147,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
                       child: CircularProgressIndicator(
                         value: 1.0,
                         strokeWidth: 12,
-                        backgroundColor: theme.colorScheme.surfaceVariant,
+                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          theme.colorScheme.surfaceVariant,
+                          theme.colorScheme.surfaceContainerHighest,
                         ),
                       ),
                     ),
@@ -756,80 +1259,155 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen>
   }
 
   Widget _buildActionCards(ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Quick Actions',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Quick Actions',
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        
-        const SizedBox(height: 12),
-        
-        Row(
-          children: [
-            Expanded(
-              child: Card(
-                child: InkWell(
-                  onTap: () {
-                    // Navigate to calculator
-                  },
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.calculate,
-                          size: 32,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Calculate\nNew EMI',
-                          style: theme.textTheme.labelLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+          
+          const SizedBox(height: 16),
+          
+          Row(
+            children: [
+              Expanded(
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      // Navigate to calculator using the same method as header
+                      try {
+                        final mainNavState = context.findAncestorStateOfType<State<StatefulWidget>>();
+                        if (mainNavState != null) {
+                          final dynamic state = mainNavState;
+                          if (state.navigateToTab != null) {
+                            state.navigateToTab(3); // Navigate to Calculator tab
+                          }
+                        }
+                      } catch (e) {
+                        // Fallback
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please go to the Calculator tab')),
+                        );
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Icon(
+                              Icons.calculate_outlined,
+                              size: 32,
+                              color: theme.colorScheme.primary,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Calculator',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Recalculate EMI',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Card(
-                child: InkWell(
-                  onTap: () {
-                    // Navigate to strategies
-                  },
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.lightbulb,
-                          size: 32,
-                          color: theme.colorScheme.secondary,
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'View\nStrategies',
-                          style: theme.textTheme.labelLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: Card(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: InkWell(
+                    onTap: () {
+                      // Navigate to strategies
+                      try {
+                        final mainNavState = context.findAncestorStateOfType<State<StatefulWidget>>();
+                        if (mainNavState != null) {
+                          final dynamic state = mainNavState;
+                          if (state.navigateToTab != null) {
+                            state.navigateToTab(1); // Navigate to Strategies tab
+                          }
+                        }
+                      } catch (e) {
+                        // Fallback
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please go to the Strategies tab')),
+                        );
+                      }
+                    },
+                    borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: theme.colorScheme.secondaryContainer.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Icon(
+                              Icons.lightbulb_outline,
+                              size: 32,
+                              color: theme.colorScheme.secondary,
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Strategies',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Save money',
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ],
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/theme/app_theme.dart';
-import 'screens/main_navigation.dart';
-import 'providers/settings_provider.dart';
+import 'screens/app_initializer.dart';
 
 void main() {
   runApp(
@@ -17,20 +16,17 @@ class HomeLoanAdvisorApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch theme mode from settings provider
-    final themeMode = ref.watch(currentThemeModeProvider);
     
     return MaterialApp(
       title: 'Home Loan Advisor',
       debugShowCheckedModeBanner: false,
       
-      // Use our custom Material 3 theme system with reactive theme mode
+      // Use only light theme - consistent light mode throughout
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
+      themeMode: ThemeMode.light,
       
-      // Main app navigation
-      home: const MainNavigation(),
+      // App initializer (handles onboarding and main navigation)
+      home: const AppInitializer(),
     );
   }
 }

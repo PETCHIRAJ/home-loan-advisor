@@ -15,7 +15,7 @@ import 'dart:math' as math;
 class EMIBreakdownChart extends ConsumerStatefulWidget {
   const EMIBreakdownChart({
     super.key,
-    this.height = 300,
+    this.height = 200, // Reduced default height to prevent overflow
     this.showMonths = 24, // Show first 2 years by default
     this.showLegend = true,
   });
@@ -76,29 +76,33 @@ class _EMIBreakdownChartState extends ConsumerState<EMIBreakdownChart> {
         ? emiData.map((e) => e.totalEMI).reduce(math.max) 
         : 0.0;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Chart title
-        Text(
-          'EMI Breakdown Over Time',
-          style: theme.textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
+    return SizedBox(
+      height: widget.height + 120, // Add extra height for title and legend
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Chart title
+          Text(
+            'EMI Breakdown Over Time',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'See how your monthly payment splits between principal and interest',
-          style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
+          const SizedBox(height: 4),
+          Text(
+            'Principal vs Interest split',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
-        // Chart
-        SizedBox(
-          height: widget.height,
-          child: BarChart(
+          // Chart with overflow protection
+          Expanded(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: BarChart(
             BarChartData(
               maxY: maxValue * 1.1, // Add 10% padding
               barTouchData: BarTouchData(
@@ -202,20 +206,24 @@ class _EMIBreakdownChartState extends ConsumerState<EMIBreakdownChart> {
                   );
                 },
               ),
+              ),
+            ),
             ),
           ),
-        ),
 
-        // Legend
-        if (widget.showLegend) ...[
-          const SizedBox(height: 16),
-          _buildLegend(theme),
+          // Legend
+          if (widget.showLegend) ...[
+            const SizedBox(height: 8),
+            _buildLegend(theme),
+          ],
+
+          // Key insights - removed to prevent overflow
+          if (widget.height > 250) ...[
+            const SizedBox(height: 8),
+            _buildCompactInsights(theme, loan, emiData),
+          ],
         ],
-
-        // Key insights
-        const SizedBox(height: 16),
-        _buildKeyInsights(theme, loan, emiData),
-      ],
+      ),
     );
   }
 
@@ -326,6 +334,33 @@ class _EMIBreakdownChartState extends ConsumerState<EMIBreakdownChart> {
     );
   }
 
+  Widget _buildCompactInsights(
+    ThemeData theme,
+    LoanModel loan,
+    List<EMIBreakdownData> emiData,
+  ) {
+    if (emiData.isEmpty) return const SizedBox.shrink();
+
+    final firstMonth = emiData.first;
+    final firstInterestRatio = (firstMonth.interestAmount / firstMonth.totalEMI) * 100;
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        'Month 1: ${firstInterestRatio.toStringAsFixed(0)}% Interest, ${(100 - firstInterestRatio).toStringAsFixed(0)}% Principal',
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: theme.colorScheme.primary,
+          fontWeight: FontWeight.w500,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
   Widget _buildKeyInsights(
     ThemeData theme,
     LoanModel loan,
@@ -342,7 +377,7 @@ class _EMIBreakdownChartState extends ConsumerState<EMIBreakdownChart> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
+        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(

@@ -1,5 +1,4 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
@@ -19,6 +18,10 @@ class AppSettings {
   final bool enableHapticFeedback;
   final bool showOnboarding;
   
+  // Loan progress tracking
+  final bool isLoanTaken;
+  final int monthsAlreadyPaid;
+  
   const AppSettings({
     this.themeMode = ThemeMode.system,
     this.enableNotifications = true,
@@ -29,6 +32,8 @@ class AppSettings {
     this.textScaleFactor = 1.0,
     this.enableHapticFeedback = true,
     this.showOnboarding = true,
+    this.isLoanTaken = false,
+    this.monthsAlreadyPaid = 0,
   });
   
   AppSettings copyWith({
@@ -41,6 +46,8 @@ class AppSettings {
     double? textScaleFactor,
     bool? enableHapticFeedback,
     bool? showOnboarding,
+    bool? isLoanTaken,
+    int? monthsAlreadyPaid,
   }) {
     return AppSettings(
       themeMode: themeMode ?? this.themeMode,
@@ -52,6 +59,8 @@ class AppSettings {
       textScaleFactor: textScaleFactor ?? this.textScaleFactor,
       enableHapticFeedback: enableHapticFeedback ?? this.enableHapticFeedback,
       showOnboarding: showOnboarding ?? this.showOnboarding,
+      isLoanTaken: isLoanTaken ?? this.isLoanTaken,
+      monthsAlreadyPaid: monthsAlreadyPaid ?? this.monthsAlreadyPaid,
     );
   }
   
@@ -66,6 +75,8 @@ class AppSettings {
       'textScaleFactor': textScaleFactor,
       'enableHapticFeedback': enableHapticFeedback,
       'showOnboarding': showOnboarding,
+      'isLoanTaken': isLoanTaken,
+      'monthsAlreadyPaid': monthsAlreadyPaid,
     };
   }
   
@@ -80,6 +91,8 @@ class AppSettings {
       textScaleFactor: (json['textScaleFactor'] ?? 1.0).toDouble(),
       enableHapticFeedback: json['enableHapticFeedback'] ?? true,
       showOnboarding: json['showOnboarding'] ?? true,
+      isLoanTaken: json['isLoanTaken'] ?? false,
+      monthsAlreadyPaid: json['monthsAlreadyPaid'] ?? 0,
     );
   }
 }

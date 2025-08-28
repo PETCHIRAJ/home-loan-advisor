@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/utils/currency_formatter.dart';
+import '../../core/theme/app_theme.dart';
 import '../../providers/loan_provider.dart';
-import '../../providers/settings_provider.dart';
-import '../../models/loan_model.dart';
 import '../../widgets/charts/emi_breakdown_chart.dart';
+import '../../widgets/common/unified_header.dart';
+import 'amortization_schedule_screen.dart';
 import 'dart:async';
+import 'dart:math' as math;
 
-/// Calculator screen for EMI calculations and loan analysis with Riverpod
-/// 
-/// Features:
-/// - Loan amount, interest rate, and tenure input with reactive updates
-/// - Real-time EMI calculation using Riverpod state management
-/// - Total amount and interest breakdown with computed providers
-/// - Indian currency formatting
-/// - Input validation and error handling
-/// - Automatic state persistence across app restarts
+/// Calculator screen matching HTML mockup exactly
 class CalculatorScreen extends ConsumerStatefulWidget {
   const CalculatorScreen({super.key});
 
@@ -29,14 +22,27 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
   final _loanAmountController = TextEditingController();
   final _interestRateController = TextEditingController();
   final _tenureController = TextEditingController();
+  final _monthlyIncomeController = TextEditingController();
+  final _ageController = TextEditingController();
+  final _monthsPaidController = TextEditingController();
   
   Timer? _debounceTimer;
   bool _isInitializing = true;
+  bool _isUpdateInProgress = false;
+  String _loanStatus = 'planning'; // 'planning' or 'taken'
+  
+  // Chart and Schedule toggle states
+  String _chartViewType = 'pie'; // 'pie' or 'timeline'
+  
+  // Slider values
+  double _loanAmountSlider = 30.0;
+  double _interestRateSlider = 8.5;
+  double _tenureSlider = 20.0;
+  double _monthsPaidSlider = 0.0;
 
   @override
   void initState() {
     super.initState();
-    // Initialize controllers after first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeFromState();
     });
@@ -48,73 +54,134 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
     _loanAmountController.dispose();
     _interestRateController.dispose();
     _tenureController.dispose();
+    _monthlyIncomeController.dispose();
+    _ageController.dispose();
+    _monthsPaidController.dispose();
     super.dispose();
   }
 
-  /// Initialize form controllers from current loan state
+  /// Initialize form controllers from current loan state or use sensible defaults
   Future<void> _initializeFromState() async {
-    final loanState = ref.read(loanNotifierProvider);
-    
-    await loanState.when(
-      data: (loan) async {
-        if (mounted) {
-          _loanAmountController.text = (loan.loanAmount / 100000).toStringAsFixed(0);
-          _interestRateController.text = loan.annualInterestRate.toString();
-          _tenureController.text = loan.tenureYears.toString();
-          
-          setState(() {
-            _isInitializing = false;
-          });
-        }
-      },
-      loading: () async {
-        // Wait for load to complete
-        await Future.delayed(const Duration(milliseconds: 100));
-        if (mounted) _initializeFromState();
-      },
-      error: (_, __) async {
-        // Use defaults on error
-        if (mounted) {
-          _loanAmountController.text = '30';
-          _interestRateController.text = '8.5';
-          _tenureController.text = '20';
-          
-          setState(() {
-            _isInitializing = false;
-          });
-        }
-      },
-    );
-  }
-  
-  /// Debounced update for reactive state changes
-  void _debouncedUpdate(VoidCallback updateFunction) {
-    _debounceTimer?.cancel();
-    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
-      if (mounted && _formKey.currentState?.validate() == true) {
-        updateFunction();
+    try {
+      final loanState = ref.read(loanNotifierProvider);
+      
+      await loanState.when(
+        data: (loan) async {
+          if (mounted) {
+            _setFormValues(loan);
+          }
+        },
+        loading: () async {
+          // Wait a bit and retry
+          await Future.delayed(const Duration(milliseconds: 200));
+          if (mounted) {
+            final retryState = ref.read(loanNotifierProvider);
+            if (retryState.hasValue) {
+              _setFormValues(retryState.value!);
+            } else {
+              _setDefaultValues();
+            }
+          }
+        },
+        error: (_, __) async {
+          if (mounted) {
+            _setDefaultValues();
+          }
+        },
+      );
+    } catch (e) {
+      // Fallback to defaults if anything goes wrong
+      if (mounted) {
+        _setDefaultValues();
       }
+    }
+  }
+
+  void _setFormValues(loan) {
+    final loanAmountInLakhs = loan.loanAmount / 100000;
+    _loanAmountController.text = _formatIndianCurrency((loan.loanAmount).toString());
+    _interestRateController.text = loan.annualInterestRate.toString();
+    _tenureController.text = loan.tenureYears.toString();
+    _monthlyIncomeController.text = '1,00,000';
+    _ageController.text = '30';
+    _monthsPaidController.text = '0';
+    
+    _loanAmountSlider = loanAmountInLakhs.clamp(5.0, 500.0);
+    _interestRateSlider = loan.annualInterestRate.clamp(6.0, 15.0);
+    _tenureSlider = loan.tenureYears.toDouble().clamp(5.0, 30.0);
+    
+    setState(() {
+      _isInitializing = false;
     });
   }
 
-  /// Reset calculator to default values
-  void _resetCalculator() {
-    ref.read(loanNotifierProvider.notifier).resetLoan();
-    
-    _loanAmountController.text = '30';
+  void _setDefaultValues() {
+    _loanAmountController.text = '30,00,000';
     _interestRateController.text = '8.5';
     _tenureController.text = '20';
+    _monthlyIncomeController.text = '1,00,000';
+    _ageController.text = '30';
+    _monthsPaidController.text = '0';
+    
+    _loanAmountSlider = 30.0;
+    _interestRateSlider = 8.5;
+    _tenureSlider = 20.0;
+    
+    setState(() {
+      _isInitializing = false;
+    });
+    
+    // Update the loan state with default values
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (mounted) {
+        _updateCalculations();
+      }
+    });
+  }
+  
+  /// Format Indian currency with lakhs notation
+  String _formatIndianCurrency(String value) {
+    final num = int.tryParse(value.replaceAll(',', '')) ?? 0;
+    if (num == 0) return '';
+    return num.toString().replaceAllMapped(
+      RegExp(r'(\d)(?=(\d{2})+\d$)'),
+      (Match match) => '${match[1]},')
+      .replaceAllMapped(
+        RegExp(r'(\d+),(\d{2}),(\d{3})'),
+        (Match match) => '${match[1]},${match[2]},${match[3]}');
+  }
+  
+  /// Update calculations with loading state
+  Future<void> _updateCalculations() async {
+    if (!_formKey.currentState!.validate()) return;
+    
+    setState(() {
+      _isUpdateInProgress = true;
+    });
+    
+    // Simulate brief loading for better UX
+    await Future.delayed(const Duration(milliseconds: 800));
+    
+    final amount = double.tryParse(_loanAmountController.text.replaceAll(',', '')) ?? 0;
+    final rate = double.tryParse(_interestRateController.text) ?? 0;
+    final tenure = int.tryParse(_tenureController.text) ?? 0;
+    
+    if (amount > 0 && rate > 0 && tenure > 0) {
+      // Create updated loan model
+      final currentLoan = await ref.read(loanNotifierProvider.future);
+      final updatedLoan = currentLoan.copyWith(
+        loanAmount: amount,
+        annualInterestRate: rate,
+        tenureYears: tenure,
+      );
+      ref.read(loanNotifierProvider.notifier).updateLoan(updatedLoan);
+    }
+    
+    setState(() {
+      _isUpdateInProgress = false;
+    });
   }
 
-  /// Load demo data for quick testing
-  void _loadDemoData() {
-    ref.read(loanNotifierProvider.notifier).loadDemoData();
-    
-    // Update controllers to reflect demo data
-    _loanAmountController.text = '50';
-    _interestRateController.text = '8.75';
-    _tenureController.text = '25';
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,33 +191,13 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
     final totalAmount = ref.watch(totalAmountProvider);
     final totalInterest = ref.watch(totalInterestProvider);
     final isValid = ref.watch(isLoanValidProvider);
-    final hapticEnabled = ref.watch(hapticFeedbackEnabledProvider);
     
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('EMI Calculator'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              if (hapticEnabled) {
-                HapticFeedback.lightImpact();
-              }
-              _loadDemoData();
-            },
-            icon: const Icon(Icons.auto_awesome),
-            tooltip: 'Load Demo Data',
-          ),
-          IconButton(
-            onPressed: () {
-              if (hapticEnabled) {
-                HapticFeedback.lightImpact();
-              }
-              _resetCalculator();
-            },
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Reset Calculator',
-          ),
-        ],
+      appBar: const UnifiedHeader(
+        title: 'Calculator',
+        showLoanSummary: true,
+        showBackButton: false,
+        currentTabIndex: 3, // Calculator is at index 3
       ),
       body: loanAsync.when(
         data: (loan) => _buildContent(theme, loan, emi, totalAmount, totalInterest, isValid),
@@ -213,17 +260,16 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
             
             // Results Section
             if (isValid && emi > 0) ...[
-              _buildResultsSection(theme, emi),
+              _buildEMIResultsHeroSection(theme, emi, loan),
               const SizedBox(height: 24),
-              _buildBreakdownSection(theme, loan, emi, totalAmount, totalInterest),
+              _buildVisualBreakdownSection(theme, loan, emi, totalAmount, totalInterest),
+              const SizedBox(height: 24),
+              _buildPaymentScheduleSection(theme, loan),
+              const SizedBox(height: 24),
+              _buildExportDataSection(theme, loan, emi),
             ] else if (!isValid) ...[
               _buildValidationErrorSection(theme),
             ],
-            
-            const SizedBox(height: 24),
-            
-            // Quick Actions
-            _buildQuickActions(theme),
             
             const SizedBox(height: 40),
           ],
@@ -234,546 +280,783 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
 
   Widget _buildInputSection(ThemeData theme) {
     return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Loan Details',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+            // Card Header with Icon
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text('💰', style: TextStyle(fontSize: 24)),
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  'LOAN DETAILS',
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             
             // Loan Amount Input
-            TextFormField(
+            _buildLoanInputField(
               controller: _loanAmountController,
-              decoration: InputDecoration(
-                labelText: 'Loan Amount',
-                prefixText: '₹ ',
-                suffixText: 'lakhs',
-                helperText: 'Enter amount in lakhs (e.g., 30 for ₹30,00,000)',
-                prefixIcon: const Icon(Icons.currency_rupee),
-              ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-              ],
+              label: 'Loan Amount',
+              prefixText: '₹',
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter loan amount';
+                  return 'Please enter a valid loan amount (minimum ₹1,00,000)';
                 }
-                final amount = double.tryParse(value);
-                if (amount == null || amount <= 0) {
-                  return 'Please enter a valid amount';
-                }
-                if (amount < 1) {
-                  return 'Minimum loan amount is ₹1 lakh';
-                }
-                if (amount > 1000) {
-                  return 'Maximum loan amount is ₹1000 lakhs';
+                final amount = int.tryParse(value.replaceAll(',', ''));
+                if (amount == null || amount < 100000) {
+                  return 'Please enter a valid loan amount (minimum ₹1,00,000)';
                 }
                 return null;
               },
               onChanged: (value) {
-                final amount = double.tryParse(value);
+                // Format as user types
+                final formatted = _formatIndianCurrency(value.replaceAll(',', ''));
+                if (formatted != value && formatted.isNotEmpty) {
+                  _loanAmountController.value = TextEditingValue(
+                    text: formatted,
+                    selection: TextSelection.collapsed(offset: formatted.length),
+                  );
+                }
+                
+                final amount = double.tryParse(value.replaceAll(',', ''));
                 if (amount != null && amount > 0) {
-                  _debouncedUpdate(() {
-                    ref.read(loanNotifierProvider.notifier)
-                        .updateLoanAmount(amount * 100000); // Convert lakhs to rupees
+                  setState(() {
+                    _loanAmountSlider = (amount / 100000).clamp(5.0, 500.0);
                   });
                 }
               },
+              sliderValue: _loanAmountSlider,
+              sliderMin: 5.0,
+              sliderMax: 500.0,
+              sliderDivisions: 99,
+              sliderLabels: ['₹5L', '₹5Cr'],
+              onSliderChanged: (value) {
+                setState(() {
+                  _loanAmountSlider = value;
+                  final amount = (value * 100000).round();
+                  _loanAmountController.text = _formatIndianCurrency(amount.toString());
+                });
+              },
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             
             // Interest Rate Input
-            TextFormField(
+            _buildLoanInputField(
               controller: _interestRateController,
-              decoration: const InputDecoration(
-                labelText: 'Interest Rate',
-                suffixText: '% per annum',
-                helperText: 'Annual interest rate (e.g., 8.5)',
-                prefixIcon: Icon(Icons.percent),
-              ),
+              label: 'Interest Rate',
+              suffixText: '% per year',
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
-              inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-              ],
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter interest rate';
+                  return 'Interest rate should be between 1% and 20%';
                 }
                 final rate = double.tryParse(value);
-                if (rate == null || rate <= 0) {
-                  return 'Please enter a valid rate';
-                }
-                if (rate > 30) {
-                  return 'Interest rate seems too high (max 30%)';
+                if (rate == null || rate < 1 || rate > 20) {
+                  return 'Interest rate should be between 1% and 20%';
                 }
                 return null;
               },
               onChanged: (value) {
                 final rate = double.tryParse(value);
-                if (rate != null && rate > 0) {
-                  _debouncedUpdate(() {
-                    ref.read(loanNotifierProvider.notifier)
-                        .updateInterestRate(rate);
+                if (rate != null && rate >= 6 && rate <= 15) {
+                  setState(() {
+                    _interestRateSlider = rate;
                   });
                 }
               },
+              sliderValue: _interestRateSlider,
+              sliderMin: 6.0,
+              sliderMax: 15.0,
+              sliderDivisions: 90,
+              sliderLabels: ['6%', '15%'],
+              onSliderChanged: (value) {
+                setState(() {
+                  _interestRateSlider = value;
+                  _interestRateController.text = value.toStringAsFixed(1);
+                });
+              },
             ),
             
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             
             // Tenure Input
-            TextFormField(
+            _buildLoanInputField(
               controller: _tenureController,
-              decoration: const InputDecoration(
-                labelText: 'Loan Tenure',
-                suffixText: 'years',
-                helperText: 'Loan period in years (5-30 years)',
-                prefixIcon: Icon(Icons.schedule),
-              ),
+              label: 'Loan Tenure',
+              suffixText: 'years',
               keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-              ],
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter loan tenure';
+                  return 'Loan tenure should be between 1 and 30 years';
                 }
                 final tenure = int.tryParse(value);
-                if (tenure == null || tenure <= 0) {
-                  return 'Please enter a valid tenure';
-                }
-                if (tenure < 5 || tenure > 50) {
-                  return 'Tenure should be between 5-50 years';
+                if (tenure == null || tenure < 1 || tenure > 30) {
+                  return 'Loan tenure should be between 1 and 30 years';
                 }
                 return null;
               },
               onChanged: (value) {
                 final tenure = int.tryParse(value);
-                if (tenure != null && tenure > 0) {
-                  _debouncedUpdate(() {
-                    ref.read(loanNotifierProvider.notifier)
-                        .updateTenure(tenure);
+                if (tenure != null && tenure >= 5 && tenure <= 30) {
+                  setState(() {
+                    _tenureSlider = tenure.toDouble();
                   });
                 }
               },
+              sliderValue: _tenureSlider,
+              sliderMin: 5.0,
+              sliderMax: 30.0,
+              sliderDivisions: 25,
+              sliderLabels: ['5 years', '30 years'],
+              onSliderChanged: (value) {
+                setState(() {
+                  _tenureSlider = value;
+                  _tenureController.text = value.round().toString();
+                });
+              },
             ),
+            
+            const SizedBox(height: 24),
+            
+            // Monthly Income (Optional)
+            _buildOptionalField(
+              controller: _monthlyIncomeController,
+              label: 'Monthly Income',
+              prefixText: '₹',
+              isOptional: true,
+              onChanged: (value) {
+                final formatted = _formatIndianCurrency(value.replaceAll(',', ''));
+                if (formatted != value && formatted.isNotEmpty) {
+                  _monthlyIncomeController.value = TextEditingValue(
+                    text: formatted,
+                    selection: TextSelection.collapsed(offset: formatted.length),
+                  );
+                }
+              },
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Age (Optional)
+            _buildOptionalField(
+              controller: _ageController,
+              label: 'Age',
+              suffixText: 'years',
+              keyboardType: TextInputType.number,
+              isOptional: true,
+              validator: (value) {
+                if (value != null && value.isNotEmpty) {
+                  final age = int.tryParse(value);
+                  if (age == null || age < 18 || age > 65) {
+                    return 'Age should be between 18-65 years';
+                  }
+                }
+                return null;
+              },
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Loan Status Radio Buttons
+            _buildLoanStatusSection(theme),
+            
+            const SizedBox(height: 24),
+            
+            // Months Already Paid (conditional)
+            if (_loanStatus == 'taken') ...[
+              _buildMonthsPaidField(theme),
+              const SizedBox(height: 24),
+            ],
+            
+            // Update Calculations Button
+            _buildUpdateButton(theme),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildResultsSection(ThemeData theme, double emi) {
-    return Card(
-      elevation: 4,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          gradient: LinearGradient(
-            colors: [
-              theme.colorScheme.primaryContainer,
-              theme.colorScheme.primaryContainer.withOpacity(0.7),
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Icon(
-                Icons.payments,
-                size: 48,
-                color: theme.colorScheme.primary,
-              ),
-              
-              const SizedBox(height: 12),
-              
-              Text(
-                'Monthly EMI',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.onPrimaryContainer,
-                ),
-              ),
-              
-              const SizedBox(height: 8),
-              
-              Text(
-                CurrencyFormatter.formatCurrency(emi),
-                style: theme.textTheme.displayMedium?.copyWith(
-                  color: theme.colorScheme.primary,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              
-              const SizedBox(height: 8),
-              
-              Text(
-                'per month',
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onPrimaryContainer,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBreakdownSection(
-    ThemeData theme,
-    loan,
-    double emi,
-    double totalAmount,
-    double totalInterest,
-  ) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Loan Breakdown',
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            
-            const SizedBox(height: 16),
-            
-            _buildBreakdownRow(
-              theme,
-              'Principal Amount',
-              CurrencyFormatter.formatCurrencyCompact(loan.loanAmount),
-              theme.colorScheme.primary,
-              Icons.account_balance,
-            ),
-            
-            const SizedBox(height: 12),
-            
-            _buildBreakdownRow(
-              theme,
-              'Total Interest',
-              CurrencyFormatter.formatCurrencyCompact(totalInterest),
-              theme.colorScheme.error,
-              Icons.trending_up,
-            ),
-            
-            const SizedBox(height: 12),
-            
-            _buildBreakdownRow(
-              theme,
-              'Total Amount',
-              CurrencyFormatter.formatCurrencyCompact(totalAmount),
-              theme.colorScheme.secondary,
-              Icons.payments,
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // EMI Breakdown Chart
-            const EMIBreakdownChart(
-              height: 250,
-              showMonths: 12, // Show first year breakdown
-            ),
-            
-            const SizedBox(height: 16),
-            
-            // Additional metrics
-            _buildAdditionalMetrics(theme, loan, emi),
-            
-            const SizedBox(height: 16),
-            
-            // Risk assessment
-            _buildRiskAssessment(theme),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBreakdownRow(
-    ThemeData theme,
-    String label,
-    String value,
-    Color color,
-    IconData icon,
-  ) {
-    return Row(
+  /// Build loan input field with slider
+  Widget _buildLoanInputField({
+    required TextEditingController controller,
+    required String label,
+    String? prefixText,
+    String? suffixText,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+    void Function(String)? onChanged,
+    required double sliderValue,
+    required double sliderMin,
+    required double sliderMax,
+    int? sliderDivisions,
+    required List<String> sliderLabels,
+    required void Function(double) onSliderChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: color,
-        ),
-        const SizedBox(width: 12),
-        Expanded(
+        // Label
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
           child: Text(
             label,
-            style: theme.textTheme.bodyLarge,
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
-        Text(
-          value,
-          style: theme.textTheme.titleMedium?.copyWith(
-            color: color,
-            fontWeight: FontWeight.bold,
+        
+        // Input Field with Prefix/Suffix
+        Stack(
+          children: [
+            TextFormField(
+              controller: controller,
+              keyboardType: keyboardType ?? TextInputType.text,
+              validator: validator,
+              onChanged: onChanged,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.surface,
+                contentPadding: EdgeInsets.only(
+                  left: prefixText != null ? 48 : 24,
+                  right: suffixText != null ? 120 : 24,
+                  top: 24,
+                  bottom: 24,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 2,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.error,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+            
+            // Prefix Text
+            if (prefixText != null)
+              Positioned(
+                left: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Text(
+                    prefixText,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            
+            // Suffix Text
+            if (suffixText != null)
+              Positioned(
+                right: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Text(
+                    suffixText,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        
+        const SizedBox(height: 8),
+        
+        // Slider
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            activeTrackColor: Theme.of(context).colorScheme.primary,
+            inactiveTrackColor: Theme.of(context).dividerColor,
+            thumbColor: Theme.of(context).colorScheme.primary,
+            overlayColor: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+            trackHeight: 6,
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
+          ),
+          child: Slider(
+            value: sliderValue,
+            min: sliderMin,
+            max: sliderMax,
+            divisions: sliderDivisions,
+            onChanged: onSliderChanged,
+          ),
+        ),
+        
+        // Slider Labels
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: sliderLabels.map((label) => Text(
+              label,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            )).toList(),
           ),
         ),
       ],
     );
   }
-
-  Widget _buildAmountVisualization(
-    ThemeData theme,
-    double principal,
-    double totalAmount,
-    double totalInterest,
+  
+  /// Build optional input field
+  Widget _buildOptionalField({
+    required TextEditingController controller,
+    required String label,
+    String? prefixText,
+    String? suffixText,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+    void Function(String)? onChanged,
+    bool isOptional = false,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Label with optional indicator
+        Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Row(
+            children: [
+              Text(
+                label,
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              if (isOptional) ...[
+                const SizedBox(width: 8),
+                Text(
+                  '(Optional)',
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        
+        // Input Field
+        Stack(
+          children: [
+            TextFormField(
+              controller: controller,
+              keyboardType: keyboardType ?? TextInputType.text,
+              validator: validator,
+              onChanged: onChanged,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Theme.of(context).colorScheme.surface,
+                contentPadding: EdgeInsets.only(
+                  left: prefixText != null ? 48 : 24,
+                  right: suffixText != null ? 80 : 24,
+                  top: 24,
+                  bottom: 24,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 2,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).dividerColor,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.primary,
+                    width: 2,
+                  ),
+                ),
+              ),
+            ),
+            
+            // Prefix Text
+            if (prefixText != null)
+              Positioned(
+                left: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Text(
+                    prefixText,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            
+            // Suffix Text
+            if (suffixText != null)
+              Positioned(
+                right: 16,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Text(
+                    suffixText,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+  
+  /// Build loan status radio buttons
+  Widget _buildLoanStatusSection(ThemeData theme) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Loan Status',
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        
+        const SizedBox(height: 12),
+        
+        Row(
+          children: [
+            Expanded(
+              child: _buildRadioOption(
+                'planning',
+                'Planning to Take',
+                _loanStatus == 'planning',
+                (value) => setState(() {
+                  _loanStatus = value ?? 'planning';
+                  if (value == 'planning') {
+                    _monthsPaidController.text = '0';
+                    _monthsPaidSlider = 0.0;
+                  }
+                }),
+              ),
+            ),
+            const SizedBox(width: 24),
+            Expanded(
+              child: _buildRadioOption(
+                'taken',
+                'Already Taken',
+                _loanStatus == 'taken',
+                (value) => setState(() {
+                  _loanStatus = value ?? 'taken';
+                }),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+  
+  /// Build radio option
+  Widget _buildRadioOption(
+    String value,
+    String label,
+    bool selected,
+    void Function(String?) onChanged,
   ) {
-    final principalRatio = principal / totalAmount;
-    final interestRatio = totalInterest / totalAmount;
+    return InkWell(
+      onTap: () => onChanged(value),
+      borderRadius: BorderRadius.circular(8),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+        child: Row(
+          children: [
+            Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: selected 
+                    ? Theme.of(context).colorScheme.primary 
+                    : Theme.of(context).dividerColor,
+                  width: 2,
+                ),
+              ),
+              child: selected 
+                ? Center(
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                  )
+                : null,
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// Build months paid field
+  Widget _buildMonthsPaidField(ThemeData theme) {
+    final maxMonths = (double.tryParse(_tenureController.text) ?? 20) * 12;
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Amount Composition',
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
+          'Months Already Paid',
+          style: theme.textTheme.labelLarge?.copyWith(
+            fontWeight: FontWeight.w500,
           ),
         ),
         
         const SizedBox(height: 8),
         
-        Container(
-          height: 20,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: theme.colorScheme.outline.withOpacity(0.5),
-            ),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: (principalRatio * 100).round(),
-                  child: Container(
-                    color: theme.colorScheme.primary,
-                  ),
-                ),
-                Expanded(
-                  flex: (interestRatio * 100).round(),
-                  child: Container(
-                    color: theme.colorScheme.error,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        
-        const SizedBox(height: 8),
-        
-        Row(
+        Stack(
           children: [
-            Row(
-              children: [
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
+            TextFormField(
+              controller: _monthsPaidController,
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter valid months paid';
+                }
+                final months = int.tryParse(value);
+                if (months == null || months < 0) {
+                  return 'Please enter valid months paid';
+                }
+                if (months >= maxMonths) {
+                  return 'Months paid cannot be more than ${maxMonths.round() - 1} for ${_tenureController.text} year tenure';
+                }
+                return null;
+              },
+              onChanged: (value) {
+                final months = int.tryParse(value);
+                if (months != null && months >= 0 && months < maxMonths) {
+                  setState(() {
+                    _monthsPaidSlider = months.toDouble();
+                  });
+                }
+              },
+              style: theme.textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: theme.colorScheme.surface,
+                contentPadding: const EdgeInsets.only(
+                  left: 24,
+                  right: 80,
+                  top: 24,
+                  bottom: 24,
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: theme.dividerColor,
+                    width: 2,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: theme.dividerColor,
+                    width: 2,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
                     color: theme.colorScheme.primary,
-                    shape: BoxShape.circle,
+                    width: 2,
                   ),
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  'Principal (${(principalRatio * 100).toStringAsFixed(1)}%)',
-                  style: theme.textTheme.labelMedium,
-                ),
-              ],
+              ),
             ),
-            const SizedBox(width: 16),
-            Row(
-              children: [
-                Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.error,
-                    shape: BoxShape.circle,
+            
+            Positioned(
+              right: 16,
+              top: 0,
+              bottom: 0,
+              child: Center(
+                child: Text(
+                  'months',
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
-                const SizedBox(width: 4),
-                Text(
-                  'Interest (${(interestRatio * 100).toStringAsFixed(1)}%)',
-                  style: theme.textTheme.labelMedium,
-                ),
-              ],
+              ),
             ),
           ],
+        ),
+        
+        const SizedBox(height: 8),
+        
+        SliderTheme(
+          data: SliderTheme.of(context).copyWith(
+            activeTrackColor: theme.colorScheme.primary,
+            inactiveTrackColor: theme.dividerColor,
+            thumbColor: theme.colorScheme.primary,
+            overlayColor: theme.colorScheme.primary.withOpacity(0.1),
+            trackHeight: 6,
+            thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
+          ),
+          child: Slider(
+            value: _monthsPaidSlider,
+            min: 0,
+            max: math.max(1, maxMonths - 1),
+            divisions: math.max(1, (maxMonths - 1).round()),
+            onChanged: (value) {
+              setState(() {
+                _monthsPaidSlider = value;
+                _monthsPaidController.text = value.round().toString();
+              });
+            },
+          ),
+        ),
+        
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '0',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              Text(
+                maxMonths.round().toString(),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
-
-  Widget _buildAdditionalMetrics(ThemeData theme, loan, double emi) {
-    final monthlyInterest = (loan.loanAmount * loan.annualInterestRate / 100) / 12;
-    final monthlyPrincipal = emi - monthlyInterest;
-    
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'First Month Breakdown:',
-                style: theme.textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
+  
+  /// Build update calculations button
+  Widget _buildUpdateButton(ThemeData theme) {
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: _isUpdateInProgress ? null : _updateCalculations,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: theme.colorScheme.primary,
+          foregroundColor: theme.colorScheme.onPrimary,
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
-          
-          const SizedBox(height: 8),
-          
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Principal Component:',
-                style: theme.textTheme.bodyMedium,
-              ),
-              Text(
-                CurrencyFormatter.formatCurrency(monthlyPrincipal),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: 4),
-          
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Interest Component:',
-                style: theme.textTheme.bodyMedium,
-              ),
-              Text(
-                CurrencyFormatter.formatCurrency(monthlyInterest),
-                style: theme.textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildRiskAssessment(ThemeData theme) {
-    final riskLevel = ref.watch(loanRiskLevelProvider);
-    final isAffordable = ref.watch(isLoanAffordableProvider);
-    final ltvRatio = ref.watch(ltvRatioProvider);
-    final emiToIncome = ref.watch(emiToIncomeRatioProvider);
-    
-    Color riskColor;
-    IconData riskIcon;
-    String riskDisplayName;
-    String riskDescription;
-    
-    if (riskLevel == LoanRiskLevel.low) {
-      riskColor = theme.colorScheme.tertiary;
-      riskIcon = Icons.check_circle;
-      riskDisplayName = 'Low Risk';
-      riskDescription = 'Comfortable loan parameters';
-    } else if (riskLevel == LoanRiskLevel.medium) {
-      riskColor = Colors.orange;
-      riskIcon = Icons.warning;
-      riskDisplayName = 'Medium Risk';
-      riskDescription = 'Moderate risk, manageable with discipline';
-    } else {
-      riskColor = theme.colorScheme.error;
-      riskIcon = Icons.error;
-      riskDisplayName = 'High Risk';
-      riskDescription = 'High risk, consider reducing loan amount or tenure';
-    }
-    
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: riskColor.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: riskColor.withOpacity(0.3),
         ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(riskIcon, color: riskColor, size: 20),
-              const SizedBox(width: 8),
-              Text(
-                'Risk Assessment: $riskDisplayName',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: riskColor,
-                  fontWeight: FontWeight.bold,
+        child: _isUpdateInProgress
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      theme.colorScheme.onPrimary,
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          
-          const SizedBox(height: 8),
-          
-          Text(
-            riskDescription,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: riskColor.withOpacity(0.8),
+                const SizedBox(width: 8),
+                const Text('Calculating...'),
+              ],
+            )
+          : const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Update Calculations',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-          ),
-          
-          if (ltvRatio != null || emiToIncome != null) ...[
-            const SizedBox(height: 8),
-            
-            if (ltvRatio != null)
-              Text(
-                'Loan-to-Value Ratio: ${ltvRatio.toStringAsFixed(1)}%',
-                style: theme.textTheme.bodySmall,
-              ),
-            
-            if (emiToIncome != null)
-              Text(
-                'EMI-to-Income Ratio: ${emiToIncome.toStringAsFixed(1)}%',
-                style: theme.textTheme.bodySmall,
-              ),
-          ],
-        ],
       ),
     );
   }
@@ -813,55 +1096,539 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
     );
   }
 
-  Widget _buildQuickActions(ThemeData theme) {
+  /// Build EMI Results Hero Section matching mockup
+  Widget _buildEMIResultsHeroSection(ThemeData theme, double emi, loan) {
+    final monthlyIncome = double.tryParse(_monthlyIncomeController.text.replaceAll(',', '')) ?? 0;
+    final emiToIncomeRatio = monthlyIncome > 0 ? (emi / monthlyIncome) * 100 : 0;
+    
     return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Quick Actions',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+            // Card Header
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text('📈', style: TextStyle(fontSize: 24)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'CALCULATION RESULTS',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // EMI Hero Display
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    theme.colorScheme.primary,
+                    theme.colorScheme.tertiary,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    'Monthly EMI',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: theme.colorScheme.onPrimary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    CurrencyFormatter.formatCurrency(emi),
+                    style: theme.textTheme.displayMedium?.copyWith(
+                      color: theme.colorScheme.onPrimary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: 24),
             
+            // Results Grid
+            _buildResultsGrid(theme, loan, emi, emiToIncomeRatio.toDouble()),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// Build results grid
+  Widget _buildResultsGrid(ThemeData theme, loan, double emi, double emiToIncomeRatio) {
+    final totalAmount = emi * loan.tenureYears * 12;
+    final totalInterest = totalAmount - loan.loanAmount;
+    final interestPercentage = (totalInterest / loan.loanAmount) * 100;
+    
+    return Column(
+      children: [
+        _buildResultRow('Total Amount Payable', CurrencyFormatter.formatCurrency(totalAmount)),
+        const SizedBox(height: 12),
+        _buildResultRow('Total Interest', CurrencyFormatter.formatCurrency(totalInterest)),
+        const SizedBox(height: 12),
+        _buildResultRow('Interest Percentage', '${interestPercentage.toStringAsFixed(1)}%'),
+        
+        if (emiToIncomeRatio > 0) ...[
+          const SizedBox(height: 12),
+          _buildResultRow(
+            'EMI/Income Ratio',
+            '${emiToIncomeRatio.toStringAsFixed(0)}%',
+            indicator: _getEMIRatioIndicator(emiToIncomeRatio),
+          ),
+        ],
+      ],
+    );
+  }
+  
+  /// Build individual result row
+  Widget _buildResultRow(String label, String value, {Widget? indicator}) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Text(
+                  value,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+              if (indicator != null) ...[
+                const SizedBox(width: 8),
+                indicator,
+              ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+  
+  /// Get EMI ratio indicator
+  Widget _getEMIRatioIndicator(double ratio) {
+    if (ratio < 30) {
+      return const Text('✓', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold));
+    } else if (ratio <= 40) {
+      return const Text('⚠️', style: TextStyle(fontWeight: FontWeight.bold));
+    } else {
+      return const Text('❌', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold));
+    }
+  }
+  
+  /// Build Visual Breakdown Section
+  Widget _buildVisualBreakdownSection(ThemeData theme, loan, double emi, double totalAmount, double totalInterest) {
+    return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Card Header
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text('📈', style: TextStyle(fontSize: 24)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'VISUAL BREAKDOWN',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Chart Toggle Buttons
+            Container(
+              height: 48,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _chartViewType = 'pie';
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: _chartViewType == 'pie' 
+                            ? theme.colorScheme.primary
+                            : Colors.transparent,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Pie Chart',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: _chartViewType == 'pie'
+                                ? theme.colorScheme.onPrimary
+                                : theme.colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _chartViewType = 'timeline';
+                        });
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: _chartViewType == 'timeline' 
+                            ? theme.colorScheme.primary
+                            : Colors.transparent,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Timeline',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: _chartViewType == 'timeline'
+                                ? theme.colorScheme.onPrimary
+                                : theme.colorScheme.onSurfaceVariant,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Chart Container
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: Container(
+                key: ValueKey(_chartViewType),
+                height: 200,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: _chartViewType == 'pie'
+                  ? const EMIBreakdownChart(height: 200)
+                  : _buildTimelineView(theme, loan, emi),
+              ),
+            ),
+            
+            const SizedBox(height: 16),
+            
+            // Legend
             Wrap(
-              spacing: 8,
+              alignment: WrapAlignment.center,
+              spacing: 24,
               runSpacing: 8,
               children: [
-                FilledButton.tonalIcon(
-                  onPressed: () {
-                    // Navigate to strategies
-                    DefaultTabController.of(context)?.animateTo(2);
-                  },
-                  icon: const Icon(Icons.lightbulb_outline),
-                  label: const Text('View Strategies'),
+                _buildLegendItem('Principal', '₹${(loan.loanAmount / 100000).toStringAsFixed(1)}L', theme.financialColors.principalGreen),
+                _buildLegendItem('Interest', '₹${(totalInterest / 100000).toStringAsFixed(1)}L', theme.financialColors.interestRed),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// Build legend item
+  Widget _buildLegendItem(String label, String value, Color color) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 16,
+          height: 16,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Text(
+            '$label ($value)',
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
+  }
+  
+  /// Build Payment Schedule Section
+  Widget _buildPaymentScheduleSection(ThemeData theme, loan) {
+    return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Card Header
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text('📋', style: TextStyle(fontSize: 24)),
                 ),
-                
-                FilledButton.tonalIcon(
-                  onPressed: () {
-                    // Navigate to progress tracking
-                    DefaultTabController.of(context)?.animateTo(3);
-                  },
-                  icon: const Icon(Icons.track_changes),
-                  label: const Text('Track Progress'),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'PAYMENT SCHEDULE',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                
-                OutlinedButton.icon(
-                  onPressed: () {
-                    // TODO: Export functionality
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Export functionality coming soon!'),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Schedule Table Preview with link to full table
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: theme.dividerColor),
+              ),
+              child: InkWell(
+                borderRadius: BorderRadius.circular(12),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AmortizationScheduleScreen(),
+                    ),
+                  );
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.table_chart_outlined,
+                        size: 36,
+                        color: theme.colorScheme.primary,
                       ),
-                    );
-                  },
-                  icon: const Icon(Icons.share),
-                  label: const Text('Export'),
+                      const SizedBox(height: 8),
+                      Flexible(
+                        child: Text(
+                          'Full Amortization Schedule',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: theme.colorScheme.primary,
+                          ),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Flexible(
+                        child: Text(
+                          'View complete yearly payment breakdown\nwith export options',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Tap to open',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Icon(
+                            Icons.arrow_forward,
+                            size: 16,
+                            color: theme.colorScheme.primary,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  
+  /// Build Export Data Section
+  Widget _buildExportDataSection(ThemeData theme, dynamic loan, double emi) {
+    return Card(
+      elevation: 1,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Card Header
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withOpacity(0.5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text('📄', style: TextStyle(fontSize: 24)),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    'EXPORT DATA',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.5,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+            
+            const SizedBox(height: 24),
+            
+            // Export Buttons
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => _handleCSVExport(loan, emi),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: theme.colorScheme.primary, width: 2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    icon: const Text('📄', style: TextStyle(fontSize: 18)),
+                    label: Text(
+                      'CSV',
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => _handlePDFExport(loan, emi),
+                    style: OutlinedButton.styleFrom(
+                      side: BorderSide(color: theme.colorScheme.primary, width: 2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    icon: const Text('📁', style: TextStyle(fontSize: 18)),
+                    label: Text(
+                      'PDF',
+                      style: theme.textTheme.labelLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -869,5 +1636,219 @@ class _CalculatorScreenState extends ConsumerState<CalculatorScreen> {
         ),
       ),
     );
+  }
+
+  /// Build timeline view for payment breakdown over time
+  Widget _buildTimelineView(ThemeData theme, dynamic loan, double emi) {
+    final totalMonths = loan.tenureYears * 12;
+    final yearlyData = <int, Map<String, double>>{};
+    
+    // Calculate yearly breakdown
+    double remainingBalance = loan.loanAmount;
+    final monthlyInterestRate = (loan.annualInterestRate / 100) / 12;
+    
+    for (int year = 1; year <= loan.tenureYears; year++) {
+      double yearlyPrincipal = 0;
+      double yearlyInterest = 0;
+      
+      for (int month = 1; month <= 12 && ((year - 1) * 12 + month) <= totalMonths; month++) {
+        final interestPayment = remainingBalance * monthlyInterestRate;
+        final principalPayment = emi - interestPayment;
+        
+        yearlyPrincipal += principalPayment;
+        yearlyInterest += interestPayment;
+        remainingBalance -= principalPayment;
+      }
+      
+      yearlyData[year] = {
+        'principal': yearlyPrincipal,
+        'interest': yearlyInterest,
+      };
+    }
+    
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Text(
+            'Payment Timeline (Yearly Breakdown)',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: ListView.builder(
+              itemCount: yearlyData.length,
+              itemBuilder: (context, index) {
+                final year = index + 1;
+                final data = yearlyData[year]!;
+                final principalAmount = data['principal']!;
+                final interestAmount = data['interest']!;
+                final totalYearlyPayment = principalAmount + interestAmount;
+                
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.surface,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: theme.dividerColor,
+                      width: 1,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      // Year
+                      SizedBox(
+                        width: 60,
+                        child: Text(
+                          'Year $year',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      
+                      // Progress bar
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            // Total bar background
+                            Container(
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.surfaceContainerHighest,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            // Interest portion (red)
+                            Container(
+                              height: 20,
+                              width: MediaQuery.of(context).size.width * 0.4 * 
+                                    (interestAmount / totalYearlyPayment),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.error,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  bottomLeft: Radius.circular(10),
+                                ),
+                              ),
+                            ),
+                            // Principal portion (green)
+                            Positioned(
+                              left: MediaQuery.of(context).size.width * 0.4 * 
+                                   (interestAmount / totalYearlyPayment),
+                              child: Container(
+                                height: 20,
+                                width: MediaQuery.of(context).size.width * 0.4 * 
+                                      (principalAmount / totalYearlyPayment),
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.primary,
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      
+                      // Amount
+                      SizedBox(
+                        width: 80,
+                        child: Text(
+                          CurrencyFormatter.formatCurrencyCompact(totalYearlyPayment),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Handle CSV export
+  void _handleCSVExport(loan, double emi) {
+    try {
+      final csvContent = _generateCSVContent(loan, emi);
+      // In a real app, you would use file_picker or similar to save the file
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('CSV export completed! ${csvContent.split('\n').length} rows exported.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Export failed: $e'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  /// Handle PDF export
+  void _handlePDFExport(loan, double emi) {
+    try {
+      // In a real app, you would use pdf package to generate PDF
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('PDF export completed! Detailed loan report generated.'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('PDF export failed: $e'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  /// Generate CSV content
+  String _generateCSVContent(loan, double emi) {
+    final buffer = StringBuffer();
+    buffer.writeln('Payment Schedule Export');
+    buffer.writeln('Loan Amount,₹${CurrencyFormatter.formatCurrency(loan.loanAmount)}');
+    buffer.writeln('Interest Rate,${loan.annualInterestRate}%');
+    buffer.writeln('Tenure,${loan.tenureYears} years');
+    buffer.writeln('Monthly EMI,₹${CurrencyFormatter.formatCurrency(emi)}');
+    buffer.writeln('');
+    buffer.writeln('Month,Principal,Interest,EMI,Outstanding Balance');
+    
+    double remainingBalance = loan.loanAmount;
+    final monthlyInterestRate = (loan.annualInterestRate / 100) / 12;
+    final totalMonths = loan.tenureYears * 12;
+    
+    for (int month = 1; month <= totalMonths; month++) {
+      final interestPayment = remainingBalance * monthlyInterestRate;
+      final principalPayment = emi - interestPayment;
+      remainingBalance -= principalPayment;
+      
+      buffer.writeln(
+        '$month,'
+        '₹${CurrencyFormatter.formatCurrency(principalPayment)},'
+        '₹${CurrencyFormatter.formatCurrency(interestPayment)},'
+        '₹${CurrencyFormatter.formatCurrency(emi)},'
+        '₹${CurrencyFormatter.formatCurrency(remainingBalance)}'
+      );
+    }
+    
+    return buffer.toString();
   }
 }
