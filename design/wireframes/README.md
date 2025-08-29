@@ -1,75 +1,86 @@
-# Home Loan Strategies - Content Presentation Design
-
-> Mobile-first content structure and presentation guidelines for 7 home loan optimization strategies
-
-**Purpose**: Define how home loan strategies should be presented to users for optimal comprehension and decision-making
-**Target Audience**: Mobile app users seeking home loan optimization advice
-**Last Updated**: 2025-08-29
-**Version**: 1.0
+# Home Loan Advisor - Wireframe Documentation
 
 ## Project Overview
 
-This design focuses on creating an intuitive content presentation system for displaying complex financial strategies in a mobile environment. The primary challenge is presenting detailed financial information that helps users make informed decisions without overwhelming them.
+**App Name:** Home Loan Advisor  
+**Tagline:** "Calculate accurately, save smartly"  
+**Platform:** Flutter Mobile App (iOS/Android)  
+**Target Audience:** Indian home loan borrowers  
 
-## Key Design Principles
+## Design Philosophy
 
-### 1. Progressive Disclosure
-- Start with high-impact summary information
-- Layer details based on user interest and expertise level
-- Provide quick wins first, complex strategies second
+### Core Principles
+- **Simplicity First**: Only 2 main screens to avoid overwhelm
+- **Mobile-First**: Thumb-friendly interactions, scannable content
+- **Trust & Transparency**: Clear calculations, no hidden features
+- **Actionable Insights**: Focus on specific savings strategies with ₹ amounts
 
-### 2. Mobile-First Content Strategy
-- Scannable content chunks (5-7 words per line)
-- Thumb-friendly interaction zones
-- Vertical scrolling with clear section breaks
+### App Scope
+- **Pure Calculator + Strategies**: No login, no tracking, no complexity
+- **Offline-Capable**: All calculations work without internet
+- **Indian Context**: Tax benefits, local strategies, ₹ currency
 
-### 3. Trust Through Transparency
-- Show calculations behind savings claims
-- Present risks alongside benefits
-- Provide clear implementation difficulty indicators
+## Navigation Structure
 
-### 4. Visual Hierarchy for Financial Data
-- Hero numbers for immediate impact recognition
-- Before/after comparisons for context
-- Timeline visualizations for long-term benefits
+```
+Home Loan Advisor App
+├── Calculator Tab (Default)
+│   ├── Basic EMI Calculator
+│   ├── Advanced Options Panel
+│   └── Results Visualization
+└── Strategies Tab
+    ├── Strategy Overview Grid (7 strategies)
+    ├── Strategy Detail Screens (7 screens)
+    └── Combination Calculator
+```
 
-## Content Architecture
+## Screen Breakdown
 
-### Strategy Categories
-1. **Quick Wins** (0-30 days implementation)
-   - Extra payments
-   - Offset accounts
-   - Rate reviews
+### Primary Screens (2)
+1. **Calculator Screen** - EMI calculation with visualizations
+2. **Strategies Screen** - 7 money-saving strategies overview
 
-2. **Medium-term Optimizations** (1-6 months)
-   - Refinancing
-   - Loan restructuring
-   - Investment properties
+### Secondary Screens (7)
+- Strategy Detail Screens (one for each strategy)
 
-3. **Advanced Strategies** (6+ months)
-   - Debt recycling
-   - Split loans
-   - Tax optimization
+## User Flow Summary
 
-### Information Layers
-- **Level 1**: Hero savings + one-sentence description
-- **Level 2**: Key benefits, risks, and implementation time
-- **Level 3**: Detailed calculations, examples, and step-by-step guides
-- **Level 4**: Expert considerations and edge cases
+1. **Entry Point**: Calculator screen (most common use case)
+2. **Quick Calculation**: Input loan details → Get EMI + tax benefits
+3. **Explore Savings**: Switch to Strategies tab → Browse 7 strategies
+4. **Deep Dive**: Tap strategy → See detailed implementation + savings
+5. **Share Results**: Export/share calculations or strategy insights
 
-## User Personas Considered
+## Key Features per Screen
 
-### Primary: Sarah (35, First Home Owner)
-- Needs simple, actionable advice
-- Values immediate savings potential
-- Requires step-by-step guidance
+### Calculator Screen
+- Real-time EMI calculation
+- Tax benefit calculator (80C, 24B)
+- Prepayment scenarios
+- Interactive charts/graphs
+- Shareable results
 
-### Secondary: David (45, Investment Property Owner)  
-- Wants detailed analysis and calculations
-- Comfortable with complex strategies
-- Needs tax implications clearly explained
+### Strategies Screen
+- 7 strategy cards with savings amounts
+- Quick filtering/sorting
+- Combination calculator
+- Implementation difficulty indicators
 
-### Tertiary: Emma (28, Recent Graduate)
-- Budget-conscious, risk-averse
-- Prefers visual explanations
-- Needs educational content alongside recommendations
+### Strategy Detail Screens
+- Hero savings number
+- Before/after comparison
+- Step-by-step implementation
+- Risk factors
+- Share functionality
+
+## Success Metrics
+- **Usability**: Can complete EMI calculation in < 30 seconds
+- **Discoverability**: Users find at least 2 relevant strategies
+- **Actionability**: Clear next steps for each strategy
+- **Trust**: Transparent calculations with explanations
+
+## Technical Considerations
+- **Performance**: Instant calculations, smooth animations
+- **Offline**: Core functionality works without internet
+- **Accessibility**: Screen reader support, sufficient contrast
+- **Localization**: Support for Indian number formats (₹1,23,45,678)

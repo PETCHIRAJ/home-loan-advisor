@@ -1,267 +1,343 @@
-# User Flows & Progressive Disclosure - Navigation Wireframes
+# User Flows & Navigation Patterns
 
-## Overview
-This document outlines how users navigate through home loan strategy content, with emphasis on progressive disclosure patterns that prevent information overwhelm while supporting informed decision-making.
+## Primary User Flows
 
-## Primary User Journey: Strategy Discovery to Implementation
-
+### Flow 1: Quick EMI Calculation (80% of users)
 ```
-Entry Point → Overview → Detail → Action
-    ↓           ↓         ↓        ↓
-[Dashboard] → [7 Strategies] → [Deep Dive] → [Implementation]
-    ↑                ↓              ↓           ↓
-[Profile]    [Quick Filter]   [Comparison] → [Plan Creation]
-    ↑                ↓              ↓           ↓
-[Setup]      [Category View] → [Combination] → [Tracking]
-```
-
-## Flow 1: Quick Discovery (Power Users)
-**Duration**: 30 seconds - 2 minutes
-**Goal**: Find and start implementing a simple strategy
-
-```
-┌─ DASHBOARD ─┐    ┌─ STRATEGY LIST ─┐    ┌─ QUICK ACTION ─┐
-│ Loan Status  │ →  │ QUICK WINS      │ →  │ Implementation  │
-│ $X savings   │    │ 💰 Extra Pays   │    │ Steps 1-3       │
-│ available    │    │ Save $18,400    │    │ [Start Now]     │
-│              │    │ ▶ Easy•No Risk  │    │                │
-│ [See Options]│    │ [Select]        │    │ [Add to Plan]   │
-└──────────────┘    └─────────────────┘    └─────────────────┘
-     2-3 sec              10-15 sec              15-30 sec
+App Launch → Calculator Screen → Input Loan Details → View Results → (Optional) Share
+    ↓
+Entry Point: Calculator tab (default)
+    ↓
+Input Journey:
+┌─ Loan Amount ₹50,00,000
+├─ Interest Rate 8.5%
+├─ Tenure 20 years
+└─ [Advanced Options] → Processing fees, prepayments
+    ↓
+Results Display:
+┌─ EMI: ₹41,822/month (prominent)
+├─ Total Amount: ₹1,00,37,280
+├─ Tax Benefits: ₹2,00,000/year
+└─ [View Breakdown] → Charts & amortization
+    ↓
+Exit Points:
+├─ Share results (PDF/image)
+├─ Explore strategies (switch tab)
+└─ Recalculate (modify inputs)
 ```
 
-**Content Strategy**:
-- Hero savings number immediately visible
-- One-click access to simple strategies
-- Minimal information to get started
-- "Learn more" option available but not required
+**Success Criteria**: User gets accurate EMI in <30 seconds
 
-## Flow 2: Thorough Research (Cautious Users)
-**Duration**: 5-15 minutes
-**Goal**: Understand multiple options before committing
-
+### Flow 2: Strategy Discovery & Implementation (15% of users)
 ```
-┌─ STRATEGY LIST ─┐   ┌─ DETAILED VIEW ─┐   ┌─ COMPARISON ─┐   ┌─ DECISION ─┐
-│ All 7 Options   │→  │ Extra Repayments │→  │ Extra vs Refi│→  │ Selected:   │
-│ Sorted by Impact│   │ How It Works     │   │ Risk Compare │   │ Extra Pays  │
-│ Filter: Easy    │   │ Implementation   │   │ Effort Level │   │ + Offset    │
-│ [Learn More]    │   │ Considerations   │   │ [Select Both]│   │ $24K savings│
-└─────────────────┘   └──────────────────┘   └──────────────┘   └─────────────┘
-     1-2 min               3-5 min              2-3 min           30 sec
-```
-
-**Content Strategy**:
-- Full information available on demand
-- Easy comparison between options
-- Risk/benefit analysis prominent
-- Multiple exit points to action
-
-## Flow 3: Expert Analysis (Investment Property Owners)
-**Duration**: 10-30 minutes
-**Goal**: Optimize complex financial situation with multiple strategies
-
-```
-┌─ ADVANCED VIEW ─┐   ┌─ CALCULATOR ─┐   ┌─ TAX ANALYSIS ─┐   ┌─ EXPERT PLAN ─┐
-│ Split Loans     │→  │ Debt Recycle │→  │ Tax Benefits  │→  │ 4-Strategy    │
-│ Debt Recycling  │   │ Custom Rates │   │ Deductions    │   │ Combination   │
-│ Tax Implications│   │ Scenarios    │   │ Timing        │   │ Professional  │
-│ [Deep Analysis] │   │ [Calculate]  │   │ [Optimize]    │   │ Review Rec.   │
-└─────────────────┘   └──────────────┘   └───────────────┘   └───────────────┘
-     3-5 min              5-10 min           3-5 min            2-5 min
+Calculator Results → "Interested in Saving?" CTA → Strategies Tab → Strategy Cards → Detail View → Implementation
+    ↓
+Entry Path A: From Calculator
+"Based on your loan, you could save ₹3,50,000 with balance transfer"
+    ↓
+Entry Path B: Direct Navigation  
+Strategies Tab → Browse all 7 strategies
+    ↓
+Discovery Pattern:
+┌─ Scan strategy cards (savings amounts prominent)
+├─ Filter by impact/time (optional)
+├─ Read quick descriptions
+└─ Tap most relevant strategy
+    ↓
+Detail Exploration:
+┌─ Hero savings number validation
+├─ Before/after comparison
+├─ Step-by-step implementation
+├─ Risk assessment
+└─ Break-even analysis
+    ↓
+Action Decision:
+├─ Save strategy for later (bookmark)
+├─ Calculate for my loan (back to calculator)
+├─ Share with family/advisor
+└─ Start implementation (external)
 ```
 
-**Content Strategy**:
-- Advanced calculations and scenarios
-- Tax implications clearly explained
-- Professional advice integration
-- Complex strategy sequencing
+**Success Criteria**: User finds 1-2 applicable strategies, understands implementation
 
-## Progressive Disclosure Patterns
-
-### Pattern 1: Expandable Cards
-**Use Case**: Strategy overview to detail transition
-**Interaction**: Tap card to expand in-place
-
+### Flow 3: Strategy Combination Planning (5% of users)
 ```
-┌─ COLLAPSED STATE ─┐     ┌─ EXPANDED STATE ─┐
-│ 💰 Extra Repayments│ →   │ 💰 Extra Repayments      │
-│ Save $18,400       │     │ Save $18,400             │
-│ Easy•No Risk       │     │ ⚡ QUICK SUMMARY          │
-│ [Expand ▼]         │     │ • Add $200/month         │
-└────────────────────┘     │ • Start immediately      │
-                           │ • No paperwork needed    │
-                           │ Easy•No Risk•High Impact │
-                           │                          │
-                           │ 📊 YOUR NUMBERS          │
-                           │ Current: $2,500/month    │
-                           │ New: $2,700/month        │
-                           │ Extra: $200/month        │
-                           │                          │
-                           │ [Full Details] [Start]   │
-                           │ [Collapse ▲]             │
-                           └──────────────────────────┘
+Strategies Tab → Combination Calculator → Select Multiple → View Combined Impact → Implementation Plan
+    ↓
+Advanced User Path:
+┌─ Open combination calculator
+├─ Select 2-3 applicable strategies
+├─ See combined savings potential
+├─ Understand interaction effects
+└─ Get prioritized implementation order
+    ↓
+Planning Output:
+┌─ Total combined savings: ₹9,75,000
+├─ Implementation timeline: 2-6 months
+├─ Priority order: Balance transfer → Tax optimization → Extra payments
+└─ Risk assessment for combination
 ```
 
-### Pattern 2: Drill-Down Navigation
-**Use Case**: Moving from overview to specific details
-**Interaction**: Navigate to dedicated detail screen
+**Success Criteria**: User gets realistic combined savings estimate and actionable plan
 
-```
-LEVEL 1: Overview    LEVEL 2: Summary     LEVEL 3: Details     LEVEL 4: Implementation
-┌─────────────┐     ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│ 7 Strategies│ →   │ Extra Pays  │  →   │ How it Works│  →   │ Step 1 of 3 │
-│ $47K Total  │     │ $18K Savings│      │ Calculations│      │ Call Lender │
-│ [See All]   │     │ 4-Level Info│      │ Examples    │      │ Script Help │
-└─────────────┘     └─────────────┘      └─────────────┘      └─────────────┘
-```
+## Navigation Patterns
 
-### Pattern 3: Layered Tabs
-**Use Case**: Different information types for same strategy
-**Interaction**: Horizontal swipe or tab selection
-
+### Tab Navigation (Bottom)
 ```
-┌─ EXTRA REPAYMENTS ────────────────────────────────┐
-│ [Summary] [Numbers] [Steps] [Considerations]      │
-├───────────────────────────────────────────────────┤
-│                                                   │
-│ Content changes based on selected tab             │
-│ • Summary: Quick overview and benefits            │
-│ • Numbers: Calculations and comparisons           │
-│ • Steps: Implementation guidance                  │
-│ • Considerations: Risks, alternatives, fit        │
-│                                                   │
-└───────────────────────────────────────────────────┘
+┌─────────────────────────────────────┐
+│ [🧮] Calculator     [📋] Strategies │
+│    (Default/Home)    (Discovery)    │
+└─────────────────────────────────────┘
 ```
 
-### Pattern 4: Contextual Help
-**Use Case**: Additional information without leaving main flow
-**Interaction**: Tap info icons or help buttons
+**Navigation Rules**:
+- **Calculator tab**: Always default on app launch
+- **Strategies tab**: Badge with number when new strategies match user's loan
+- **Tab persistence**: Remember last viewed strategy
+- **Deep linking**: Direct links to specific strategies
 
+### Hierarchical Navigation
 ```
-┌─ MAIN CONTENT ────────────────────────────────────┐
-│ Refinancing Strategy                              │
-│ Lower your rate by 0.25% [ℹ️]                     │
-│                                                   │
-│ When tapped: ┌─ TOOLTIP ──────────┐              │
-│              │ Rate reduction      │              │
-│              │ depends on:         │              │
-│              │ • Credit score      │              │
-│              │ • Loan-to-value     │              │
-│              │ • Market conditions │              │
-│              │ [Got it]            │              │
-│              └─────────────────────┘              │
-└───────────────────────────────────────────────────┘
-```
-
-## Information Architecture by User Type
-
-### First-Time Homeowners (Beginner)
-**Entry Point**: Guided tutorial
-**Path**: Overview → Simple strategies → Single selection → Implementation
-**Content Focus**: Education, risk mitigation, simple language
-
-```
-Tutorial → Quick Wins → Extra Repayments → Start Implementation
-    ↓          ↓             ↓                    ↓
-Education   Simple       Step-by-step       Success tracking
+App Level:
+├─ Calculator Screen (Tab 1)
+│   ├─ Basic Calculator View
+│   ├─ Advanced Options (slide up)
+│   ├─ Results Breakdown (slide up)
+│   └─ Share Sheet (modal)
+│
+└─ Strategies Screen (Tab 2)
+    ├─ Strategy Grid View
+    ├─ Filter/Sort Options (slide down)
+    ├─ Combination Calculator (modal)
+    └─ Strategy Detail Screens (push)
+        ├─ Implementation Guide
+        ├─ Risk Assessment
+        ├─ Related Strategies
+        └─ Share Options
 ```
 
-### Experienced Homeowners (Intermediate)  
-**Entry Point**: Strategy comparison
-**Path**: All strategies → Comparison → Combination → Implementation plan
-**Content Focus**: Efficiency, comparison, multiple options
+### Cross-Screen Flow Patterns
 
+#### Calculator → Strategies Integration
 ```
-All Strategies → Side-by-side → Combination → Implementation Plan
-      ↓              ↓            ↓              ↓
-  Filter/sort    Trade-offs    Synergies     Prioritization
-```
-
-### Investment Property Owners (Advanced)
-**Entry Point**: Advanced calculator
-**Path**: Complex strategies → Tax analysis → Professional integration → Execution
-**Content Focus**: Optimization, tax implications, professional support
-
-```
-Advanced Strategies → Tax Calculator → Professional Review → Execution
-         ↓                 ↓               ↓                ↓
-    Debt recycling    Deductions      Expert validation   Complex setup
+Calculator Screen:
+    ↓
+Results Section:
+┌─────────────────────────────────────┐
+│ 💡 Want to save more?               │
+│ Based on your loan details:         │
+│                                     │
+│ 🔄 Balance Transfer: Save ₹3.5L     │
+│ 💰 Extra Payments: Save ₹4.2L       │
+│                                     │
+│ [ View All Strategies ]             │ → Navigate to Strategies tab
+└─────────────────────────────────────┘
 ```
 
-## Error States & Edge Cases
-
-### Insufficient Information
-**Scenario**: User hasn't provided complete loan details
-**Solution**: Progressive form with smart defaults
-
+#### Strategies → Calculator Integration  
 ```
-┌─ INCOMPLETE DATA ─┐
-│ We need more info │
-│ to show accurate  │
-│ savings numbers   │
-│                   │
-│ [Complete Profile]│
-│ [See Estimates]   │
-└───────────────────┘
+Strategy Detail Screen:
+    ↓
+Action Buttons:
+┌─────────────────────────────────────┐
+│ [ 🧮 Calculate for My Loan ]        │ → Jump to Calculator with pre-filled values
+│ [ 📤 Share This Strategy ]          │ → Share modal
+│ [ ⭐ Save to Favorites ]            │ → Local storage
+└─────────────────────────────────────┘
 ```
 
-### No Suitable Strategies
-**Scenario**: User's situation doesn't benefit from available strategies
-**Solution**: Educational content and alternative resources
+## Information Architecture
 
+### Content Hierarchy
 ```
-┌─ NO RECOMMENDATIONS ─┐
-│ Your current loan is  │
-│ already optimized     │
-│                       │
-│ • Rate: Excellent     │
-│ • Term: Appropriate   │
-│ • Structure: Optimal  │
-│                       │
-│ [Monitor Changes]     │
-│ [Explore Investments] │
-└───────────────────────┘
-```
-
-### Implementation Blockers
-**Scenario**: User can't complete recommended steps
-**Solution**: Alternative paths and professional referral
-
-```
-┌─ IMPLEMENTATION HELP ─┐
-│ Having trouble with    │
-│ refinancing approval?  │
-│                        │
-│ Try these alternatives:│
-│ • Negotiate current    │
-│ • Wait 6 months        │
-│ • Get professional help│
-│                        │
-│ [Alternative Strategies]│
-│ [Connect with Expert]   │
-└────────────────────────┘
+App Level (Tabs)
+├─ Calculator (Primary function)
+│   ├─ Basic Inputs (Always visible)
+│   │   ├─ Loan Amount
+│   │   ├─ Interest Rate  
+│   │   └─ Tenure
+│   ├─ Advanced Inputs (Collapsible)
+│   │   ├─ Processing Fees
+│   │   ├─ Prepayment Amount
+│   │   └─ Tax Bracket
+│   └─ Results (Dynamic)
+│       ├─ EMI (Hero number)
+│       ├─ Totals (Amount, Interest, Tax benefits)
+│       └─ Visualizations (Charts, breakdown)
+│
+└─ Strategies (Secondary function)
+    ├─ Overview (Grid of 7)
+    │   ├─ High Impact (₹2L+)
+    │   ├─ Medium Impact (₹75K-2L)
+    │   └─ Low Impact (<₹75K)
+    ├─ Filters/Sort (Optional)
+    │   ├─ By Savings Amount
+    │   ├─ By Implementation Time
+    │   └─ By Difficulty
+    └─ Details (Per strategy)
+        ├─ Savings Calculation
+        ├─ Implementation Guide
+        ├─ Risk Assessment
+        └─ Success Tips
 ```
 
-## Navigation Best Practices
+### Mental Models & User Expectations
 
-### Breadcrumb Strategy
-- Always show current location in information hierarchy
-- Provide quick back/up navigation
-- Maintain context when drilling down
+#### Calculator Mental Model
+Users expect:
+1. **Immediate Results**: EMI calculation as they type
+2. **Familiar Inputs**: Standard loan terms (amount, rate, tenure)
+3. **Indian Context**: ₹ currency, tax benefits, realistic rates
+4. **Comparison Ability**: Different scenarios, what-if analysis
+5. **Export/Share**: Results they can save or share
 
-### State Preservation
-- Remember user selections across sessions
-- Maintain scroll position when returning
-- Preserve comparison selections
+#### Strategies Mental Model
+Users expect:
+1. **Browsable Catalog**: Like shopping for savings opportunities
+2. **Clear ROI**: Specific rupee amounts, not percentages
+3. **Implementation Difficulty**: How hard/time-consuming
+4. **Applicable Criteria**: When strategy works for their situation
+5. **Step-by-step Guidance**: Not just concepts, but actions
 
-### Exit Points
-- Clear exit to action at every level
-- "Save for later" options throughout
-- Easy return to overview from any screen
+## State Management & Data Flow
 
-### Performance Considerations
-- Lazy load detailed calculations
-- Cache frequently accessed content
-- Progressive image loading for charts/graphs
+### User Session Data
+```
+Session State:
+├─ Calculator Inputs
+│   ├─ loanAmount: number
+│   ├─ interestRate: number
+│   ├─ tenure: {years, months}
+│   ├─ processingFee: number
+│   └─ prepaymentAmount: number
+├─ Calculation Results
+│   ├─ monthlyEMI: number
+│   ├─ totalAmount: number
+│   ├─ totalInterest: number
+│   └─ taxBenefits: number
+├─ Strategy Preferences
+│   ├─ viewedStrategies: string[]
+│   ├─ favoriteStrategies: string[]
+│   └─ appliedFilters: object
+└─ App Preferences
+    ├─ defaultTab: string
+    ├─ shareFormat: string
+    └─ notificationSettings: object
+```
 
-This navigation structure ensures users can find information at their preferred level of detail while maintaining clear paths to action, regardless of their experience level or decision-making style.
+### Data Persistence
+- **Local Storage**: User inputs, preferences, favorites
+- **Session Storage**: Current calculation results, filter states
+- **No Cloud Sync**: Pure offline app, no accounts
+
+### Cross-Component Communication
+```
+Calculator Updates → Strategy Recommendations
+    ↓
+User Loan Profile:
+┌─ Amount: ₹50L
+├─ Rate: 8.5%
+├─ Tenure: 20 years
+└─ Remaining: 18 years
+    ↓
+Applicable Strategies:
+├─ Balance Transfer (rate >8%, tenure >15 years) ✅
+├─ Extra Principal (stable income, long tenure) ✅
+├─ Tax Optimization (high tax bracket) ✅
+├─ Bi-weekly Payments (flexible budget) ❓
+├─ Rate Review (good credit score) ❓
+├─ Restructuring (income changed) ❌
+└─ Offset Account (high savings balance) ❌
+```
+
+## Error Handling & Edge Cases
+
+### Input Validation Flow
+```
+User Input → Real-time Validation → Error Display → Correction Guidance
+    ↓
+Validation Rules:
+├─ Loan Amount: ₹1L - ₹5Cr
+├─ Interest Rate: 3% - 20%
+├─ Tenure: 1 - 30 years
+└─ Processing Fee: ₹0 - ₹2L
+    ↓
+Error States:
+├─ Empty Fields: Placeholder guidance
+├─ Out of Range: Specific limits shown
+├─ Invalid Format: Input mask correction
+└─ Calculation Error: Fallback to defaults
+```
+
+### Strategy Applicability Flow
+```
+User Profile → Strategy Filtering → Applicability Check → Recommendation
+    ↓
+Profile Analysis:
+├─ Loan Age: 2 years (from start date)
+├─ Remaining Balance: ₹45L
+├─ Credit Score: Unknown (user input optional)
+└─ Income Stability: Unknown
+    ↓
+Smart Recommendations:
+├─ Show All Strategies (default)
+├─ Highlight Most Applicable (green)
+├─ Mark Questionable (yellow)
+└─ Hide Inappropriate (criteria not met)
+```
+
+## Performance & Loading States
+
+### Progressive Loading Pattern
+```
+App Launch (0ms):
+├─ Show splash screen
+├─ Load calculator interface
+└─ Initialize default values
+
+Calculator Ready (200ms):
+├─ Enable input fields
+├─ Show placeholder guidance
+└─ Prepare calculation engine
+
+Strategies Loading (500ms):
+├─ Show strategy cards skeleton
+├─ Load strategy metadata
+└─ Prepare filtering/sorting
+
+Full App Ready (800ms):
+├─ All interactions enabled
+├─ Smooth animations active
+└─ Background data loaded
+```
+
+### Offline Behavior
+- **Core Functions**: Calculator works fully offline
+- **Strategy Content**: Pre-loaded, cached locally
+- **Share Features**: Generate sharable images/PDFs locally
+- **Updates**: Graceful degradation when network unavailable
+
+## Accessibility & Inclusive Design
+
+### Screen Reader Navigation Flow
+```
+Tab Navigation Order:
+1. App title and search (if visible)
+2. Primary action buttons
+3. Input fields (in logical order)
+4. Results section (with live region updates)
+5. Secondary actions (share, advanced options)
+6. Bottom navigation tabs
+```
+
+### Voice Control Patterns
+- **Calculator**: "Set loan amount to fifty lakhs"
+- **Navigation**: "Go to strategies", "Show balance transfer"
+- **Actions**: "Calculate EMI", "Share results"
+
+### Motor Accessibility
+- **Large Touch Targets**: 44px minimum
+- **Gesture Alternatives**: All swipe actions have button alternatives
+- **Voice Input**: Support for speech-to-text in input fields
+
+This comprehensive flow documentation ensures the app provides intuitive navigation patterns while maintaining focus on the core calculator and strategies functionality.
