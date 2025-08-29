@@ -1,214 +1,267 @@
-# User Flow Diagrams
+# User Flows & Progressive Disclosure - Navigation Wireframes
 
-## Primary User Journey
+## Overview
+This document outlines how users navigate through home loan strategy content, with emphasis on progressive disclosure patterns that prevent information overwhelm while supporting informed decision-making.
 
-```
-START → Dashboard → Calculator → Strategies → Progress → REPEAT
-  ↑         ↓          ↓          ↓          ↓
-  ←─────────────────────────────────────────────
-```
-
-### Journey Details
-
-**Dashboard (Entry Point)**
-- User opens app
-- Sees Daily Interest Burn Counter (₹847 lost today)
-- Emotional impact → motivated to act
-- **Next**: Taps "Calculate Savings" → Calculator
-
-**Calculator (Reality Check)**  
-- User inputs loan details (3 fields)
-- Sees shocking total interest (₹50+ lakhs)
-- Realizes loan cost doubles the principal
-- **Next**: Taps strategy OR "View All Strategies" → Strategies
-
-**Strategies (Solution Discovery)**
-- User explores 20 money-saving features
-- Finds applicable strategies (bi-weekly, round-up)
-- Learns about potential savings
-- **Next**: Activates strategy → Progress tracking
-
-**Progress (Motivation Loop)**
-- User tracks activated strategies
-- Sees actual savings accumulation
-- Unlocks achievements and badges
-- **Next**: Returns to Dashboard → Cycle continues
-
-## Secondary User Flows
-
-### Quick Action Flows
+## Primary User Journey: Strategy Discovery to Implementation
 
 ```
-Dashboard → Quick Actions → Direct Feature Access
-    ↓              ↓              ↓
-View Strategies → Strategy Hub → Savings Optimization
-EMI Calculator → Advanced Calc → Scenario Analysis  
-Track Progress → Progress Screen → Achievement View
+Entry Point → Overview → Detail → Action
+    ↓           ↓         ↓        ↓
+[Dashboard] → [7 Strategies] → [Deep Dive] → [Implementation]
+    ↑                ↓              ↓           ↓
+[Profile]    [Quick Filter]   [Comparison] → [Plan Creation]
+    ↑                ↓              ↓           ↓
+[Setup]      [Category View] → [Combination] → [Tracking]
 ```
 
-### Discovery Flows
+## Flow 1: Quick Discovery (Power Users)
+**Duration**: 30 seconds - 2 minutes
+**Goal**: Find and start implementing a simple strategy
 
 ```
-Strategies → Category Browse → Feature Deep Dive
-    ↓              ↓              ↓
-Core Calculators → Bi-Weekly → Implementation Guide
-Eye-Openers → 78% Rule → Educational Content
-Life Planning → Marriage → Dual Income Optimization
+┌─ DASHBOARD ─┐    ┌─ STRATEGY LIST ─┐    ┌─ QUICK ACTION ─┐
+│ Loan Status  │ →  │ QUICK WINS      │ →  │ Implementation  │
+│ $X savings   │    │ 💰 Extra Pays   │    │ Steps 1-3       │
+│ available    │    │ Save $18,400    │    │ [Start Now]     │
+│              │    │ ▶ Easy•No Risk  │    │                │
+│ [See Options]│    │ [Select]        │    │ [Add to Plan]   │
+└──────────────┘    └─────────────────┘    └─────────────────┘
+     2-3 sec              10-15 sec              15-30 sec
 ```
 
-## Task-Based Flows
+**Content Strategy**:
+- Hero savings number immediately visible
+- One-click access to simple strategies
+- Minimal information to get started
+- "Learn more" option available but not required
 
-### First Time User Flow
-
-```
-App Launch → Onboarding → Loan Input → Shock Value → Strategy Selection → Setup Complete
-     ↓            ↓           ↓          ↓              ↓                ↓
-Welcome → 3-Screen Tour → Calculator → Reality Check → Choose 2-3 → Progress Tracking
-```
-
-### Returning User Flow
+## Flow 2: Thorough Research (Cautious Users)
+**Duration**: 5-15 minutes
+**Goal**: Understand multiple options before committing
 
 ```
-App Launch → Dashboard → Quick Update → Action
-     ↓           ↓          ↓            ↓
-Daily Check → Burn Counter → See Progress → Adjust Strategy
+┌─ STRATEGY LIST ─┐   ┌─ DETAILED VIEW ─┐   ┌─ COMPARISON ─┐   ┌─ DECISION ─┐
+│ All 7 Options   │→  │ Extra Repayments │→  │ Extra vs Refi│→  │ Selected:   │
+│ Sorted by Impact│   │ How It Works     │   │ Risk Compare │   │ Extra Pays  │
+│ Filter: Easy    │   │ Implementation   │   │ Effort Level │   │ + Offset    │
+│ [Learn More]    │   │ Considerations   │   │ [Select Both]│   │ $24K savings│
+└─────────────────┘   └──────────────────┘   └──────────────┘   └─────────────┘
+     1-2 min               3-5 min              2-3 min           30 sec
 ```
 
-### Feature Discovery Flow
+**Content Strategy**:
+- Full information available on demand
+- Easy comparison between options
+- Risk/benefit analysis prominent
+- Multiple exit points to action
+
+## Flow 3: Expert Analysis (Investment Property Owners)
+**Duration**: 10-30 minutes
+**Goal**: Optimize complex financial situation with multiple strategies
 
 ```
-Curiosity → Strategies Hub → Category Filter → Feature Detail → Implementation
-    ↓           ↓              ↓               ↓              ↓
-"What else?" → 20 Features → Behavioral → Coffee-EMI → Calculator Integration
+┌─ ADVANCED VIEW ─┐   ┌─ CALCULATOR ─┐   ┌─ TAX ANALYSIS ─┐   ┌─ EXPERT PLAN ─┐
+│ Split Loans     │→  │ Debt Recycle │→  │ Tax Benefits  │→  │ 4-Strategy    │
+│ Debt Recycling  │   │ Custom Rates │   │ Deductions    │   │ Combination   │
+│ Tax Implications│   │ Scenarios    │   │ Timing        │   │ Professional  │
+│ [Deep Analysis] │   │ [Calculate]  │   │ [Optimize]    │   │ Review Rec.   │
+└─────────────────┘   └──────────────┘   └───────────────┘   └───────────────┘
+     3-5 min              5-10 min           3-5 min            2-5 min
 ```
 
-## Navigation Patterns
+**Content Strategy**:
+- Advanced calculations and scenarios
+- Tax implications clearly explained
+- Professional advice integration
+- Complex strategy sequencing
 
-### Bottom Tab Navigation (Always Accessible)
+## Progressive Disclosure Patterns
+
+### Pattern 1: Expandable Cards
+**Use Case**: Strategy overview to detail transition
+**Interaction**: Tap card to expand in-place
 
 ```
-🏠 Home ←→ 📊 Calculator ←→ 🎯 Strategies ←→ ⚙️ Progress ←→ 👤 Profile
-   ↓            ↓               ↓              ↓           ↓
-Dashboard → Input/Results → Feature Hub → Tracking → Settings
+┌─ COLLAPSED STATE ─┐     ┌─ EXPANDED STATE ─┐
+│ 💰 Extra Repayments│ →   │ 💰 Extra Repayments      │
+│ Save $18,400       │     │ Save $18,400             │
+│ Easy•No Risk       │     │ ⚡ QUICK SUMMARY          │
+│ [Expand ▼]         │     │ • Add $200/month         │
+└────────────────────┘     │ • Start immediately      │
+                           │ • No paperwork needed    │
+                           │ Easy•No Risk•High Impact │
+                           │                          │
+                           │ 📊 YOUR NUMBERS          │
+                           │ Current: $2,500/month    │
+                           │ New: $2,700/month        │
+                           │ Extra: $200/month        │
+                           │                          │
+                           │ [Full Details] [Start]   │
+                           │ [Collapse ▲]             │
+                           └──────────────────────────┘
 ```
 
-### Information Architecture Flow
+### Pattern 2: Drill-Down Navigation
+**Use Case**: Moving from overview to specific details
+**Interaction**: Navigate to dedicated detail screen
 
 ```
-App Root
-├── 🏠 Home (Dashboard)
-│   ├── Daily Burn Counter
-│   ├── Health Score → Improvement Tips
-│   ├── Daily Tip → Impact Calculator
-│   └── Quick Actions → Direct Features
-│
-├── 📊 Calculator
-│   ├── 3-Input Form
-│   ├── Reality Check Display
-│   ├── Top 3 Strategies
-│   └── All Strategies Link → Strategies Hub
-│
-├── 🎯 Strategies
-│   ├── Core Calculators (4)
-│   ├── Eye-Openers (4) 
-│   ├── Smart Analysis (3)
-│   ├── Behavioral Motivators (3)
-│   ├── Life Event Planning (3)
-│   └── Advanced Predictions (3)
-│
-├── ⚙️ Progress
-│   ├── Current Savings
-│   ├── Active Strategies
-│   ├── Achievement Badges
-│   └── Consistency Tracking
-│
-└── 👤 Profile
-    ├── Loan Settings
-    ├── Notification Preferences
-    ├── Sharing Features
-    └── Help/Support
+LEVEL 1: Overview    LEVEL 2: Summary     LEVEL 3: Details     LEVEL 4: Implementation
+┌─────────────┐     ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│ 7 Strategies│ →   │ Extra Pays  │  →   │ How it Works│  →   │ Step 1 of 3 │
+│ $47K Total  │     │ $18K Savings│      │ Calculations│      │ Call Lender │
+│ [See All]   │     │ 4-Level Info│      │ Examples    │      │ Script Help │
+└─────────────┘     └─────────────┘      └─────────────┘      └─────────────┘
 ```
 
-## User Intent Mapping
+### Pattern 3: Layered Tabs
+**Use Case**: Different information types for same strategy
+**Interaction**: Horizontal swipe or tab selection
 
-### High Intent (Ready to Act)
-**Trigger**: Saw shocking numbers, wants immediate action
-**Flow**: Calculator → Top Strategies → Implementation Guide → Progress Setup
-**Key Metric**: Strategy activation rate
-
-### Medium Intent (Exploring Options)
-**Trigger**: Curious about savings possibilities
-**Flow**: Dashboard → Strategies Hub → Feature Comparison → Bookmarking
-**Key Metric**: Feature exploration depth
-
-### Low Intent (Passive Learning)
-**Trigger**: Daily habit check-in
-**Flow**: Dashboard → Progress Review → Achievement Check → Daily Tip
-**Key Metric**: Return visit frequency
-
-## Critical Decision Points
-
-### Moment 1: First Impression (Dashboard)
-**User Question**: "Is this app worth my time?"
-**Design Response**: Daily burn counter shows immediate value
-**Success Metric**: Time spent on dashboard > 30 seconds
-
-### Moment 2: Calculation Results (Calculator)
-**User Question**: "Is this accurate? Can I really save this much?"
-**Design Response**: Detailed breakdown with credible numbers
-**Success Metric**: Progression to strategies screen > 60%
-
-### Moment 3: Strategy Selection (Strategies)
-**User Question**: "Which strategy should I actually use?"
-**Design Response**: Clear impact ranking with difficulty indication
-**Success Metric**: Strategy activation > 40%
-
-### Moment 4: Implementation (Progress)
-**User Question**: "Is this actually working?"
-**Design Response**: Real progress tracking with achievement rewards
-**Success Metric**: 30-day retention > 70%
-
-## Error Recovery Flows
-
-### Invalid Input Recovery
 ```
-Calculator → Validation Error → Helpful Message → Corrected Input → Success
-    ↓              ↓               ↓              ↓             ↓
-Empty Field → "Enter amount" → Example shown → User fixes → Calculation
+┌─ EXTRA REPAYMENTS ────────────────────────────────┐
+│ [Summary] [Numbers] [Steps] [Considerations]      │
+├───────────────────────────────────────────────────┤
+│                                                   │
+│ Content changes based on selected tab             │
+│ • Summary: Quick overview and benefits            │
+│ • Numbers: Calculations and comparisons           │
+│ • Steps: Implementation guidance                  │
+│ • Considerations: Risks, alternatives, fit        │
+│                                                   │
+└───────────────────────────────────────────────────┘
 ```
 
-### Network Error Recovery
+### Pattern 4: Contextual Help
+**Use Case**: Additional information without leaving main flow
+**Interaction**: Tap info icons or help buttons
+
 ```
-Feature Access → Network Error → Offline Message → Cached Content → Full Experience
-     ↓               ↓              ↓               ↓              ↓
-API Call → Connection Failed → "Working offline" → Local calc → Seamless UX
+┌─ MAIN CONTENT ────────────────────────────────────┐
+│ Refinancing Strategy                              │
+│ Lower your rate by 0.25% [ℹ️]                     │
+│                                                   │
+│ When tapped: ┌─ TOOLTIP ──────────┐              │
+│              │ Rate reduction      │              │
+│              │ depends on:         │              │
+│              │ • Credit score      │              │
+│              │ • Loan-to-value     │              │
+│              │ • Market conditions │              │
+│              │ [Got it]            │              │
+│              └─────────────────────┘              │
+└───────────────────────────────────────────────────┘
 ```
 
-### Incomplete Setup Recovery
+## Information Architecture by User Type
+
+### First-Time Homeowners (Beginner)
+**Entry Point**: Guided tutorial
+**Path**: Overview → Simple strategies → Single selection → Implementation
+**Content Focus**: Education, risk mitigation, simple language
+
 ```
-Strategy Activation → Missing Data → Quick Input → Setup Complete → Feature Active
-       ↓                 ↓            ↓             ↓              ↓
-"Enable bi-weekly" → "Need bank info" → 2-field form → Data saved → Tracking starts
+Tutorial → Quick Wins → Extra Repayments → Start Implementation
+    ↓          ↓             ↓                    ↓
+Education   Simple       Step-by-step       Success tracking
 ```
 
-## Success Metrics by Flow
+### Experienced Homeowners (Intermediate)  
+**Entry Point**: Strategy comparison
+**Path**: All strategies → Comparison → Combination → Implementation plan
+**Content Focus**: Efficiency, comparison, multiple options
 
-### Engagement Flow
-- **Dashboard → Calculator**: 70% of users
-- **Calculator → Strategies**: 60% of users  
-- **Strategies → Progress**: 40% of users
-- **Progress → Return Visit**: 80% of users
+```
+All Strategies → Side-by-side → Combination → Implementation Plan
+      ↓              ↓            ↓              ↓
+  Filter/sort    Trade-offs    Synergies     Prioritization
+```
 
-### Conversion Flow
-- **Discovery → Strategy Selection**: 45%
-- **Selection → Implementation**: 35%
-- **Implementation → 7-day retention**: 60%
-- **7-day → 30-day retention**: 70%
+### Investment Property Owners (Advanced)
+**Entry Point**: Advanced calculator
+**Path**: Complex strategies → Tax analysis → Professional integration → Execution
+**Content Focus**: Optimization, tax implications, professional support
 
-### Satisfaction Flow
-- **Feature Discovery Rate**: 80% find relevant feature
-- **Implementation Success**: 70% successfully activate
-- **Perceived Value**: 85% report actual savings
-- **Recommendation Rate**: 75% would recommend app
+```
+Advanced Strategies → Tax Calculator → Professional Review → Execution
+         ↓                 ↓               ↓                ↓
+    Debt recycling    Deductions      Expert validation   Complex setup
+```
 
-These flows prioritize emotional engagement first, then education, then action, creating a sustainable motivation loop for long-term behavior change.
+## Error States & Edge Cases
+
+### Insufficient Information
+**Scenario**: User hasn't provided complete loan details
+**Solution**: Progressive form with smart defaults
+
+```
+┌─ INCOMPLETE DATA ─┐
+│ We need more info │
+│ to show accurate  │
+│ savings numbers   │
+│                   │
+│ [Complete Profile]│
+│ [See Estimates]   │
+└───────────────────┘
+```
+
+### No Suitable Strategies
+**Scenario**: User's situation doesn't benefit from available strategies
+**Solution**: Educational content and alternative resources
+
+```
+┌─ NO RECOMMENDATIONS ─┐
+│ Your current loan is  │
+│ already optimized     │
+│                       │
+│ • Rate: Excellent     │
+│ • Term: Appropriate   │
+│ • Structure: Optimal  │
+│                       │
+│ [Monitor Changes]     │
+│ [Explore Investments] │
+└───────────────────────┘
+```
+
+### Implementation Blockers
+**Scenario**: User can't complete recommended steps
+**Solution**: Alternative paths and professional referral
+
+```
+┌─ IMPLEMENTATION HELP ─┐
+│ Having trouble with    │
+│ refinancing approval?  │
+│                        │
+│ Try these alternatives:│
+│ • Negotiate current    │
+│ • Wait 6 months        │
+│ • Get professional help│
+│                        │
+│ [Alternative Strategies]│
+│ [Connect with Expert]   │
+└────────────────────────┘
+```
+
+## Navigation Best Practices
+
+### Breadcrumb Strategy
+- Always show current location in information hierarchy
+- Provide quick back/up navigation
+- Maintain context when drilling down
+
+### State Preservation
+- Remember user selections across sessions
+- Maintain scroll position when returning
+- Preserve comparison selections
+
+### Exit Points
+- Clear exit to action at every level
+- "Save for later" options throughout
+- Easy return to overview from any screen
+
+### Performance Considerations
+- Lazy load detailed calculations
+- Cache frequently accessed content
+- Progressive image loading for charts/graphs
+
+This navigation structure ensures users can find information at their preferred level of detail while maintaining clear paths to action, regardless of their experience level or decision-making style.

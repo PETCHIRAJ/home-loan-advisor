@@ -1,49 +1,75 @@
-# Home Loan Advisor App - Phase 1 Text Wireframes
+# Home Loan Strategies - Content Presentation Design
 
-## Design Brief
+> Mobile-first content structure and presentation guidelines for 7 home loan optimization strategies
 
-**Problem Statement**: Indian home loan borrowers lack awareness of simple strategies that can save lakhs of rupees over their loan tenure. The app aims to educate and motivate users through instant, eye-opening calculations and actionable savings strategies.
+**Purpose**: Define how home loan strategies should be presented to users for optimal comprehension and decision-making
+**Target Audience**: Mobile app users seeking home loan optimization advice
+**Last Updated**: 2025-08-29
+**Version**: 1.0
 
-**Target Audience**: Tamil Nadu home loan borrowers, ages 25-45, tech-comfortable, value-conscious
-**Success Metrics**: User engagement with calculators, feature adoption rate, savings goal achievement
-**Design Approach**: Progressive disclosure with instant gratification through shocking revelations
+## Project Overview
 
-## Screen Navigation
-
-1. [Dashboard](dashboard.md) - Main hub with Daily Interest Burn Counter
-2. [Calculator](calculator.md) - Simple 3-input loan calculator
-3. [Strategies](strategies.md) - 20 money-saving features organized by impact
-4. [Progress](progress.md) - Achievement tracking and motivation hub
-5. [User Flows](user-flows.md) - Navigation patterns and task flows
-
-## Information Architecture
-
-```
-App
-├── Dashboard (Money Burn Counter, Health Score, Tips)
-├── Calculator (3-Input Form, Instant Results, Top Strategies)
-├── Strategies
-│   ├── Core Savings Calculators (4 features)
-│   ├── Instant Eye-Openers (4 features)
-│   ├── Smart Analysis (3 features)
-│   ├── Behavioral Motivators (3 features)
-│   ├── Life Event Planning (3 features)
-│   └── Advanced Predictions (3 features)
-├── Progress (Savings Tracker, Achievements, Active Strategies)
-└── Profile (Settings, Help, Sharing)
-```
+This design focuses on creating an intuitive content presentation system for displaying complex financial strategies in a mobile environment. The primary challenge is presenting detailed financial information that helps users make informed decisions without overwhelming them.
 
 ## Key Design Principles
 
-1. **Immediate Impact**: Daily burn counter creates emotional urgency
-2. **Progressive Disclosure**: Start simple, reveal complexity gradually
-3. **Cultural Relevance**: Tamil Nadu market, Indian currency formatting
-4. **Behavioral Psychology**: Gamification, achievements, social proof
-5. **Offline-First**: All calculations work without internet
+### 1. Progressive Disclosure
+- Start with high-impact summary information
+- Layer details based on user interest and expertise level
+- Provide quick wins first, complex strategies second
 
-## Next Steps
+### 2. Mobile-First Content Strategy
+- Scannable content chunks (5-7 words per line)
+- Thumb-friendly interaction zones
+- Vertical scrolling with clear section breaks
 
-After wireframe approval:
-- Phase 2: HTML mockups in `/design/mockups/`
-- Phase 3: Design system in `/design/assets/`
-- Phase 4: Documentation in `/design/specs/`
+### 3. Trust Through Transparency
+- Show calculations behind savings claims
+- Present risks alongside benefits
+- Provide clear implementation difficulty indicators
+
+### 4. Visual Hierarchy for Financial Data
+- Hero numbers for immediate impact recognition
+- Before/after comparisons for context
+- Timeline visualizations for long-term benefits
+
+## Content Architecture
+
+### Strategy Categories
+1. **Quick Wins** (0-30 days implementation)
+   - Extra payments
+   - Offset accounts
+   - Rate reviews
+
+2. **Medium-term Optimizations** (1-6 months)
+   - Refinancing
+   - Loan restructuring
+   - Investment properties
+
+3. **Advanced Strategies** (6+ months)
+   - Debt recycling
+   - Split loans
+   - Tax optimization
+
+### Information Layers
+- **Level 1**: Hero savings + one-sentence description
+- **Level 2**: Key benefits, risks, and implementation time
+- **Level 3**: Detailed calculations, examples, and step-by-step guides
+- **Level 4**: Expert considerations and edge cases
+
+## User Personas Considered
+
+### Primary: Sarah (35, First Home Owner)
+- Needs simple, actionable advice
+- Values immediate savings potential
+- Requires step-by-step guidance
+
+### Secondary: David (45, Investment Property Owner)  
+- Wants detailed analysis and calculations
+- Comfortable with complex strategies
+- Needs tax implications clearly explained
+
+### Tertiary: Emma (28, Recent Graduate)
+- Budget-conscious, risk-averse
+- Prefers visual explanations
+- Needs educational content alongside recommendations

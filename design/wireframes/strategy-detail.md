@@ -1,144 +1,158 @@
-# Strategy Detail Page Wireframe
+# Individual Strategy Detail Screen - Content Wireframe
 
-## Purpose
-Detailed view of a specific strategy showing calculations, implementation steps, and personalized impact based on user's loan parameters.
-
-## Example: Extra EMI Strategy (12+1)
+## Screen Purpose
+Deep dive into a specific strategy with progressive disclosure of information layers, calculations, and implementation guidance.
 
 ```
-┌─────────────────────────────────────┐
-│ ← Back to Strategies           [×] │
-├─────────────────────────────────────┤
-│                                     │
-│ 💎 Extra EMI Strategy              │
-│ Pay 13 EMIs per year               │
-│                                     │
-│ ┌─────────────────────────────────┐ │
-│ │ YOUR POTENTIAL SAVINGS           │ │
-│ │                                 │ │
-│ │ 💰 Interest Saved: ₹7.2 Lakhs   │ │
-│ │ ⏰ Time Saved: 5 years          │ │
-│ │ 📊 Extra Payment: ₹26,085/year  │ │
-│ └─────────────────────────────────┘ │
-│                                     │
-│ 📈 IMPACT VISUALIZATION             │
-│ ┌─────────────────────────────────┐ │
-│ │ [Graph showing loan timeline]   │ │
-│ │ Original: 20 years = ₹62.6L    │ │
-│ │ With Strategy: 15 years = ₹55.4L│ │
-│ └─────────────────────────────────┘ │
-│                                     │
-│ 🎯 HOW TO IMPLEMENT                 │
-│ ┌─────────────────────────────────┐ │
-│ │ 1. Save ₹2,200 monthly          │ │
-│ │    (₹26,085 ÷ 12 months)        │ │
-│ │                                 │ │
-│ │ 2. Use annual bonus/increment   │ │
-│ │                                 │ │
-│ │ 3. Make extra payment in Dec    │ │
-│ │    (or any month you prefer)    │ │
-│ │                                 │ │
-│ │ 4. Inform bank it's for         │ │
-│ │    principal reduction          │ │
-│ └─────────────────────────────────┘ │
-│                                     │
-│ 💡 PRO TIPS                         │
-│ • Best time: After annual bonus    │
-│ • Check prepayment charges (if any)│
-│ • Get receipt for tax benefits     │
-│                                     │
-│ ⚠️ CONSIDERATIONS                   │
-│ • Ensure emergency fund intact     │
-│ • Don't strain monthly budget      │
-│ • Some banks waive charges yearly  │
-│                                     │
-│ [Try Calculator] [Set Reminder]     │
-│                                     │
-├─────────────────────────────────────┤
-│ [🏠] [💰] [📈] [📊]                │
-│ Home Strategies Progress Calculator │
-└─────────────────────────────────────┘
+┌─────────────────────────────────────────┐
+│ ← Strategies    Extra Repayments   [✓]  │
+├─────────────────────────────────────────┤
+│                                         │
+│ 💰 EXTRA REPAYMENTS                     │
+│                                         │
+│ Save $18,400 over loan life             │
+│ ████████████████████████████ $18,400    │
+│                                         │
+│ Cut 4.2 years off your loan            │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ ⚡ QUICK SUMMARY                        │
+│                                         │
+│ • Add $200/month to repayments          │
+│ • Start immediately, no paperwork       │
+│ • Reduce interest by $18,400            │
+│ • Pay off loan 4.2 years earlier       │
+│                                         │
+│ Easy • No Risk • High Impact            │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ 📊 YOUR NUMBERS                         │
+│                                         │
+│ Current Payment:        $2,500/month    │
+│ Recommended Payment:    $2,700/month    │
+│ Extra Amount:           $200/month      │
+│                                         │
+│ ┌─────────────────────────────────────┐ │
+│ │        BEFORE    →    AFTER         │ │
+│ │ Loan Term:  25 years   20.8 years  │ │
+│ │ Interest:   $245,000   $226,600    │ │
+│ │ Savings:    $0         $18,400     │ │
+│ └─────────────────────────────────────┘ │
+│                                         │
+│ [Adjust Amount] [See Calculation]       │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ 🎯 HOW IT WORKS                         │
+│                                         │
+│ Your extra $200 goes directly to        │
+│ principal, reducing the loan balance    │
+│ faster. This means:                     │
+│                                         │
+│ → Less interest charged each month      │
+│ → Shorter loan term                     │
+│ → More equity built faster              │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ ✅ IMPLEMENTATION STEPS                 │
+│                                         │
+│ 1. Contact your lender (5 mins)        │
+│    Set up increased payment             │
+│                                         │
+│ 2. Update budget (15 mins)             │
+│    Ensure you can afford extra $200    │
+│                                         │
+│ 3. Set automatic payment (10 mins)     │
+│    Make it automatic so you don't      │
+│    forget                              │
+│                                         │
+│ Total time: 30 minutes                  │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ ⚠️ THINGS TO CONSIDER                   │
+│                                         │
+│ ✓ Pros:                                 │
+│ • Guaranteed savings                    │
+│ • No fees or penalties                  │
+│ • Can stop anytime                      │
+│ • Builds discipline                     │
+│                                         │
+│ ⚠️ Watch out for:                       │
+│ • Ensure you have emergency fund       │
+│ • Don't compromise other goals          │
+│ • Consider offset account first         │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ 🤔 IS THIS RIGHT FOR YOU?               │
+│                                         │
+│ This works best if you:                 │
+│ ✓ Have stable income                    │
+│ ✓ Already have emergency fund           │
+│ ✓ Want guaranteed results               │
+│                                         │
+│ Consider other options if you:          │
+│ ⚠️ Are struggling with current payments │
+│ ⚠️ Have high-interest debt              │
+│ ⚠️ Need access to cash                  │
+│                                         │
+├─────────────────────────────────────────┤
+│                                         │
+│ 📱 NEXT STEPS                           │
+│                                         │
+│ [Start Implementation] [Add to Plan]    │
+│ [Compare with Other Strategies]         │
+│                                         │
+└─────────────────────────────────────────┘
 ```
 
-## Page Sections
+## Content Structure Guidelines - Detailed View
 
-### 1. Header Bar
-- **Back navigation**: "← Back to Strategies" 
-- **Close button**: [×] to return to strategies list
-- **No loan summary header** (to maximize content space)
+### Hero Section (Level 1)
+- **Strategy Name**: Large, clear heading with icon
+- **Primary Benefit**: Hero savings number with visual progress
+- **Secondary Benefit**: Time saved or other key metric
+- **Status Indicator**: Added to plan or implementation status
 
-### 2. Strategy Title Section
-- **Icon + Strategy Name**: Clear identification
-- **Brief tagline**: One-line description
+### Quick Summary (Level 2)  
+- **Bullet Points**: 4 maximum, action-focused
+- **Key Actions**: What user needs to do
+- **Key Benefits**: What user gets
+- **Difficulty Tags**: Visual indicators matching overview screen
 
-### 3. Savings Impact Box (Personalized)
-- **Interest Saved**: Calculated for user's loan
-- **Time Saved**: Years/months reduced
-- **Required Payment**: Exact amount needed
+### Your Numbers (Level 2)
+- **Current vs Recommended**: Clear comparison
+- **Before/After Table**: Visual comparison of key metrics
+- **Interactive Elements**: Sliders or input fields to adjust amounts
+- **Calculation Access**: Link to detailed math
 
-### 4. Visual Impact Graph
-- **Before/After comparison**: Timeline and total payment
-- **Interactive elements**: Hover for details
-- **Clear visual difference**: Original vs optimized
+### How It Works (Level 3)
+- **Simple Explanation**: Plain English, no jargon
+- **Visual Metaphors**: Use familiar concepts
+- **Benefit Flow**: Arrow-based progression showing cause and effect
 
-### 5. Implementation Steps
-- **Step-by-step guide**: Numbered, actionable steps
-- **Calculations shown**: Break down complex math
-- **Specific to user**: Uses their loan parameters
+### Implementation Steps (Level 3)
+- **Numbered Steps**: Clear sequence with time estimates
+- **Action-Oriented**: Each step is a specific task
+- **Time Indicators**: How long each step takes
+- **Total Time**: Overall implementation effort
 
-### 6. Pro Tips Section
-- **Best practices**: When and how to execute
-- **Bank-specific notes**: Common policies
-- **Tax implications**: If applicable
+### Considerations (Level 4)
+- **Balanced View**: Pros and cons clearly separated
+- **Risk Indicators**: Visual warning for potential issues
+- **Context Setting**: When this strategy works best
+- **Alternative Prompts**: When to consider other options
 
-### 7. Considerations/Warnings
-- **Risk factors**: What to watch out for
-- **Prerequisites**: Emergency fund, etc.
-- **Bank charges**: Prepayment fees info
+### Suitability Assessment (Level 4)
+- **Checklist Format**: Easy to scan personal criteria
+- **Green/Red Indicators**: Visual cues for fit
+- **Decision Support**: Help users self-assess appropriateness
 
-### 8. Action Buttons
-- **Try Calculator**: Deep link to calculator with this strategy
-- **Set Reminder**: Add to calendar (if applicable)
-
-### 9. Bottom Navigation
-- Standard 4-tab navigation remains
-
-## Content Variations by Strategy Type
-
-### For "Instant Eye-Openers" (like Daily Burn):
-- Focus on visualization and shock value
-- Less implementation steps, more awareness
-
-### For "Tax Strategies":
-- Include tax calculation tables
-- Show tax bracket impact
-- Link to relevant tax sections
-
-### For "Life Event Strategies":
-- Timeline-based visualization
-- Scenario comparisons
-- Future projections
-
-## Navigation Flow
-
-```
-Strategies List → Tap Strategy → Detail Page
-                                      ↓
-                              [Try Calculator] → Calculator Tab
-                                      ↓
-                              [Back] → Strategies List
-```
-
-## Technical Notes
-
-- **Data source**: All calculations from Calculator tab settings
-- **Personalization**: Updates when loan parameters change
-- **Offline capable**: All calculations local
-- **Responsive**: Adapts to screen size
-
-## Accessibility
-
-- **Back navigation**: Clear escape route
-- **High contrast**: Important numbers highlighted
-- **Readable fonts**: Calculation details legible
-- **Touch targets**: Minimum 44px for buttons
+### Call to Action
+- **Primary**: Start implementation or add to plan
+- **Secondary**: Compare with other strategies
+- **Utility**: Share, save, or get more details
