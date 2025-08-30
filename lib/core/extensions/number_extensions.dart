@@ -24,6 +24,19 @@ extension NumberExtensions on double {
     return '₹${formatter.format(this)}';
   }
 
+  /// Formats as compact currency (for chart labels)
+  String toCompactFormat() {
+    if (this >= 10000000) {
+      return '₹${(this / 10000000).toStringAsFixed(1)}Cr';
+    } else if (this >= 100000) {
+      return '₹${(this / 100000).toStringAsFixed(1)}L';
+    } else if (this >= 1000) {
+      return '₹${(this / 1000).toStringAsFixed(1)}K';
+    } else {
+      return '₹${toStringAsFixed(0)}';
+    }
+  }
+
   /// Checks if number is in valid range
   bool isInRange(double min, double max) {
     return this >= min && this <= max;

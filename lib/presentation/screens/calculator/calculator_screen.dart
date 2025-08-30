@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/calculation_providers.dart';
 import '../../widgets/calculator/loan_input_form.dart';
-import '../../widgets/calculator/emi_results_card.dart';
+import '../../widgets/calculator/enhanced_emi_results_card.dart';
 import '../../widgets/common/app_scaffold.dart';
 
 class CalculatorScreen extends ConsumerWidget {
@@ -16,13 +16,13 @@ class CalculatorScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'EMI Calculator',
       actions: [
-        IconButton(
-          icon: const Icon(Icons.refresh),
+        TextButton.icon(
+          icon: const Icon(Icons.clear_all),
+          label: const Text('Clear'),
           onPressed: () {
             ref.read(loanParametersProvider.notifier).resetToDefaults();
             ref.read(emiCalculationProvider.notifier).clearResult();
           },
-          tooltip: 'Reset to defaults',
         ),
       ],
       body: SingleChildScrollView(
@@ -94,7 +94,11 @@ class CalculatorScreen extends ConsumerWidget {
               emiCalculation.when(
                 data: (result) {
                   if (result != null) {
-                    return EMIResultsCard(result: result);
+                    final loanParams = ref.read(loanParametersProvider);
+                    return EnhancedEMIResultsCard(
+                      result: result,
+                      parameters: loanParams,
+                    );
                   }
                   return const SizedBox.shrink();
                 },
