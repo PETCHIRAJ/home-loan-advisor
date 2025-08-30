@@ -1,0 +1,28 @@
+{
+  "name": "home_loan_advisor",
+  "version": "1.0.0",
+  "description": "> \"Calculate accurately, save smartly\"",
+  "main": "ui-test-suite.js",
+  "directories": {
+    "doc": "docs",
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PETCHIRAJ/home-loan-advisor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PETCHIRAJ/home-loan-advisor/issues"
+  },
+  "homepage": "https://github.com/PETCHIRAJ/home-loan-advisor#readme",
+  "dependencies": {
+    "playwright": "^1.55.0"
+  }
+}
