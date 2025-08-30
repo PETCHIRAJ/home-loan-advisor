@@ -1,7 +1,7 @@
-# Calculator Screen Wireframe
+# Calculator Screen Wireframe - Most Comprehensive EMI Calculator
 
 ## Layout Overview
-The calculator screen is the primary entry point and most frequently used feature. It prioritizes ease of input and clear result visualization.
+The redesigned calculator screen delivers India's most comprehensive home loan EMI experience with integrated tax benefits, multi-bank comparison, total cost transparency, and smart investment insights. Built for mobile-first interaction with progressive disclosure.
 
 ## ASCII Wireframe
 
@@ -9,53 +9,86 @@ The calculator screen is the primary entry point and most frequently used featur
 ┌─────────────────────────────────────┐ ← StatusBar (iOS/Android)
 │ 🏡 Home Loan Advisor           [📤] │ ← App Header (title + share)
 ├─────────────────────────────────────┤
+│ ☰ MARKETS: SBI 8.4% | HDFC 8.6% ↑  │ ← Live rate ticker (key differentiator)
+├─────────────────────────────────────┤
 │                                     │
-│  💰 EMI CALCULATOR                  │ ← Section Title
+│  💰 SMART EMI CALCULATOR            │ ← Enhanced section title
 │                                     │
 │  ┌─────────────────────────────────┐ │
-│  │ Loan Amount (₹)             [i] │ │ ← Tooltip for help
+│  │ Property Value (₹)          [i] │ │ ← New: Property value first
 │  │ ┌─────────────────────────────┐ │ │
-│  │ │ 50,00,000               [×] │ │ │ ← Clear button
+│  │ │ 75,00,000               [×] │ │ │
 │  │ └─────────────────────────────┘ │ │
+│  │ 🏠 [50L] [75L] [1Cr] [1.5Cr]   │ │ ← Quick preset buttons
 │  └─────────────────────────────────┘ │
 │                                     │
 │  ┌─────────────────────────────────┐ │
-│  │ Interest Rate (% per annum) [i] │ │
+│  │ Loan Amount (₹) • LTV: 80%  [i] │ │ ← Auto-calculated LTV display
 │  │ ┌─────────────────────────────┐ │ │
-│  │ │ 8.5                     [×] │ │ │
+│  │ │ 60,00,000               [×] │ │ │ ← Auto-filled from property value
 │  │ └─────────────────────────────┘ │ │
+│  │ ══════════════════░░░░░░        │ │ ← Visual slider (thumb-friendly)
+│  └─────────────────────────────────┘ │
+│                                     │
+│  ┌─────────────────────────────────┐ │
+│  │ Interest Rate (% p.a.)      [i] │ │
+│  │ ┌──────────────┬──────────────┐ │ │
+│  │ │ 8.5      [×] │ 📊 Best: 8.1%│ │ │ ← Current market best display
+│  │ └──────────────┴──────────────┘ │ │
+│  │ ══════════════░░░░░░░░░░░░░░    │ │ ← Hybrid: slider + text input
 │  └─────────────────────────────────┘ │
 │                                     │
 │  ┌─────────────────────────────────┐ │
 │  │ Loan Tenure                 [i] │ │
-│  │ ┌──────────┐ ┌──────────────────┐│ │
-│  │ │    20    │ │     Years     [v]││ │ ← Dropdown: Years/Months
-│  │ └──────────┘ └──────────────────┘│ │
+│  │ ┌──────────┬──────────────────┐ │ │
+│  │ │    20    │     Years     [v]│ │ │
+│  │ └──────────┴──────────────────┘ │ │
+│  │ ══════════════════░░░░░░        │ │ ← Tenure slider
+│  │ ⚡ Optimal: 15Y saves ₹12.5L   │ │ ← Smart recommendation
 │  └─────────────────────────────────┘ │
 │                                     │
-│  [ Advanced Options... ]           │ ← Collapsible section
+│  [ 🎯 Smart Options... ]           │ ← Enhanced collapsible section
 │                                     │
 ├─────────────────────────────────────┤
 │                                     │
-│  📊 RESULTS                         │
+│  💡 COMPREHENSIVE RESULTS           │ ← Enhanced results section
 │                                     │
 │  ┌─────────────────────────────────┐ │
-│  │         YOUR EMI                │ │
-│  │       ₹ 41,822                  │ │ ← Large, prominent EMI
-│  │      per month                  │ │
+│  │      MONTHLY EMI                │ │
+│  │       ₹ 50,387                  │ │ ← Larger, bold EMI
+│  │                                 │ │
+│  │ 📈 Net EMI (after tax): ₹42,821│ │ ← Major differentiator!
+│  │    💰 Tax savings: ₹7,566/month │ │
 │  └─────────────────────────────────┘ │
 │                                     │
 │  ┌───────────────┬─────────────────┐ │
-│  │ Total Amount  │ Tax Benefits    │ │
-│  │ ₹ 1,00,37,280 │ ₹ 2,00,000     │ │ ← Key numbers
-│  │               │ per year        │ │
+│  │ True Cost     │ Your Savings    │ │
+│  │ ₹ 1,21,47,890 │ ₹ 18,15,840    │ │ ← Total cost transparency
+│  │ (All fees)    │ vs investment   │ │
 │  └───────────────┴─────────────────┘ │
 │                                     │
-│  [  Amortization Chart  ]           │ ← Expandable visualization
-│  [═══════════████████████]          │ ← Progress bar (Interest vs Principal)
-│  Interest: 60% | Principal: 40%     │
+│  ┌─────────────────────────────────┐ │ ← Interactive pie chart
+│  │     📊 [Touch to Explore]       │ │
+│  │        ╭─────────╮              │ │
+│  │      ╭─┤Principal├─╮            │ │
+│  │     ╱  ╰─────────╯  ╲           │ │
+│  │    ╱      62%        ╲          │ │
+│  │   ╱                   ╲         │ │
+│  │  ╱        38%          ╲        │ │
+│  │ ╱       Interest        ╲       │ │
+│  │ ╲                      ╱        │ │
+│  │  ╲____________________╱         │ │
+│  └─────────────────────────────────┘ │
 │                                     │
-│  [ View Breakdown ] [ Compare ]     │ ← Action buttons
+│  ┌─────────────────────────────────┐ │
+│  │ ⚡ ELIGIBILITY CHECKER           │ │ ← Major differentiator
+│  │ ✅ SBI: Pre-approved (8.4%)     │ │
+│  │ ✅ HDFC: Eligible (8.6%)        │ │
+│  │ ⚠️ ICICI: Income review needed   │ │
+│  │ 🔍 [ Check More Banks ]         │ │
+│  └─────────────────────────────────┘ │
+│                                     │
+│  [ 📋 Smart Analysis ] [ 🔄 Compare]│ ← Enhanced action buttons
 │                                     │
 ├─────────────────────────────────────┤
 │ [🧮]     Calculator     [📋]        │ ← Bottom Navigation
@@ -65,141 +98,324 @@ The calculator screen is the primary entry point and most frequently used featur
 
 ## Interactive Elements
 
-### Input Fields
-- **Loan Amount**: Number input with Indian currency formatting (₹1,23,45,678)
-- **Interest Rate**: Decimal input (8.5%) with validation (3-20% range)
-- **Loan Tenure**: Number input + dropdown for Years/Months selection
+### Enhanced Input System (Hybrid Approach)
+- **Property Value**: Primary input with preset buttons (₹50L, ₹75L, ₹1Cr, ₹1.5Cr)
+- **Loan Amount**: Auto-calculated with LTV display, slider + text input hybrid
+- **Interest Rate**: Market-aware with "Best Rate" indicator and slider
+- **Loan Tenure**: Smart recommendations with optimal tenure suggestions
 
-### Advanced Options Panel (Collapsible)
+### Live Market Integration
+- **Rate Ticker**: Real-time updates from major banks (SBI, HDFC, ICICI, Axis)
+- **Best Rate Display**: Current market best rate prominently shown
+- **Rate Alerts**: Notification when rates drop below user's current rate
+
+### Smart Options Panel (Enhanced Collapsible)
 ```
 ┌─────────────────────────────────────┐
-│ 🔧 Advanced Options                 │
+│ 🎯 SMART OPTIONS                    │
 │                                     │
 │ ┌─────────────────────────────────┐ │
-│ │ Processing Fees (₹)         [i] │ │
+│ │ 💼 Income Details           [i] │ │
 │ │ ┌─────────────────────────────┐ │ │
-│ │ │ 25,000                      │ │ │
+│ │ │ Monthly: ₹1,50,000          │ │ │ ← For eligibility check
 │ │ └─────────────────────────────┘ │ │
 │ └─────────────────────────────────┘ │
 │                                     │
 │ ┌─────────────────────────────────┐ │
-│ │ Prepayment (₹/year)         [i] │ │
-│ │ ┌─────────────────────────────┐ │ │
-│ │ │ 1,00,000                    │ │ │
-│ │ └─────────────────────────────┘ │ │
+│ │ 🏦 Total Cost Breakdown     [i] │ │
+│ │ • Processing Fees: ₹25,000      │ │
+│ │ • Legal Charges: ₹15,000        │ │ ← True cost transparency
+│ │ • Insurance: ₹2,000/month       │ │
+│ │ • Valuation: ₹5,000             │ │
 │ └─────────────────────────────────┘ │
 │                                     │
-│ □ Include insurance costs           │
-│ □ Show tax benefit calculation      │
+│ ┌─────────────────────────────────┐ │
+│ │ 💰 Tax Planning Section     [i] │ │
+│ │ Annual Income: ₹18,00,000       │ │
+│ │ 📊 Section 80C: ₹1,50,000      │ │ ← Major differentiator
+│ │ 📊 Section 24B: ₹2,00,000      │ │
+│ │ Tax Bracket: 30%                │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ┌─────────────────────────────────┐ │
+│ │ 🚀 Prepayment Strategy      [i] │ │
+│ │ ┌─────────────────────────────┐ │ │
+│ │ │ Yearly: ₹2,00,000           │ │ │
+│ │ └─────────────────────────────┘ │ │
+│ │ ⚡ vs Investment: +₹5.2L returns│ │ ← EMI vs investment comparison
+│ │ 💡 Recommendation: Invest       │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ☑️ Include all fees in calculation  │
+│ ☑️ Show tax benefit optimization    │
+│ ☑️ Compare with investment returns  │
+│ ☐ Send rate alerts                 │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
-### Results Visualization (Expandable)
+### Smart Analysis Panel (Enhanced Expandable)
 ```
 ┌─────────────────────────────────────┐
-│ 📈 Payment Breakdown                │
+│ 📋 COMPREHENSIVE ANALYSIS           │
 │                                     │
 │ ┌─────────────────────────────────┐ │
-│ │    [Chart: Monthly Payments]    │ │
-│ │         ╭─╮                     │ │
-│ │      ╭──╯ ╰─╮   Principal       │ │
-│ │   ╭──╯      ╰─╮ ||||||||       │ │
-│ │ ──╯          ╰─────────────     │ │
-│ │              Interest           │ │
-│ │ Years: 1  5  10  15  20        │ │
+│ │ 📊 Interactive Payment Timeline │ │
+│ │                                 │ │
+│ │ Year 1 ├─────┤ Year 10 ├──────┤ │ │ ← Draggable timeline
+│ │ Interest: ₹48K    Interest: ₹35K│ │
+│ │ Principal: ₹15K   Principal: ₹28K│ │
+│ │                                 │ │
+│ │ 🎯 Tap any year for details     │ │
 │ └─────────────────────────────────┘ │
 │                                     │
-│ Total Interest: ₹ 50,37,280         │
-│ Total Principal: ₹ 50,00,000        │
-│ Savings with Prepayment: ₹ 8,50,000│
+│ ┌─────────────────────────────────┐ │
+│ │ 💡 TAX BENEFITS BREAKDOWN       │ │ ← Major differentiator
+│ │                                 │ │
+│ │ Year 1: Save ₹1,05,000          │ │
+│ │ • Principal (80C): ₹45,000      │ │
+│ │ • Interest (24B): ₹60,000       │ │
+│ │                                 │ │
+│ │ 20-Year Total: ₹18,15,000       │ │
+│ │ 🎯 Net EMI after tax: ₹42,821   │ │
+│ └─────────────────────────────────┘ │
 │                                     │
-│ [ Download PDF ] [ Share Results ]  │
+│ ┌─────────────────────────────────┐ │
+│ │ 🏦 BANK COMPARISON & SAVINGS    │ │
+│ │                                 │ │
+│ │ Current Bank   │ Best Available │ │
+│ │ ₹50,387/month  │ ₹48,967/month  │ │
+│ │ Your Rate: 8.5%│ Best Rate: 8.1%│ │
+│ │ ──────────────────────────────  │ │
+│ │ 💰 Switch & Save: ₹3,42,000     │ │ ← Switching savings
+│ │ 🔄 [ Check Eligibility ]        │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ┌─────────────────────────────────┐ │
+│ │ 🚀 PREPAYMENT VS INVESTMENT     │ │ ← Major differentiator
+│ │                                 │ │
+│ │ Strategy A: Prepay ₹2L/year     │ │
+│ │ • Save ₹8,50,000 in interest   │ │
+│ │ • Loan closes in 15 years       │ │
+│ │                                 │ │
+│ │ Strategy B: Invest ₹2L/year     │ │
+│ │ • Earn ₹12,67,000 (12% return)  │ │
+│ │ • Net gain: +₹4,17,000          │ │
+│ │                                 │ │
+│ │ 💡 Recommendation: INVEST        │ │
+│ │ 📈 [ View Detailed Comparison ]  │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ ┌─────────────────────────────────┐ │
+│ │ 📊 SCENARIO COMPARISON          │ │
+│ │                                 │ │
+│ │ Current   │ Optimal  │ Best Case│ │
+│ │ 20Y, 8.5% │ 15Y, 8.1%│ 12Y, 7.8%│ │
+│ │ ₹50,387   │ ₹57,234  │ ₹67,123  │ │
+│ │ ₹1.21Cr   │ ₹1.03Cr  │ ₹96.5L   │ │
+│ │           │ Save 18L │ Save 25L │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ [ 📄 Download Report ] [ 📱 Share ] │ ← Enhanced sharing
+│ [ 🔔 Set Rate Alerts ] [ 💾 Save ] │
 │                                     │
 └─────────────────────────────────────┘
 ```
 
 ## Interaction Patterns
 
-### Input Interactions
-- **Tap Input Field**: Focus with numeric keyboard
-- **Clear Button (×)**: Reset field to empty
-- **Info Button (i)**: Show contextual tooltip
-- **Real-time Calculation**: Update results as user types
+### Enhanced Input Interactions
+- **Property Preset Buttons**: One-tap common amounts (₹50L, ₹75L, ₹1Cr, ₹1.5Cr)
+- **Hybrid Slider + Text**: Touch slider for quick changes, tap to type exact value
+- **Smart Auto-Fill**: LTV auto-calculation, rate suggestions based on profile
+- **Real-time Validation**: Instant feedback with Indian banking limits
+- **Voice Input**: "Set loan amount fifty lakh" for accessibility
 
-### Touch Targets
-- **Minimum Size**: 44px × 44px (iOS) / 48dp × 48dp (Android)
-- **Thumb-Friendly**: Inputs positioned for one-handed use
-- **Clear Visual Feedback**: Pressed states, ripple effects
+### Market Integration Interactions
+- **Rate Ticker Tap**: Expand to show all bank rates comparison
+- **Best Rate Alert**: Tap to check eligibility for better rates
+- **Live Rate Updates**: Background refresh every 30 minutes
+- **Rate History**: Swipe chart to see 6-month rate trends
 
-### Progressive Disclosure
-1. **Basic Inputs**: Always visible (Loan, Rate, Tenure)
-2. **Advanced Options**: Collapsed by default, expand on demand
-3. **Detailed Results**: Show EMI immediately, expand for breakdown
-4. **Visualizations**: Chart/graph hidden until "View Breakdown" tapped
+### Advanced Touch Interactions
+- **Interactive Pie Chart**: Touch segments to highlight, pinch to zoom
+- **Draggable Timeline**: Scrub through payment years with finger
+- **Pull-to-Refresh**: Update market rates and calculations
+- **Haptic Feedback**: Subtle vibration for slider interactions and alerts
 
-## Content Hierarchy
+### Progressive Disclosure (Enhanced)
+1. **Essential Inputs**: Property value, loan amount, rate, tenure (always visible)
+2. **Smart Options**: Tax details, income verification, total costs (expandable)
+3. **Comprehensive Results**: EMI → Net EMI after tax → Full analysis
+4. **Deep Analytics**: Bank comparison, investment analysis, scenarios (on-demand)
+
+### Thumb-Friendly Mobile Design
+- **Primary Zone (0-300px)**: Core inputs and EMI result
+- **Secondary Zone (300-500px)**: Quick actions and key metrics
+- **Extended Zone (500px+)**: Detailed analysis and comparisons
+- **One-Hand Mode**: All essential functions accessible with thumb
+
+## Content Hierarchy (Redesigned for Comprehensive Experience)
 
 ### Primary Information (Always Visible)
-1. **EMI Amount**: Largest text, center-aligned, bold
-2. **Input Fields**: Clear labels, proper grouping
-3. **Basic Results**: Total amount, tax benefits
+1. **Live Market Rates**: Real-time bank rates ticker (builds credibility)
+2. **Monthly EMI**: Largest, bold display with tax-adjusted net EMI
+3. **Property-First Inputs**: Property value → Loan amount → Rate → Tenure
+4. **Smart Indicators**: LTV ratio, optimal tenure suggestions, best rates
 
-### Secondary Information (On Demand)
-1. **Advanced Inputs**: Processing fees, prepayments
-2. **Detailed Breakdown**: Interest vs principal split
-3. **Visualizations**: Charts, amortization schedule
+### Secondary Information (Progressive Disclosure)
+1. **Total Cost Transparency**: True monthly cost including all fees
+2. **Tax Benefits Integration**: Real-time Section 80C/24B calculations
+3. **Multi-Bank Eligibility**: Live eligibility status for major banks
+4. **Investment Comparison**: Prepayment vs investment scenarios
 
-### Helper Information (Contextual)
-1. **Tooltips**: Explain complex terms
-2. **Validation Messages**: Input errors, range limits
-3. **Educational Content**: Why calculations matter
+### Tertiary Information (Deep Analysis)
+1. **Interactive Visualizations**: Touch-enabled charts and timelines
+2. **Scenario Planning**: Multiple loan strategies comparison
+3. **Rate History & Alerts**: Market trend analysis and notifications
+4. **Detailed Breakdowns**: Year-by-year payment and tax benefit analysis
 
-## Error States
+### Contextual Intelligence (Smart Recommendations)
+1. **Optimal Strategies**: AI-powered loan vs investment recommendations
+2. **Market Insights**: Rate trend predictions and switching opportunities
+3. **Personalized Alerts**: Rate drops, policy changes, better offers
+4. **Educational Tooltips**: Indian tax laws, banking regulations, investment basics
 
-### Input Validation
+## Error States & Smart Feedback
+
+### Enhanced Input Validation
 ```
 ┌─────────────────────────────────────┐
-│ Loan Amount (₹)                 [i] │
+│ Property Value (₹)              [i] │
 │ ┌─────────────────────────────────┐ │
-│ │ 2,00,00,000                     │ │ ← Error state (red border)
+│ │ 5,00,00,000                     │ │ ← Warning state (orange border)
 │ └─────────────────────────────────┘ │
-│ ⚠️ Maximum loan amount: ₹1,00,00,000│ ← Error message
+│ ⚠️ High-value property. Consider     │ ← Context-aware message
+│    jumbo loan options (8.2-8.8%)   │
+│ 💡 [ View Jumbo Loan Banks ]        │ ← Smart recommendation
 └─────────────────────────────────────┘
 ```
 
-### Empty States
+### Market-Aware Validation
 ```
 ┌─────────────────────────────────────┐
-│         📊 RESULTS                  │
-│                                     │
-│    📱 Enter loan details above      │
-│    to see your EMI calculation      │
-│                                     │
-│  [  Start with ₹50L, 8.5%, 20Y  ]  │ ← Quick start suggestion
-│                                     │
+│ Interest Rate (% p.a.)          [i] │
+│ ┌─────────────────────────────────┐ │
+│ │ 10.5                            │ │ ← Alert state (yellow border)
+│ └─────────────────────────────────┘ │
+│ 📊 Rate seems high. Current market  │
+│    best: 8.1% (Save ₹8,400/month)  │ ← Market intelligence
+│ 🔍 [ Check Better Rates ]           │ ← Actionable suggestion
 └─────────────────────────────────────┘
 ```
 
-## Mobile UX Considerations
+### Smart Empty States
+```
+┌─────────────────────────────────────┐
+│    💡 COMPREHENSIVE RESULTS         │
+│                                     │
+│  🏡 Start by entering property value│
+│     to unlock India's most          │
+│     comprehensive EMI analysis      │
+│                                     │
+│ Popular choices:                    │
+│ [₹50L Property] [₹75L Property]     │ ← Market-based suggestions
+│ [₹1Cr Property] [₹1.5Cr Property]   │
+│                                     │
+│ 🎯 Get tax benefits + bank          │
+│    comparison + investment advice   │
+└─────────────────────────────────────┘
+```
 
-### Thumb-Friendly Design
-- Primary actions within thumb reach (bottom 2/3 of screen)
-- Large touch targets for all interactive elements
-- Swipe gestures for advanced options panel
+### Eligibility Error States
+```
+┌─────────────────────────────────────┐
+│ ⚡ ELIGIBILITY STATUS               │
+│                                     │
+│ ❌ Current profile doesn't qualify  │
+│    for target loan amount           │
+│                                     │
+│ 💰 Max eligible: ₹45,00,000        │
+│ 📈 Need ₹25K more monthly income    │
+│                                     │
+│ 💡 Solutions:                       │
+│ • Add co-applicant                  │
+│ • Consider ₹45L property instead    │ ← Smart alternatives
+│ • Increase down payment to 30%      │
+│                                     │
+│ [ 🔧 Adjust Loan Parameters ]       │
+└─────────────────────────────────────┘
+```
 
-### One-Handed Usage
-- Input fields positioned for thumb typing
-- Navigation elements at bottom
-- Important actions accessible without stretching
+## Mobile UX Considerations (Enhanced for Comprehensive Experience)
 
-### Performance
-- Instant calculation updates (< 100ms)
-- Smooth animations for expand/collapse
-- Offline calculation capability
+### Thumb-Optimized Interaction Zones
+- **Primary Zone (Bottom 1/3)**: Essential inputs, EMI display, quick actions
+- **Secondary Zone (Middle 1/3)**: Advanced options, bank rates, key metrics
+- **Browse Zone (Top 1/3)**: Detailed analysis, comparisons, visualizations
+- **Slide-Up Panels**: Deep analytics accessible via bottom sheet gesture
 
-### Accessibility
-- Screen reader labels for all inputs
-- High contrast ratios (4.5:1 minimum)
-- Focus indicators for keyboard navigation
-- Semantic markup for calculations
+### One-Handed Usage Optimization
+- **Preset Buttons**: Quick property values (₹50L, ₹75L, ₹1Cr) in thumb reach
+- **Gesture Navigation**: Swipe left/right for bank rate comparison
+- **Voice Commands**: "Calculate EMI for fifty lakh loan" for hands-free input
+- **Smart Defaults**: Auto-populate based on user's previous calculations
+
+### Enhanced Performance (Critical for Comprehensive Features)
+- **Instant Core Calculations**: < 50ms for basic EMI calculation
+- **Progressive Loading**: Tax benefits load in 100ms, bank data in 200ms
+- **Smart Caching**: Bank rates cached for 30 minutes, offline tax calculations
+- **Incremental Updates**: Only recalculate changed components
+
+### Advanced Accessibility (Indian Market Focused)
+- **Multi-language Support**: Hindi tooltips for tax terms (Section 80C/24B)
+- **Voice Input**: Hindi/English voice commands for amount entry
+- **High Contrast Mode**: Enhanced visibility for complex data visualizations
+- **Screen Reader Optimization**: Detailed EMI breakdown in accessible format
+- **Offline Mode**: Core calculations work without internet
+
+### India-Specific UX Patterns
+- **₹ Formatting**: Indian lakhs/crores number system with proper spacing
+- **Regional Bank Integration**: Local bank rate comparison based on user location
+- **Festival Offers**: Seasonal rate alerts during Diwali, New Year periods
+- **Tax Year Awareness**: Automatic tax benefit calculations for current FY
+
+## Key Competitive Differentiators Implemented
+
+### 1. Tax Benefits Integration (Unique in Market)
+- **Real-time Section 80C/24B calculations** with current tax slab awareness
+- **Net EMI display** showing true monthly cost after tax benefits
+- **Annual tax planning** with 20-year projection of total tax savings
+- **Tax slab optimization** recommendations for maximum benefits
+
+### 2. Total Cost Transparency (Market Gap Addressed)
+- **True monthly cost** including processing fees, insurance, legal charges
+- **Hidden cost calculator** comparing advertised EMI vs reality
+- **Fee comparison** across different banks and loan products
+- **Total ownership cost** over loan tenure with all expenses
+
+### 3. Multi-Bank Intelligence (Major Differentiator)
+- **Live rate ticker** from major banks updated every 30 minutes
+- **Eligibility checker** for multiple banks simultaneously
+- **Switching savings calculator** showing potential savings from rate changes
+- **Pre-approval status** integration with bank APIs where available
+
+### 4. Smart Investment Comparison (Unique Feature)
+- **Prepayment vs Investment** analysis with realistic return assumptions
+- **Opportunity cost calculator** showing alternative investment scenarios
+- **Risk-adjusted returns** considering tax implications and market volatility
+- **Dynamic recommendations** based on current market conditions
+
+### 5. Intelligent User Experience
+- **Property-first approach** with automatic LTV calculation
+- **Hybrid input method** combining sliders and text for optimal mobile experience
+- **Smart validation** with market-aware error messages
+- **Contextual recommendations** based on user's financial profile
+
+### 6. Market Integration & Alerts
+- **Rate trend analysis** with 6-month historical data
+- **Personalized rate alerts** when better rates become available
+- **Policy change notifications** affecting home loan benefits
+- **Optimal timing recommendations** for loan applications
+
+This redesigned calculator screen transforms from a basic EMI calculator into a comprehensive home loan decision-making platform, addressing every major gap identified in the competitive analysis while maintaining mobile-first usability.
