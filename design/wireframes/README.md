@@ -1,86 +1,66 @@
-# Home Loan Advisor - Wireframe Documentation
+# Home Loan Advisor - Design Wireframes
 
-## Project Overview
+> ASCII wireframes for India's first tax-aware EMI calculator with PMAY benefits
 
-**App Name:** Home Loan Advisor  
-**Tagline:** "Calculate accurately, save smartly"  
-**Platform:** Flutter Mobile App (iOS/Android)  
-**Target Audience:** Indian home loan borrowers  
+**Purpose**: Establish information architecture and user experience flows for a 2-screen Flutter app targeting Indian home loan borrowers aged 25-45.
 
-## Design Philosophy
+**Target Audience**: Indian professionals seeking accurate home loan calculations with tax benefits and PMAY subsidy integration.
 
-### Core Principles
-- **Simplicity First**: Only 2 main screens to avoid overwhelm
-- **Mobile-First**: Thumb-friendly interactions, scannable content
-- **Trust & Transparency**: Clear calculations, no hidden features
-- **Actionable Insights**: Focus on specific savings strategies with ₹ amounts
+**Last Updated**: 2025-08-30
 
-### App Scope
-- **Pure Calculator + Strategies**: No login, no tracking, no complexity
-- **Offline-Capable**: All calculations work without internet
-- **Indian Context**: Tax benefits, local strategies, ₹ currency
+## App Overview
 
-## Navigation Structure
+**Unique Value Proposition**: "Calculate accurately, save smartly" - India's first tax-aware EMI calculator with PMAY benefits integration.
 
+### Key Features
+- Tax benefits integration (Section 80C, 24B)
+- PMAY subsidy calculator
+- 15 bank interest rates comparison
+- Hybrid slider+text input system
+- Strategy recommendations
+
+### Target Users
+- Age: 25-45 years
+- Profile: Indian home loan borrowers
+- Tech comfort: Moderate to high
+- Financial literacy: Beginner to intermediate
+
+### Technical Context
+- Platform: Flutter mobile app
+- Design System: Material 3
+- Screens: 2 primary (Calculator, Strategies)
+- Navigation: Bottom navigation
+- Orientation: Portrait-first with landscape support
+
+### Design Principles
+1. **Trust & Accuracy**: Professional design conveying financial reliability
+2. **Simplicity**: Complex calculations made approachable
+3. **Indian Context**: Culturally relevant (₹, lakhs/crores, PMAY)
+4. **Accessibility**: WCAG 2.1 AA compliance for inclusive design
+
+## Screen Architecture
+
+### Primary Screens
+1. **Calculator Screen**: EMI calculation with tax benefits
+2. **Strategies Screen**: Loan optimization recommendations
+
+### User Journey
 ```
-Home Loan Advisor App
-├── Calculator Tab (Default)
-│   ├── Basic EMI Calculator
-│   ├── Advanced Options Panel
-│   └── Results Visualization
-└── Strategies Tab
-    ├── Strategy Overview Grid (7 strategies)
-    ├── Strategy Detail Screens (7 screens)
-    └── Combination Calculator
+App Launch → Calculator (Input) → Calculation Results → 
+   ↓
+Strategy Recommendations → Share Results → Return to Calculator
 ```
 
-## Screen Breakdown
+## Design System Goals
 
-### Primary Screens (2)
-1. **Calculator Screen** - EMI calculation with visualizations
-2. **Strategies Screen** - 7 money-saving strategies overview
+- Material 3 implementation with Indian market adaptations
+- Trustworthy color palette suitable for financial data
+- Typography optimized for large numbers and currency
+- Micro-interactions for calculator feedback
+- Responsive design for various device sizes
 
-### Secondary Screens (7)
-- Strategy Detail Screens (one for each strategy)
+## Files in this Directory
 
-## User Flow Summary
-
-1. **Entry Point**: Calculator screen (most common use case)
-2. **Quick Calculation**: Input loan details → Get EMI + tax benefits
-3. **Explore Savings**: Switch to Strategies tab → Browse 7 strategies
-4. **Deep Dive**: Tap strategy → See detailed implementation + savings
-5. **Share Results**: Export/share calculations or strategy insights
-
-## Key Features per Screen
-
-### Calculator Screen
-- Real-time EMI calculation
-- Tax benefit calculator (80C, 24B)
-- Prepayment scenarios
-- Interactive charts/graphs
-- Shareable results
-
-### Strategies Screen
-- 7 strategy cards with savings amounts
-- Quick filtering/sorting
-- Combination calculator
-- Implementation difficulty indicators
-
-### Strategy Detail Screens
-- Hero savings number
-- Before/after comparison
-- Step-by-step implementation
-- Risk factors
-- Share functionality
-
-## Success Metrics
-- **Usability**: Can complete EMI calculation in < 30 seconds
-- **Discoverability**: Users find at least 2 relevant strategies
-- **Actionability**: Clear next steps for each strategy
-- **Trust**: Transparent calculations with explanations
-
-## Technical Considerations
-- **Performance**: Instant calculations, smooth animations
-- **Offline**: Core functionality works without internet
-- **Accessibility**: Screen reader support, sufficient contrast
-- **Localization**: Support for Indian number formats (₹1,23,45,678)
+- `calculator-screen.md` - Primary calculation interface wireframe
+- `strategies-screen.md` - Loan strategy recommendations wireframe  
+- `user-flows.md` - Complete user journey mapping
