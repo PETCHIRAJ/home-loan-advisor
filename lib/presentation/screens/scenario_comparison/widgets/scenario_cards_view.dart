@@ -5,6 +5,8 @@ import '../../../providers/scenario_comparison_providers.dart';
 import 'scenario_card.dart';
 import 'scenario_presets_sheet.dart';
 import 'add_custom_scenario_dialog.dart';
+import '../../../widgets/common/responsive_scenario_cards.dart';
+import '../../../widgets/common/responsive_layout.dart';
 
 class ScenarioCardsView extends ConsumerWidget {
   const ScenarioCardsView({super.key});
@@ -48,35 +50,18 @@ class ScenarioCardsView extends ConsumerWidget {
           ),
         ),
 
-        // Scenarios grid
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final scenario = filteredScenarios[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: ScenarioCard(
-                    scenario: scenario,
-                    isBest: bestScenario?.id == scenario.id,
-                    onToggle: scenario.isBaseScenario
-                        ? null
-                        : () => ref
-                            .read(scenarioComparisonProvider.notifier)
-                            .toggleScenario(scenario.id),
-                    onEdit: () => _editScenario(context, ref, scenario),
-                    onRemove: scenario.isBaseScenario || 
-                             scenario.id.startsWith('custom_') == false
-                        ? null
-                        : () => ref
-                            .read(scenarioComparisonProvider.notifier)
-                            .removeScenario(scenario.id),
-                  ),
-                );
-              },
-              childCount: filteredScenarios.length,
-            ),
+        // Responsive scenario cards with adaptive layout
+        SliverFillRemaining(
+          child: ResponsiveScenarioCards(
+            scenarios: filteredScenarios,
+            bestScenario: bestScenario,
+            onToggleScenario: (scenarioId) => ref
+                .read(scenarioComparisonProvider.notifier)
+                .toggleScenario(scenarioId),
+            onEditScenario: (scenario) => _editScenario(context, ref, scenario),
+            onRemoveScenario: (scenarioId) => ref
+                .read(scenarioComparisonProvider.notifier)
+                .removeScenario(scenarioId),
           ),
         ),
 
@@ -89,9 +74,9 @@ class ScenarioCardsView extends ConsumerWidget {
   }
 
   void _showPresetsSheet(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
+    ResponsiveBottomSheet.show(
       context: context,
-      isScrollControlled: true,
+      maxHeightFactor: 0.85,
       builder: (context) => const ScenarioPresetsSheet(),
     );
   }

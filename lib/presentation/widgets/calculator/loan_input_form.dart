@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/extensions/number_extensions.dart';
 import '../../providers/calculation_providers.dart';
+import '../common/indian_currency_input_field.dart';
+import '../common/responsive_layout.dart';
 
 class LoanInputForm extends ConsumerWidget {
   const LoanInputForm({super.key});
@@ -35,28 +37,27 @@ class LoanInputForm extends ConsumerWidget {
             Text('Loan Details', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 16),
 
-            // Loan Amount
-            _ImprovedNumberInput(
+            // Loan Amount with enhanced Indian currency formatting
+            IndianCurrencyInputField(
               label: 'Loan Amount',
-              value: loanParameters.loanAmount,
-              min: 500000, // 5 lakhs
-              max: 20000000, // 2 crores
-              step: 500000, // 5 lakh steps
-              inputType: InputType.currency,
-              onChanged: loanParamsNotifier.updateLoanAmount,
+              helperText: 'Enter the amount you want to borrow',
+              initialValue: loanParameters.loanAmount,
+              minValue: 500000, // 5 lakhs
+              maxValue: 20000000, // 2 crores
+              onValueChanged: loanParamsNotifier.updateLoanAmount,
             ),
 
             const SizedBox(height: 16),
 
-            // Interest Rate
-            _ImprovedNumberInput(
-              label: 'Interest Rate (% per annum)',
-              value: loanParameters.interestRate,
-              min: 6.0,
-              max: 15.0,
-              step: 0.1,
-              inputType: InputType.percentage,
-              onChanged: loanParamsNotifier.updateInterestRate,
+            // Interest Rate with percentage formatting
+            PercentageInputField(
+              label: 'Interest Rate',
+              helperText: 'Annual interest rate charged by the bank',
+              initialValue: loanParameters.interestRate,
+              minValue: 6.0,
+              maxValue: 15.0,
+              decimalPlaces: 2,
+              onValueChanged: loanParamsNotifier.updateInterestRate,
             ),
 
             const SizedBox(height: 16),
@@ -81,15 +82,14 @@ class LoanInputForm extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
 
-            // Annual Income
-            _ImprovedNumberInput(
+            // Annual Income with enhanced currency formatting
+            IndianCurrencyInputField(
               label: 'Annual Income',
-              value: loanParameters.annualIncome,
-              min: 200000,
-              max: 10000000,
-              step: 100000, // 1 lakh steps
-              inputType: InputType.currency,
-              onChanged: (value) {
+              helperText: 'Your total annual income from all sources',
+              initialValue: loanParameters.annualIncome,
+              minValue: 200000, // 2 lakhs
+              maxValue: 10000000, // 1 crore
+              onValueChanged: (value) {
                 loanParamsNotifier.updateAnnualIncome(value);
                 // Auto-update tax slab based on income
                 _updateTaxSlabBasedOnIncome(value, loanParamsNotifier);

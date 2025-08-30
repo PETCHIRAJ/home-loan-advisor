@@ -3,6 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import '../../../../domain/entities/emi_result.dart';
 import '../../../../core/extensions/number_extensions.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../widgets/common/responsive_chart_container.dart';
+import '../../../widgets/common/responsive_layout.dart';
 
 class OverviewTab extends StatefulWidget {
   final EMIResult result;
@@ -68,10 +70,11 @@ class _OverviewTabState extends State<OverviewTab>
           AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
-              return LayoutBuilder(
-                builder: (context, constraints) {
-                  // Determine layout based on available width
-                  final isCompactLayout = constraints.maxWidth < 500;
+              return ResponsiveChartContainer(
+                chart: LayoutBuilder(
+                  builder: (context, constraints) {
+                    // Use AppBreakpoints for consistent responsive behavior
+                    final isCompactLayout = constraints.maxWidth < AppBreakpoints.tablet;
                   
                   return Container(
                     constraints: BoxConstraints(
@@ -219,8 +222,9 @@ class _OverviewTabState extends State<OverviewTab>
                               ),
                             ],
                           ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             },
           ),

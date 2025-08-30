@@ -6,6 +6,8 @@ import '../../../domain/entities/emi_result.dart';
 import '../../widgets/prepayment/prepayment_tabs.dart';
 import '../../../core/extensions/number_extensions.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../widgets/common/accessible_tab_bar.dart';
+import '../../widgets/common/responsive_layout.dart';
 
 class PrepaymentCalculatorScreen extends ConsumerStatefulWidget {
   final LoanParameters loanParameters;
@@ -186,33 +188,31 @@ class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculato
                   ),
                 ),
 
-                // Tab Bar
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    return TabBar(
-                      controller: _tabController,
-                      isScrollable: constraints.maxWidth < 400,
-                      tabAlignment: constraints.maxWidth < 400 
-                          ? TabAlignment.start 
-                          : TabAlignment.fill,
-                      labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                // Tab Bar with improved accessibility and touch targets
+                Padding(
+                  padding: ResponsivePadding.adaptive(
+                    context,
+                    mobile: const EdgeInsets.all(ResponsiveSpacing.sm),
+                    tablet: const EdgeInsets.symmetric(horizontal: ResponsiveSpacing.md),
+                    desktop: const EdgeInsets.symmetric(horizontal: ResponsiveSpacing.lg),
+                  ),
+                  child: AccessibleTabBar(
+                    controller: _tabController,
+                    isScrollable: MediaQuery.of(context).size.width < AppBreakpoints.tablet,
+                    onTap: (index) {
+                      setState(() {
+                        _selectedIndex = index;
+                      });
+                    },
+                    tabs: List.generate(
+                      _tabLabels.length,
+                      (index) => Tab(
+                        icon: Icon(_tabIcons[index], size: 20),
+                        text: _tabLabels[index],
+                        iconMargin: const EdgeInsets.only(bottom: 4),
                       ),
-                      unselectedLabelStyle: Theme.of(context).textTheme.labelMedium,
-                      indicatorSize: TabBarIndicatorSize.tab,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: constraints.maxWidth < 400 ? 8 : 0,
-                      ),
-                      tabs: List.generate(
-                        _tabLabels.length,
-                        (index) => Tab(
-                          icon: Icon(_tabIcons[index], size: 20),
-                          text: _tabLabels[index],
-                          iconMargin: const EdgeInsets.only(bottom: 4),
-                        ),
-                      ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
               ],
             ),
