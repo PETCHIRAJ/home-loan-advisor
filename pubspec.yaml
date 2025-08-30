@@ -1,0 +1,61 @@
+name: home_loan_advisor
+description: "India's only tax-aware EMI calculator with PMAY benefits"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # State Management
+  flutter_riverpod: ^2.6.1
+  riverpod_annotation: ^2.3.5
+  
+  # Charts and Visualizations
+  fl_chart: ^0.70.1
+  
+  # HTTP and Data
+  http: ^1.2.2
+  dio: ^5.7.0
+  
+  # Local Storage
+  shared_preferences: ^2.3.2
+  
+  # UI Components and Fonts
+  google_fonts: ^6.1.0
+  intl: ^0.19.0
+  
+  # Utilities
+  equatable: ^2.0.5
+  collection: ^1.18.0
+  
+  # Either/Result pattern
+  fpdart: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  
+  # Code Generation
+  build_runner: ^2.4.13
+  riverpod_generator: ^2.4.0
+  json_serializable: ^6.8.0
+  json_annotation: ^4.9.0
+  
+  # Testing
+  mockito: ^5.4.4
+  integration_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+    - data/
