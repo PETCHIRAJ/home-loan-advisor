@@ -99,36 +99,80 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          // Header with toggle
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Balance Trend Over Time',
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
-              ),
-              Row(
-                children: [
-                  Text(
-                    'Show Principal',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(width: 8),
-                  Switch.adaptive(
-                    value: _showPrincipal,
-                    onChanged: (value) {
-                      setState(() {
-                        _showPrincipal = value;
-                      });
-                    },
-                    activeTrackColor: FinancialColors.savings,
-                  ),
-                ],
-              ),
-            ],
+          // Header with toggle - responsive layout
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth < 400) {
+                // Stack vertically on small screens
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Balance Trend Over Time',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Show Principal',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(width: 8),
+                        Switch.adaptive(
+                          value: _showPrincipal,
+                          onChanged: (value) {
+                            setState(() {
+                              _showPrincipal = value;
+                            });
+                          },
+                          activeTrackColor: FinancialColors.savings,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              } else {
+                // Keep side by side on larger screens
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Balance Trend Over Time',
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Show Principal',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(width: 8),
+                        Switch.adaptive(
+                          value: _showPrincipal,
+                          onChanged: (value) {
+                            setState(() {
+                              _showPrincipal = value;
+                            });
+                          },
+                          activeTrackColor: FinancialColors.savings,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }
+            },
           ),
 
           const SizedBox(height: 16),
@@ -137,8 +181,11 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
           AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
-              return SizedBox(
-                height: 300,
+              return ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 200,
+                  maxHeight: 300,
+                ),
                 child: LineChart(
                   LineChartData(
                     gridData: FlGridData(

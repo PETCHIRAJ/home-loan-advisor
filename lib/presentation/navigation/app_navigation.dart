@@ -1,32 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../screens/calculator/calculator_screen.dart';
 import '../screens/strategies/strategies_screen.dart';
 
-class AppNavigation extends StatefulWidget {
+class AppNavigation extends ConsumerStatefulWidget {
   const AppNavigation({super.key});
 
   @override
-  State<AppNavigation> createState() => _AppNavigationState();
+  ConsumerState<AppNavigation> createState() => _AppNavigationState();
 }
 
-class _AppNavigationState extends State<AppNavigation> {
+class _AppNavigationState extends ConsumerState<AppNavigation> {
   int _currentIndex = 0;
+  final PageController _pageController = PageController();
 
-  final List<Widget> _screens = [
-    const CalculatorScreen(),
-    const StrategiesScreen(),
-  ];
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _currentIndex, children: _screens),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        children: const [
+          CalculatorScreen(),
+          StrategiesScreen(),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (index) {
           setState(() {
             _currentIndex = index;
           });
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
         },
         destinations: const [
           NavigationDestination(

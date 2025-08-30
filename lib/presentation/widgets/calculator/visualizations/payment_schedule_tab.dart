@@ -104,6 +104,7 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
     final currentSchedule = _isYearlyView ? _yearlySchedule : _monthlySchedule;
 
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         // Header with toggle
         Padding(
@@ -172,59 +173,68 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
 
         // Table Header
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           color: Theme.of(
             context,
           ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
           child: Row(
             children: [
               SizedBox(
-                width: 50,
+                width: 40,
                 child: Text(
-                  _isYearlyView ? 'Year' : 'Month',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Text(
-                  _isYearlyView ? 'Annual EMI' : 'Monthly EMI',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  _isYearlyView ? 'Yr' : 'Mo',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  _isYearlyView ? 'Annual EMI' : 'Monthly EMI',
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Text(
                   'Principal',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Expanded(
                 flex: 2,
                 child: Text(
                   'Interest',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Text(
                   'Outstanding',
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
                   textAlign: TextAlign.center,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
@@ -232,7 +242,11 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
         ),
 
         // Scrollable Table Content
-        Expanded(
+        ConstrainedBox(
+          constraints: const BoxConstraints(
+            minHeight: 200,
+            maxHeight: 400,
+          ),
           child: AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
@@ -252,8 +266,8 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                     ),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
+                        horizontal: 12,
+                        vertical: 10,
                       ),
                       color: isEvenRow
                           ? Theme.of(context).colorScheme.surface
@@ -264,15 +278,16 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                       child: Row(
                         children: [
                           SizedBox(
-                            width: 50,
+                            width: 40,
                             child: Text(
                               item.period.toString(),
                               style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
                             ),
                           ),
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: Text(
                               item.emiAmount.toCompactFormat(),
                               style: Theme.of(context).textTheme.bodySmall
@@ -283,6 +298,8 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                                     fontWeight: FontWeight.w600,
                                   ),
                               textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Expanded(
@@ -295,6 +312,8 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                                     fontWeight: FontWeight.w500,
                                   ),
                               textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Expanded(
@@ -307,10 +326,12 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                                     fontWeight: FontWeight.w500,
                                   ),
                               textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Expanded(
-                            flex: 2,
+                            flex: 3,
                             child: Text(
                               item.outstandingBalance.toCompactFormat(),
                               style: Theme.of(context).textTheme.bodySmall
@@ -322,6 +343,8 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                                     fontWeight: FontWeight.w500,
                                   ),
                               textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
@@ -363,23 +386,28 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
               ),
               const SizedBox(height: 12),
 
-              Row(
+              Wrap(
+                spacing: 16,
+                runSpacing: 16,
                 children: [
-                  Expanded(
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width - 80) / 3,
                     child: _SummaryItem(
                       label: 'Total Payments',
                       value: currentSchedule.length.toString(),
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  Expanded(
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width - 80) / 3,
                     child: _SummaryItem(
                       label: 'Total Principal',
                       value: widget.result.principalAmount.toCompactFormat(),
                       color: FinancialColors.savings,
                     ),
                   ),
-                  Expanded(
+                  SizedBox(
+                    width: (MediaQuery.of(context).size.width - 80) / 3,
                     child: _SummaryItem(
                       label: 'Total Interest',
                       value: widget.result.totalInterest.toCompactFormat(),

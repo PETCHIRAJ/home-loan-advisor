@@ -5,6 +5,7 @@ import '../../domain/repositories/calculation_repository.dart';
 import '../../domain/usecases/calculate_emi_usecase.dart';
 import '../../domain/usecases/get_bank_offers_usecase.dart';
 import '../../domain/usecases/get_optimization_strategies_usecase.dart';
+import '../../domain/usecases/get_money_saving_strategies_usecase.dart';
 import '../../data/repositories/bank_repository_impl.dart';
 import '../../data/repositories/calculation_repository_impl.dart';
 import '../../data/datasources/local_data_source.dart';
@@ -45,4 +46,9 @@ final getOptimizationStrategiesUseCaseProvider =
     Provider<GetOptimizationStrategiesUseCase>((ref) {
       final repository = ref.watch(calculationRepositoryProvider);
       return GetOptimizationStrategiesUseCase(repository);
+    });
+
+final getMoneySavingStrategiesUseCaseProvider =
+    Provider<GetMoneySavingStrategiesUseCase>((ref) {
+      return GetMoneySavingStrategiesUseCase();
     });

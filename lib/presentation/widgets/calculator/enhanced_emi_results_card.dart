@@ -7,6 +7,7 @@ import 'visualizations/overview_tab.dart';
 import 'visualizations/balance_trend_tab.dart';
 import 'visualizations/yearly_breakdown_tab.dart';
 import 'visualizations/payment_schedule_tab.dart';
+import '../../screens/prepayment/prepayment_calculator_screen.dart';
 
 class EnhancedEMIResultsCard extends StatefulWidget {
   final EMIResult result;
@@ -60,6 +61,21 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
     super.dispose();
   }
 
+  String _getShortLabel(String label) {
+    switch (label) {
+      case 'Overview':
+        return 'Overview';
+      case 'Balance Trend':
+        return 'Trend';
+      case 'Yearly Breakdown':
+        return 'Yearly';
+      case 'Payment Schedule':
+        return 'Schedule';
+      default:
+        return label;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -85,23 +101,47 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                 const SizedBox(height: 16),
 
                 // Quick Summary Row
-                Row(
-                  children: [
-                    Expanded(
-                      child: _SummaryItem(
-                        label: 'Total Interest',
-                        value: widget.result.totalInterest.toIndianFormat(),
-                        color: FinancialColors.cost,
-                      ),
-                    ),
-                    Expanded(
-                      child: _SummaryItem(
-                        label: 'Total Amount',
-                        value: widget.result.totalAmount.toIndianFormat(),
-                        color: FinancialColors.neutral,
-                      ),
-                    ),
-                  ],
+                LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (constraints.maxWidth < 400) {
+                      // Stack vertically on small screens
+                      return Column(
+                        children: [
+                          _SummaryItem(
+                            label: 'Total Interest',
+                            value: widget.result.totalInterest.toIndianFormat(),
+                            color: FinancialColors.cost,
+                          ),
+                          const SizedBox(height: 12),
+                          _SummaryItem(
+                            label: 'Total Amount',
+                            value: widget.result.totalAmount.toIndianFormat(),
+                            color: FinancialColors.neutral,
+                          ),
+                        ],
+                      );
+                    } else {
+                      // Keep side by side on larger screens
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: _SummaryItem(
+                              label: 'Total Interest',
+                              value: widget.result.totalInterest.toIndianFormat(),
+                              color: FinancialColors.cost,
+                            ),
+                          ),
+                          Expanded(
+                            child: _SummaryItem(
+                              label: 'Total Amount',
+                              value: widget.result.totalAmount.toIndianFormat(),
+                              color: FinancialColors.neutral,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -124,69 +164,88 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                     ),
                   ),
                 ),
-                child: TabBar(
-                  controller: _tabController,
-                  isScrollable: true,
-                  tabAlignment: TabAlignment.start,
-                  labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-                  unselectedLabelStyle: Theme.of(context).textTheme.labelMedium,
-                  tabs: List.generate(
-                    _tabLabels.length,
-                    (index) => Tab(
-                      icon: Icon(_tabIcons[index], size: 20),
-                      text: _tabLabels[index],
-                    ),
-                  ),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return TabBar(
+                      controller: _tabController,
+                      isScrollable: constraints.maxWidth < 600,
+                      tabAlignment: constraints.maxWidth < 600 
+                          ? TabAlignment.start 
+                          : TabAlignment.fill,
+                      labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                      unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: constraints.maxWidth < 600 ? 8 : 0,
+                      ),
+                      tabs: List.generate(
+                        _tabLabels.length,
+                        (index) => Tab(
+                          icon: Icon(_tabIcons[index], size: 18),
+                          text: constraints.maxWidth < 400 
+                              ? _getShortLabel(_tabLabels[index])
+                              : _tabLabels[index],
+                          iconMargin: const EdgeInsets.only(bottom: 4),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
 
               // Tab Content
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (child, animation) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: SlideTransition(
-                      position: Tween<Offset>(
-                        begin: const Offset(0.1, 0),
-                        end: Offset.zero,
-                      ).animate(animation),
-                      child: child,
-                    ),
-                  );
-                },
-                child: IndexedStack(
-                  key: ValueKey(_selectedIndex),
-                  index: _selectedIndex,
-                  children: [
-                    // Overview Tab
-                    OverviewTab(
-                      result: widget.result,
-                      isVisible: _selectedIndex == 0,
-                    ),
+              Container(
+                constraints: const BoxConstraints(minHeight: 300),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(0.05, 0),
+                          end: Offset.zero,
+                        ).animate(CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeInOut,
+                        )),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: IndexedStack(
+                    key: ValueKey(_selectedIndex),
+                    index: _selectedIndex,
+                    children: [
+                      // Overview Tab
+                      OverviewTab(
+                        result: widget.result,
+                        isVisible: _selectedIndex == 0,
+                      ),
 
-                    // Balance Trend Tab
-                    BalanceTrendTab(
-                      result: widget.result,
-                      parameters: widget.parameters,
-                      isVisible: _selectedIndex == 1,
-                    ),
+                      // Balance Trend Tab
+                      BalanceTrendTab(
+                        result: widget.result,
+                        parameters: widget.parameters,
+                        isVisible: _selectedIndex == 1,
+                      ),
 
-                    // Yearly Breakdown Tab
-                    YearlyBreakdownTab(
-                      result: widget.result,
-                      isVisible: _selectedIndex == 2,
-                    ),
+                      // Yearly Breakdown Tab
+                      YearlyBreakdownTab(
+                        result: widget.result,
+                        isVisible: _selectedIndex == 2,
+                      ),
 
-                    // Payment Schedule Tab
-                    PaymentScheduleTab(
-                      result: widget.result,
-                      parameters: widget.parameters,
-                      isVisible: _selectedIndex == 3,
-                    ),
-                  ],
+                      // Payment Schedule Tab
+                      PaymentScheduleTab(
+                        result: widget.result,
+                        parameters: widget.parameters,
+                        isVisible: _selectedIndex == 3,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -272,6 +331,73 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
 
         const SizedBox(height: 16),
 
+        // Prepayment Calculator Button
+        Card(
+          color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PrepaymentCalculatorScreen(
+                    loanParameters: widget.parameters,
+                    emiResult: widget.result,
+                  ),
+                ),
+              );
+            },
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.calculate,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Prepayment Calculator',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Calculate how prepayments can save you money and reduce loan tenure',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
         // PMAY Benefit Card (if applicable)
         if (widget.result.pmayBenefit != null &&
             widget.result.pmayBenefit!.isEligible)
@@ -295,43 +421,90 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                   ),
                   const SizedBox(height: 12),
 
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
+                  LayoutBuilder(
+                    builder: (context, constraints) {
+                      if (constraints.maxWidth < 350) {
+                        return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Category',
-                              style: Theme.of(context).textTheme.bodySmall,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Category',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                Text(
+                                  widget.result.pmayBenefit!.category,
+                                  style: Theme.of(context).textTheme.titleSmall,
+                                ),
+                              ],
                             ),
-                            Text(
-                              widget.result.pmayBenefit!.category,
-                              style: Theme.of(context).textTheme.titleSmall,
+                            const SizedBox(height: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Subsidy Amount',
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                Text(
+                                  widget.result.pmayBenefit!.subsidyAmount
+                                      .toEMIFormat(),
+                                  style: FinancialTypography.moneyMedium.copyWith(
+                                    color: FinancialColors.pmayBenefit,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                        );
+                      } else {
+                        return Row(
                           children: [
-                            Text(
-                              'Subsidy Amount',
-                              style: Theme.of(context).textTheme.bodySmall,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Category',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    widget.result.pmayBenefit!.category,
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              widget.result.pmayBenefit!.subsidyAmount
-                                  .toEMIFormat(),
-                              style: FinancialTypography.moneyMedium.copyWith(
-                                color: FinancialColors.pmayBenefit,
-                                fontWeight: FontWeight.bold,
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    'Subsidy Amount',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    widget.result.pmayBenefit!.subsidyAmount
+                                        .toEMIFormat(),
+                                    style: FinancialTypography.moneyMedium.copyWith(
+                                      color: FinancialColors.pmayBenefit,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                    ],
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
@@ -358,7 +531,12 @@ class _SummaryItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
+        Text(
+          label, 
+          style: Theme.of(context).textTheme.bodySmall,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        ),
         const SizedBox(height: 4),
         Text(
           value,
@@ -366,6 +544,8 @@ class _SummaryItem extends StatelessWidget {
             color: color,
             fontWeight: FontWeight.w600,
           ),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -385,26 +565,85 @@ class _TaxBenefitRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < 300) {
+          // Stack vertically on very small screens
+          return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(section, style: Theme.of(context).textTheme.titleSmall),
-              Text(description, style: Theme.of(context).textTheme.bodySmall),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    section, 
+                    style: Theme.of(context).textTheme.titleSmall,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    description, 
+                    style: Theme.of(context).textTheme.bodySmall,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                amount.toEMIFormat(),
+                style: FinancialTypography.moneyMedium.copyWith(
+                  color: FinancialColors.taxBenefit,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ],
-          ),
-        ),
-        Text(
-          amount.toEMIFormat(),
-          style: FinancialTypography.moneyMedium.copyWith(
-            color: FinancialColors.taxBenefit,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ],
+          );
+        } else {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 3,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      section, 
+                      style: Theme.of(context).textTheme.titleSmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      description, 
+                      style: Theme.of(context).textTheme.bodySmall,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                flex: 2,
+                child: Text(
+                  amount.toEMIFormat(),
+                  style: FinancialTypography.moneyMedium.copyWith(
+                    color: FinancialColors.taxBenefit,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.end,
+                ),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }

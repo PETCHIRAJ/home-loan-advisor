@@ -60,6 +60,7 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             'Year-wise Payment Breakdown',
@@ -75,6 +76,8 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
                 context,
               ).colorScheme.onSurface.withValues(alpha: 0.7),
             ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
 
           const SizedBox(height: 16),
@@ -83,8 +86,11 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
           AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
-              return SizedBox(
-                height: 350,
+              return ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 250,
+                  maxHeight: 350,
+                ),
                 child: BarChart(
                   BarChartData(
                     maxY: _getMaxY(),

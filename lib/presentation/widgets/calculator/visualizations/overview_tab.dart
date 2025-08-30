@@ -68,76 +68,159 @@ class _OverviewTabState extends State<OverviewTab>
           AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {
-              return SizedBox(
-                height: 250,
-                child: Row(
-                  children: [
-                    // Pie Chart
-                    Expanded(
-                      flex: 2,
-                      child: PieChart(
-                        PieChartData(
-                          sections: _buildPieChartSections(),
-                          centerSpaceRadius: 40,
-                          sectionsSpace: 2,
-                          pieTouchData: PieTouchData(
-                            enabled: true,
-                            touchCallback: (FlTouchEvent event, response) {
-                              if (!event.isInterestedForInteractions ||
-                                  response == null ||
-                                  response.touchedSection == null) {
-                                setState(() {
-                                  touchedIndex = -1;
-                                });
-                                return;
-                              }
-                              setState(() {
-                                touchedIndex = response
-                                    .touchedSection!
-                                    .touchedSectionIndex;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  // Determine layout based on available width
+                  final isCompactLayout = constraints.maxWidth < 500;
+                  
+                  return Container(
+                    constraints: BoxConstraints(
+                      minHeight: isCompactLayout ? 400 : 250,
+                      maxHeight: isCompactLayout ? 500 : 300,
                     ),
-
-                    // Legend
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          _LegendItem(
-                            color: Theme.of(context).colorScheme.primary,
-                            label: 'Principal',
-                            value: widget.result.principalAmount
-                                .toIndianFormat(),
-                            percentage:
-                                (widget.result.principalAmount /
-                                        widget.result.totalAmount *
-                                        100)
-                                    .toStringAsFixed(1),
-                            isSelected: touchedIndex == 0,
+                    child: isCompactLayout 
+                        ? Column(
+                            children: [
+                              // Pie Chart on top for compact layout
+                              Expanded(
+                                child: Center(
+                                  child: SizedBox(
+                                    width: 200,
+                                    height: 200,
+                                    child: PieChart(
+                                      PieChartData(
+                                        sections: _buildPieChartSections(),
+                                        centerSpaceRadius: 35,
+                                        sectionsSpace: 2,
+                                        pieTouchData: PieTouchData(
+                                          enabled: true,
+                                          touchCallback: (FlTouchEvent event, response) {
+                                            if (!event.isInterestedForInteractions ||
+                                                response == null ||
+                                                response.touchedSection == null) {
+                                              setState(() {
+                                                touchedIndex = -1;
+                                              });
+                                              return;
+                                            }
+                                            setState(() {
+                                              touchedIndex = response
+                                                  .touchedSection!
+                                                  .touchedSectionIndex;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              // Legend below for compact layout
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _LegendItem(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      label: 'Principal',
+                                      value: widget.result.principalAmount
+                                          .toCompactFormat(),
+                                      percentage:
+                                          (widget.result.principalAmount /
+                                                  widget.result.totalAmount *
+                                                  100)
+                                              .toStringAsFixed(1),
+                                      isSelected: touchedIndex == 0,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: _LegendItem(
+                                      color: FinancialColors.cost,
+                                      label: 'Interest',
+                                      value: widget.result.totalInterest.toCompactFormat(),
+                                      percentage:
+                                          (widget.result.totalInterest /
+                                                  widget.result.totalAmount *
+                                                  100)
+                                              .toStringAsFixed(1),
+                                      isSelected: touchedIndex == 1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              // Pie Chart on left for wide layout
+                              Expanded(
+                                flex: 2,
+                                child: PieChart(
+                                  PieChartData(
+                                    sections: _buildPieChartSections(),
+                                    centerSpaceRadius: 40,
+                                    sectionsSpace: 2,
+                                    pieTouchData: PieTouchData(
+                                      enabled: true,
+                                      touchCallback: (FlTouchEvent event, response) {
+                                        if (!event.isInterestedForInteractions ||
+                                            response == null ||
+                                            response.touchedSection == null) {
+                                          setState(() {
+                                            touchedIndex = -1;
+                                          });
+                                          return;
+                                        }
+                                        setState(() {
+                                          touchedIndex = response
+                                              .touchedSection!
+                                              .touchedSectionIndex;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              // Legend on right for wide layout
+                              Expanded(
+                                flex: 3,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    _LegendItem(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      label: 'Principal',
+                                      value: widget.result.principalAmount
+                                          .toIndianFormat(),
+                                      percentage:
+                                          (widget.result.principalAmount /
+                                                  widget.result.totalAmount *
+                                                  100)
+                                              .toStringAsFixed(1),
+                                      isSelected: touchedIndex == 0,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    _LegendItem(
+                                      color: FinancialColors.cost,
+                                      label: 'Interest',
+                                      value: widget.result.totalInterest.toIndianFormat(),
+                                      percentage:
+                                          (widget.result.totalInterest /
+                                                  widget.result.totalAmount *
+                                                  100)
+                                              .toStringAsFixed(1),
+                                      isSelected: touchedIndex == 1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 16),
-                          _LegendItem(
-                            color: FinancialColors.cost,
-                            label: 'Interest',
-                            value: widget.result.totalInterest.toIndianFormat(),
-                            percentage:
-                                (widget.result.totalInterest /
-                                        widget.result.totalAmount *
-                                        100)
-                                    .toStringAsFixed(1),
-                            isSelected: touchedIndex == 1,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),
@@ -289,31 +372,40 @@ class _LegendItem extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            width: 16,
-            height: 16,
+            width: 14,
+            height: 14,
             decoration: BoxDecoration(
               color: color,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: BorderRadius.circular(3),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                   label,
                   style: Theme.of(
                     context,
-                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                  ).textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 2),
                 Text(
                   value,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontWeight: FontWeight.w500,
                     color: color,
+                    fontSize: 11,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Text(
                   '$percentage%',
@@ -321,7 +413,10 @@ class _LegendItem extends StatelessWidget {
                     color: Theme.of(
                       context,
                     ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    fontSize: 10,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),

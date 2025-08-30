@@ -62,21 +62,26 @@ class CalculatorScreen extends ConsumerWidget {
             FilledButton(
               onPressed: calculatorState.isLoading
                   ? null
-                  : () {
+                  : () async {
                       ref
                           .read(calculatorScreenStateProvider.notifier)
                           .setLoading(true);
-                      ref
+                      
+                      await ref
                           .read(emiCalculationProvider.notifier)
-                          .calculateEMI()
-                          .then((_) {
-                            ref
-                                .read(calculatorScreenStateProvider.notifier)
-                                .setLoading(false);
-                            ref
-                                .read(calculatorScreenStateProvider.notifier)
-                                .showResults();
-                          });
+                          .calculateEMI();
+                      
+                      ref
+                          .read(calculatorScreenStateProvider.notifier)
+                          .setLoading(false);
+                      
+                      // Check if calculation was successful and show results
+                      final calculationResult = ref.read(emiCalculationProvider);
+                      if (calculationResult.hasValue && calculationResult.value != null) {
+                        ref
+                            .read(calculatorScreenStateProvider.notifier)
+                            .showResults();
+                      }
                     },
               child: calculatorState.isLoading
                   ? const SizedBox(

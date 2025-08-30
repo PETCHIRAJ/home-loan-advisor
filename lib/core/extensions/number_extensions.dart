@@ -37,6 +37,19 @@ extension NumberExtensions on double {
     }
   }
 
+  /// Formats as compact Indian format
+  String toCompactIndianFormat() {
+    if (this >= 10000000) {
+      return '₹${(this / 10000000).toStringAsFixed(1)}Cr';
+    } else if (this >= 100000) {
+      return '₹${(this / 100000).toStringAsFixed(1)}L';
+    } else if (this >= 1000) {
+      return '₹${(this / 1000).toStringAsFixed(0)}K';
+    } else {
+      return '₹${toStringAsFixed(0)}';
+    }
+  }
+
   /// Checks if number is in valid range
   bool isInRange(double min, double max) {
     return this >= min && this <= max;

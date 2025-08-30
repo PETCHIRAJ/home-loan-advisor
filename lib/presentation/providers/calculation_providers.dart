@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/loan_parameters.dart' as domain;
 import '../../domain/entities/emi_result.dart';
 import '../../domain/entities/optimization_strategy.dart';
+import '../../domain/entities/money_saving_strategy.dart';
 import 'app_providers.dart';
 
 // Loan parameters state notifier
@@ -288,4 +289,52 @@ final calculationHistoryProvider =
       AsyncValue<List<Map<String, dynamic>>>
     >((ref) {
       return CalculationHistoryNotifier(ref);
+    });
+
+// Money-saving strategies notifier
+class MoneySavingStrategiesNotifier
+    extends StateNotifier<AsyncValue<List<PersonalizedStrategyResult>>> {
+  MoneySavingStrategiesNotifier(this._ref) : super(const AsyncValue.data([]));
+
+  final Ref _ref;
+
+  Future<void> loadStrategies() async {
+    final parameters = _ref.read(loanParametersProvider);
+    final emiCalculation = _ref.read(emiCalculationProvider);
+
+    // Wait for EMI calculation to complete
+    if (!emiCalculation.hasValue || emiCalculation.value == null) {
+      state = const AsyncValue.error(
+        'EMI calculation required first',
+        StackTrace.empty,
+      );
+      return;
+    }
+
+    state = const AsyncValue.loading();
+
+    try {
+      final useCase = _ref.read(getMoneySavingStrategiesUseCaseProvider);
+      final result = await useCase(
+        parameters: parameters,
+        currentResult: emiCalculation.value!,
+      );
+
+      state = AsyncValue.data(result);
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  void clearStrategies() {
+    state = const AsyncValue.data([]);
+  }
+}
+
+final moneySavingStrategiesProvider =
+    StateNotifierProvider<
+      MoneySavingStrategiesNotifier,
+      AsyncValue<List<PersonalizedStrategyResult>>
+    >((ref) {
+      return MoneySavingStrategiesNotifier(ref);
     });
