@@ -25,7 +25,7 @@ Indian home loan borrowers face:
 
 ### 1.2 Solution
 A focused mobile app that:
-- Provides the most comprehensive EMI calculator in the market
+- Provides India's only tax-aware EMI calculator with verified rates
 - Educates users on proven money-saving strategies
 - Delivers immediate utility with long-term value
 - Works offline with privacy-first approach
@@ -35,6 +35,7 @@ A focused mobile app that:
 - **Market Size**: ~10 million active home loans (₹22 lakh crore outstanding)
 - **Average Loan**: ₹30-50 lakhs
 - **Savings Potential**: ₹2-8 lakhs per user
+- **Coverage**: 15 major banks (80% market share)
 
 ---
 
@@ -112,34 +113,35 @@ Summary Cards:
    - Moratorium period
 ```
 
-#### Tax Integration
+#### Tax Integration (✅ Fully Available Data)
 ```
 - Section 24(b): Interest deduction (₹2L limit)
 - Section 80C: Principal deduction (₹1.5L limit)
-- Section 80EE: First-time buyer benefit
+- Section 80EEA: Additional ₹1.5L (valid till 2026)
 - Net EMI after tax benefits
 - Effective vs Actual interest rate
+- PMAY subsidy integration (₹1.8L max)
 ```
 
-#### Smart Features
+#### Smart Features (Adjusted for Data Reality)
 ```
 - Affordability Check (40% income rule)
-- Loan Eligibility Estimator
+- Basic Eligibility Indicator (age, income criteria)
 - Best Tenure Finder
-- Rate Alert System
+- Daily Rate Updates (15 major banks)
 - Calculation History with names
 - Multi-loan Comparison
 ```
 
-### 2.3 What Makes It Complete
+### 2.3 What Makes It Comprehensive (Realistic)
 
-**Beyond Competition**:
-1. **Full Transparency**: Shows all hidden costs upfront
-2. **Real Scenarios**: Step-up EMI, moratorium - features banks hide
-3. **Tax Benefits**: Actual take-home impact calculation
-4. **Smart Optimization**: AI-powered prepayment suggestions
+**Genuine Differentiators**:
+1. **Tax-Aware Calculations**: Only calculator with 80C/24B/PMAY integration
+2. **Total Cost Transparency**: Processing fees, stamp duty, insurance
+3. **15 Major Banks**: Daily verified rates (80% market coverage)
+4. **Smart Prepayment**: Mathematical optimization strategies
 5. **Privacy First**: All calculations offline
-6. **Educational**: Explains formulas and concepts
+6. **Educational**: Explains tax benefits and savings
 
 ---
 
@@ -182,10 +184,12 @@ Summary Cards:
    - Effort: High
    - Implementation: 2-4 weeks
 
-5. **Bi-weekly Payments**
-   - Savings: ₹6-10 lakhs
-   - Effort: Medium
-   - Implementation: Next month
+5. **Round-up EMI Strategy**
+   - Savings: ₹3-5 lakhs
+   - Effort: Low
+   - Implementation: Immediate
+   
+   Note: Bi-weekly not available in Indian banking
 
 ### 3.2 Strategy Details View
 

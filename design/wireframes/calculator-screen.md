@@ -1,7 +1,7 @@
-# Calculator Screen Wireframe - Most Comprehensive EMI Calculator
+# Calculator Screen Wireframe - Tax-Aware EMI Calculator
 
 ## Layout Overview
-The redesigned calculator screen delivers India's most comprehensive home loan EMI experience with integrated tax benefits, multi-bank comparison, total cost transparency, and smart investment insights. Built for mobile-first interaction with progressive disclosure.
+The calculator screen delivers India's only tax-aware EMI calculator with PMAY integration, verified rates from 15 major banks, total cost transparency, and smart prepayment strategies. Built for mobile-first interaction with realistic data availability.
 
 ## ASCII Wireframe
 
@@ -9,7 +9,7 @@ The redesigned calculator screen delivers India's most comprehensive home loan E
 ┌─────────────────────────────────────┐ ← StatusBar (iOS/Android)
 │ 🏡 Home Loan Advisor           [📤] │ ← App Header (title + share)
 ├─────────────────────────────────────┤
-│ ☰ MARKETS: SBI 8.4% | HDFC 8.6% ↑  │ ← Live rate ticker (key differentiator)
+│ ☰ TODAY: SBI 8.4% | HDFC 8.6% | ICICI 8.5% │ ← Daily rate updates (15 banks)
 ├─────────────────────────────────────┤
 │                                     │
 │  💰 SMART EMI CALCULATOR            │ ← Enhanced section title
@@ -33,7 +33,7 @@ The redesigned calculator screen delivers India's most comprehensive home loan E
 │  ┌─────────────────────────────────┐ │
 │  │ Interest Rate (% p.a.)      [i] │ │
 │  │ ┌──────────────┬──────────────┐ │ │
-│  │ │ 8.5      [×] │ 📊 Best: 8.1%│ │ │ ← Current market best display
+│  │ │ 8.5      [×] │ 📊 Range: 8.1-9.5%│ │ │ ← Market rate range
 │  │ └──────────────┴──────────────┘ │ │
 │  │ ══════════════░░░░░░░░░░░░░░    │ │ ← Hybrid: slider + text input
 │  └─────────────────────────────────┘ │
@@ -57,8 +57,9 @@ The redesigned calculator screen delivers India's most comprehensive home loan E
 │  │      MONTHLY EMI                │ │
 │  │       ₹ 50,387                  │ │ ← Larger, bold EMI
 │  │                                 │ │
-│  │ 📈 Net EMI (after tax): ₹42,821│ │ ← Major differentiator!
+│  │ 📈 Net EMI (after tax): ₹42,821│ │ ← Unique: Tax benefits!
 │  │    💰 Tax savings: ₹7,566/month │ │
+│  │    🏠 PMAY eligible: Save ₹1.8L │ │
 │  └─────────────────────────────────┘ │
 │                                     │
 │  ┌───────────────┬─────────────────┐ │
@@ -81,11 +82,11 @@ The redesigned calculator screen delivers India's most comprehensive home loan E
 │  └─────────────────────────────────┘ │
 │                                     │
 │  ┌─────────────────────────────────┐ │
-│  │ ⚡ ELIGIBILITY CHECKER           │ │ ← Major differentiator
-│  │ ✅ SBI: Pre-approved (8.4%)     │ │
-│  │ ✅ HDFC: Eligible (8.6%)        │ │
-│  │ ⚠️ ICICI: Income review needed   │ │
-│  │ 🔍 [ Check More Banks ]         │ │
+│  │ ⚡ ELIGIBILITY INDICATOR         │ │ ← Basic eligibility
+│  │ ✅ Age & Income: Eligible       │ │
+│  │ 📊 15 Banks: 8.1% - 9.5% range │ │
+│  │ ⚠️ Final rates after assessment │ │
+│  │ 🔍 [ View Bank Details ]        │ │
 │  └─────────────────────────────────┘ │
 │                                     │
 │  [ 📋 Smart Analysis ] [ 🔄 Compare]│ ← Enhanced action buttons
@@ -104,10 +105,11 @@ The redesigned calculator screen delivers India's most comprehensive home loan E
 - **Interest Rate**: Market-aware with "Best Rate" indicator and slider
 - **Loan Tenure**: Smart recommendations with optimal tenure suggestions
 
-### Live Market Integration
-- **Rate Ticker**: Real-time updates from major banks (SBI, HDFC, ICICI, Axis)
-- **Best Rate Display**: Current market best rate prominently shown
-- **Rate Alerts**: Notification when rates drop below user's current rate
+### Daily Market Updates (Realistic)
+- **Rate Display**: Daily verified rates from 15 major banks
+- **Rate Range**: Shows market range (8.1% - 9.5%) instead of exact rates
+- **Last Updated**: Clear timestamp showing data freshness
+- **Disclaimer**: "Rates indicative, subject to credit assessment"
 
 ### Smart Options Panel (Enhanced Collapsible)
 ```
@@ -132,8 +134,9 @@ The redesigned calculator screen delivers India's most comprehensive home loan E
 │ ┌─────────────────────────────────┐ │
 │ │ 💰 Tax Planning Section     [i] │ │
 │ │ Annual Income: ₹18,00,000       │ │
-│ │ 📊 Section 80C: ₹1,50,000      │ │ ← Major differentiator
+│ │ 📊 Section 80C: ₹1,50,000      │ │ ← Unique: Tax calculator
 │ │ 📊 Section 24B: ₹2,00,000      │ │
+│ │ 🏠 PMAY Check: Save ₹1.8L      │ │
 │ │ Tax Bracket: 30%                │ │
 │ └─────────────────────────────────┘ │
 │                                     │

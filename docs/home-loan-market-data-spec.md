@@ -361,53 +361,49 @@ This document defines the structure and update requirements for `home-loan-marke
 }
 ```
 
-## Update Frequency Requirements
+## Update Frequency Requirements (Realistic)
 
-### Real-Time Updates (Every 15 minutes)
-- During market hours (9 AM - 5 PM IST)
-- Only for rate ticker display
-- Minimal data: current rates from top 5 banks
+### Daily Updates (Manual Verification)
+- Bank interest rates from 15 major banks
+- Processing fees and charges
+- Special offers and schemes
+- Data freshness timestamp
+- Manual verification via web scraping
 
-### High Frequency Updates (Every 6 hours)
-- Bank interest rates
-- Processing fees
-- Special offers
-- Eligibility criteria changes
+### Weekly Updates (Every Monday)
+- Special offers verification
+- Festival schemes
+- Limited-time promotions
+- Rate changes tracking
 
-### Daily Updates (Once at 12:01 AM IST)
-- Government scheme changes
+### Monthly Updates
+- Government scheme changes (PMAY)
 - Tax benefit updates
 - Market trends
 - Average property prices
 - Insurance rates
 
-### Weekly Updates (Every Monday)
-- Customer ratings and reviews
-- Bank market share data
-- Loan growth statistics
-- Default rates
-
-### Monthly Updates (1st of each month)
-- Legal and technical charges
-- Stamp duty rates
-- Registration charges
-- Calculator defaults
-- Prepayment strategy statistics
-
 ### Quarterly Updates
+- Legal and technical charges
+- Stamp duty rates (state-wise)
+- Registration charges
 - Property appreciation rates
 - Inflation adjustments
+
+### Annual Updates
+- Tax rules (Section 80C, 24B)
+- Calculator defaults
 - Investment return assumptions
 - Long-term market forecasts
 
 ## Data Sources
 
-### Primary Sources
-1. **RBI** - Repo rates, banking regulations
-2. **Individual Banks** - Direct API integration for rates
-3. **Government Portals** - PMAY, tax regulations
-4. **Property Portals** - Average property prices
-5. **Insurance Regulators** - IRDAI for insurance rates
+### Primary Sources (Verified Available)
+1. **RBI** - Repo rates, banking regulations (Public data)
+2. **Individual Banks** - Website scraping (No APIs available)
+3. **Government Portals** - PMAY, tax regulations (Public data)
+4. **Property Portals** - 99acres, MagicBricks (Limited access)
+5. **Insurance Regulators** - IRDAI (Public guidelines)
 
 ### Secondary Sources
 1. **Financial aggregators** - BankBazaar, PolicyBazaar
@@ -417,12 +413,13 @@ This document defines the structure and update requirements for `home-loan-marke
 
 ## Implementation Notes
 
-### Caching Strategy
+### Caching Strategy (Realistic)
 ```
-- Full data: Cache for 6 hours
-- Rate ticker: Cache for 15 minutes
-- User-specific: Cache for session duration
-- Offline mode: Store last 7 days of data
+- Full data: Cache for 24 hours
+- Bank rates: Daily refresh at midnight
+- Tax/PMAY data: Cache for 30 days
+- Offline mode: Store last 30 days of data
+- Clear "Last Updated" timestamp display
 ```
 
 ### API Endpoints
