@@ -8,6 +8,7 @@ import 'visualizations/balance_trend_tab.dart';
 import 'visualizations/yearly_breakdown_tab.dart';
 import 'visualizations/payment_schedule_tab.dart';
 import '../../screens/prepayment/prepayment_calculator_screen.dart';
+import '../../screens/scenario_comparison/scenario_comparison_screen.dart';
 
 class EnhancedEMIResultsCard extends StatefulWidget {
   final EMIResult result;
@@ -328,6 +329,73 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
               ),
             ),
           ),
+
+        const SizedBox(height: 16),
+
+        // Compare Scenarios Button
+        Card(
+          color: Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.3),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScenarioComparisonScreen(
+                    baseParameters: widget.parameters,
+                    baseResult: widget.result,
+                  ),
+                ),
+              );
+            },
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.compare_arrows,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Compare Scenarios',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Compare different loan options side-by-side to find the best deal',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward_ios,
+                    color: Theme.of(context).colorScheme.secondary,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
 
         const SizedBox(height: 16),
 
