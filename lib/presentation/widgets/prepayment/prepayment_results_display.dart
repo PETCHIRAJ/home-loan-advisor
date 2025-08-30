@@ -313,11 +313,17 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 60,
+                      reservedSize: 70,
+                      interval: widget.loanParameters.loanAmount / 4,
                       getTitlesWidget: (value, meta) {
-                        return Text(
-                          value.toCompactIndianFormat(),
-                          style: Theme.of(context).textTheme.bodySmall,
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 4),
+                          child: Text(
+                            value.toCompactIndianFormat(),
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              fontSize: 10,
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -325,11 +331,18 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
+                      reservedSize: 35,
+                      interval: (widget.loanParameters.tenureYears * 3).toDouble(),
                       getTitlesWidget: (value, meta) {
                         if (value % 12 == 0) {
-                          return Text(
-                            'Y${(value / 12).toInt()}',
-                            style: Theme.of(context).textTheme.bodySmall,
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              'Y${(value / 12).toInt()}',
+                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                fontSize: 10,
+                              ),
+                            ),
                           );
                         }
                         return const SizedBox.shrink();

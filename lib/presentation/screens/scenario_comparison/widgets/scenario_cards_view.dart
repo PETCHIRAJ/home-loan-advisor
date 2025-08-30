@@ -51,79 +51,32 @@ class ScenarioCardsView extends ConsumerWidget {
         // Scenarios grid
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          sliver: LayoutBuilder(
-            builder: (context, constraints) {
-              // Determine number of columns based on screen width
-              int crossAxisCount = 1;
-              if (constraints.maxWidth >= 1200) {
-                crossAxisCount = 3;
-              } else if (constraints.maxWidth >= 800) {
-                crossAxisCount = 2;
-              }
-
-              if (crossAxisCount == 1) {
-                // Single column layout for mobile
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final scenario = filteredScenarios[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: ScenarioCard(
-                          scenario: scenario,
-                          isBest: bestScenario?.id == scenario.id,
-                          onToggle: scenario.isBaseScenario
-                              ? null
-                              : () => ref
-                                  .read(scenarioComparisonProvider.notifier)
-                                  .toggleScenario(scenario.id),
-                          onEdit: () => _editScenario(context, ref, scenario),
-                          onRemove: scenario.isBaseScenario || 
-                                   scenario.id.startsWith('custom_') == false
-                              ? null
-                              : () => ref
-                                  .read(scenarioComparisonProvider.notifier)
-                                  .removeScenario(scenario.id),
-                        ),
-                      );
-                    },
-                    childCount: filteredScenarios.length,
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final scenario = filteredScenarios[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: ScenarioCard(
+                    scenario: scenario,
+                    isBest: bestScenario?.id == scenario.id,
+                    onToggle: scenario.isBaseScenario
+                        ? null
+                        : () => ref
+                            .read(scenarioComparisonProvider.notifier)
+                            .toggleScenario(scenario.id),
+                    onEdit: () => _editScenario(context, ref, scenario),
+                    onRemove: scenario.isBaseScenario || 
+                             scenario.id.startsWith('custom_') == false
+                        ? null
+                        : () => ref
+                            .read(scenarioComparisonProvider.notifier)
+                            .removeScenario(scenario.id),
                   ),
                 );
-              } else {
-                // Grid layout for tablet/desktop
-                return SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: crossAxisCount,
-                    childAspectRatio: 0.8,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final scenario = filteredScenarios[index];
-                      return ScenarioCard(
-                        scenario: scenario,
-                        isBest: bestScenario?.id == scenario.id,
-                        onToggle: scenario.isBaseScenario
-                            ? null
-                            : () => ref
-                                .read(scenarioComparisonProvider.notifier)
-                                .toggleScenario(scenario.id),
-                        onEdit: () => _editScenario(context, ref, scenario),
-                        onRemove: scenario.isBaseScenario || 
-                                 scenario.id.startsWith('custom_') == false
-                            ? null
-                            : () => ref
-                                .read(scenarioComparisonProvider.notifier)
-                                .removeScenario(scenario.id),
-                      );
-                    },
-                    childCount: filteredScenarios.length,
-                  ),
-                );
-              }
-            },
+              },
+              childCount: filteredScenarios.length,
+            ),
           ),
         ),
 

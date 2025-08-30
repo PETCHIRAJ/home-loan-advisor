@@ -144,17 +144,22 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 40,
+                        reservedSize: 50,
                         getTitlesWidget: (value, meta) {
                           final index = value.toInt();
                           if (index >= 0 && index < scenarios.length) {
                             final name = scenarios[index].name;
                             return Padding(
                               padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                name.length > 8 ? '${name.substring(0, 8)}...' : name,
-                                style: Theme.of(context).textTheme.labelSmall,
-                                textAlign: TextAlign.center,
+                              child: RotatedBox(
+                                quarterTurns: -1,
+                                child: Text(
+                                  name.length > 10 ? '${name.substring(0, 10)}...' : name,
+                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    fontSize: 10,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             );
                           }
@@ -236,11 +241,16 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 60,
+                        reservedSize: 70,
                         getTitlesWidget: (value, meta) {
-                          return Text(
-                            '₹${(value / 100000).toInt()}L',
-                            style: Theme.of(context).textTheme.labelSmall,
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Text(
+                              '₹${(value / 100000).toInt()}L',
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                fontSize: 10,
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -248,17 +258,22 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 40,
+                        reservedSize: 50,
                         getTitlesWidget: (value, meta) {
                           final index = value.toInt();
                           if (index >= 0 && index < scenarios.length) {
                             final name = scenarios[index].name;
                             return Padding(
                               padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                name.length > 8 ? '${name.substring(0, 8)}...' : name,
-                                style: Theme.of(context).textTheme.labelSmall,
-                                textAlign: TextAlign.center,
+                              child: RotatedBox(
+                                quarterTurns: -1,
+                                child: Text(
+                                  name.length > 10 ? '${name.substring(0, 10)}...' : name,
+                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    fontSize: 10,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             );
                           }
@@ -340,11 +355,16 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 60,
+                        reservedSize: 70,
                         getTitlesWidget: (value, meta) {
-                          return Text(
-                            '₹${(value / 100000).toInt()}L',
-                            style: Theme.of(context).textTheme.labelSmall,
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Text(
+                              '₹${(value / 100000).toInt()}L',
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                fontSize: 10,
+                              ),
+                            ),
                           );
                         },
                       ),
@@ -352,17 +372,22 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                     bottomTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 40,
+                        reservedSize: 50,
                         getTitlesWidget: (value, meta) {
                           final index = value.toInt();
                           if (index >= 0 && index < scenarios.length) {
                             final name = scenarios[index].name;
                             return Padding(
                               padding: const EdgeInsets.only(top: 8),
-                              child: Text(
-                                name.length > 8 ? '${name.substring(0, 8)}...' : name,
-                                style: Theme.of(context).textTheme.labelSmall,
-                                textAlign: TextAlign.center,
+                              child: RotatedBox(
+                                quarterTurns: -1,
+                                child: Text(
+                                  name.length > 10 ? '${name.substring(0, 10)}...' : name,
+                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    fontSize: 10,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             );
                           }
@@ -462,11 +487,16 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
                         showTitles: true,
-                        reservedSize: 60,
+                        reservedSize: 70,
                         getTitlesWidget: (value, meta) {
-                          return Text(
-                            '₹${(value / 100000).toInt()}L',
-                            style: Theme.of(context).textTheme.labelSmall,
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 4),
+                            child: Text(
+                              '₹${(value / 100000).toInt()}L',
+                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                fontSize: 10,
+                              ),
+                            ),
                           );
                         },
                       ),

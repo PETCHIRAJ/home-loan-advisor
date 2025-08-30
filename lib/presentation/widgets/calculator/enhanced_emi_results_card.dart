@@ -7,6 +7,8 @@ import 'visualizations/overview_tab.dart';
 import 'visualizations/balance_trend_tab.dart';
 import 'visualizations/yearly_breakdown_tab.dart';
 import 'visualizations/payment_schedule_tab.dart';
+import 'visualizations/step_emi_chart_tab.dart';
+import '../../../core/utils/calculation_utils.dart';
 import '../../screens/prepayment/prepayment_calculator_screen.dart';
 import '../../screens/scenario_comparison/scenario_comparison_screen.dart';
 
@@ -29,24 +31,43 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
   late TabController _tabController;
   int _selectedIndex = 0;
 
-  final List<String> _tabLabels = [
-    'Overview',
-    'Balance Trend',
-    'Yearly Breakdown',
-    'Payment Schedule',
-  ];
+  List<String> get _tabLabels {
+    final baseLabels = [
+      'Overview',
+      'Balance Trend',
+      'Yearly Breakdown',
+      'Payment Schedule',
+    ];
+    
+    // Add Step EMI tab if step EMI is enabled
+    if (widget.result.stepEMIResult != null) {
+      baseLabels.insert(1, 'Step EMI');
+    }
+    
+    return baseLabels;
+  }
 
-  final List<IconData> _tabIcons = [
-    Icons.pie_chart,
-    Icons.show_chart,
-    Icons.bar_chart,
-    Icons.table_chart,
-  ];
+  List<IconData> get _tabIcons {
+    final baseIcons = [
+      Icons.pie_chart,
+      Icons.show_chart,
+      Icons.bar_chart,
+      Icons.table_chart,
+    ];
+    
+    // Add Step EMI icon if step EMI is enabled
+    if (widget.result.stepEMIResult != null) {
+      baseIcons.insert(1, Icons.trending_up);
+    }
+    
+    return baseIcons;
+  }
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    final tabCount = widget.result.stepEMIResult != null ? 5 : 4;
+    _tabController = TabController(length: tabCount, vsync: this);
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
         setState(() {
@@ -72,9 +93,62 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
         return 'Yearly';
       case 'Payment Schedule':
         return 'Schedule';
+      case 'Step EMI':
+        return 'Step';
       default:
         return label;
     }
+  }
+
+  List<Widget> _buildTabChildren() {
+    final tabs = <Widget>[];
+    int currentIndex = 0;
+
+    // Overview Tab
+    tabs.add(OverviewTab(
+      result: widget.result,
+      isVisible: _selectedIndex == currentIndex,
+    ));
+    currentIndex++;
+
+    // Step EMI Tab (if enabled)
+    if (widget.result.stepEMIResult != null) {
+      final regularEMI = CalculationUtils.calculateEMI(
+        principal: widget.parameters.loanAmount,
+        annualRate: widget.parameters.interestRate,
+        tenureYears: widget.parameters.tenureYears,
+      );
+      
+      tabs.add(StepEMIChartTab(
+        stepResult: widget.result.stepEMIResult!,
+        regularEMI: regularEMI,
+      ));
+      currentIndex++;
+    }
+
+    // Balance Trend Tab
+    tabs.add(BalanceTrendTab(
+      result: widget.result,
+      parameters: widget.parameters,
+      isVisible: _selectedIndex == currentIndex,
+    ));
+    currentIndex++;
+
+    // Yearly Breakdown Tab
+    tabs.add(YearlyBreakdownTab(
+      result: widget.result,
+      isVisible: _selectedIndex == currentIndex,
+    ));
+    currentIndex++;
+
+    // Payment Schedule Tab
+    tabs.add(PaymentScheduleTab(
+      result: widget.result,
+      parameters: widget.parameters,
+      isVisible: _selectedIndex == currentIndex,
+    ));
+
+    return tabs;
   }
 
   @override
@@ -219,33 +293,7 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                   child: IndexedStack(
                     key: ValueKey(_selectedIndex),
                     index: _selectedIndex,
-                    children: [
-                      // Overview Tab
-                      OverviewTab(
-                        result: widget.result,
-                        isVisible: _selectedIndex == 0,
-                      ),
-
-                      // Balance Trend Tab
-                      BalanceTrendTab(
-                        result: widget.result,
-                        parameters: widget.parameters,
-                        isVisible: _selectedIndex == 1,
-                      ),
-
-                      // Yearly Breakdown Tab
-                      YearlyBreakdownTab(
-                        result: widget.result,
-                        isVisible: _selectedIndex == 2,
-                      ),
-
-                      // Payment Schedule Tab
-                      PaymentScheduleTab(
-                        result: widget.result,
-                        parameters: widget.parameters,
-                        isVisible: _selectedIndex == 3,
-                      ),
-                    ],
+                    children: _buildTabChildren(),
                   ),
                 ),
               ),
@@ -310,11 +358,14 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Total Annual Tax Savings',
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                      Flexible(
+                        child: Text(
+                          'Total Annual Tax Savings',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
                       ),
+                      const SizedBox(width: 8),
                       Text(
                         widget.result.taxBenefits.totalAnnualSavings
                             .toEMIFormat(),

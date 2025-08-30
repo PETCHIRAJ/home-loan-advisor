@@ -3,6 +3,8 @@ import '../../domain/entities/loan_parameters.dart' as domain;
 import '../../domain/entities/emi_result.dart';
 import '../../domain/entities/optimization_strategy.dart';
 import '../../domain/entities/money_saving_strategy.dart';
+import '../../domain/entities/step_emi.dart';
+import '../../core/utils/step_emi_calculation_utils.dart';
 import 'app_providers.dart';
 
 // Loan parameters state notifier
@@ -338,3 +340,182 @@ final moneySavingStrategiesProvider =
     >((ref) {
       return MoneySavingStrategiesNotifier(ref);
     });
+
+// Step EMI parameters notifier
+class StepEMIParametersNotifier extends StateNotifier<StepEMIParameters> {
+  StepEMIParametersNotifier() : super(StepEMIParameters.none());
+
+  void updateParameters(StepEMIParameters parameters) {
+    state = parameters;
+  }
+
+  void updateType(StepEMIType type) {
+    switch (type) {
+      case StepEMIType.none:
+        state = StepEMIParameters.none();
+        break;
+      case StepEMIType.stepUp:
+        state = StepEMIParameters.stepUp(
+          stepPercentage: state.stepPercentage > 0 ? state.stepPercentage : 10.0,
+          frequency: state.frequency,
+        );
+        break;
+      case StepEMIType.stepDown:
+        state = StepEMIParameters.stepDown(
+          stepPercentage: state.stepPercentage > 0 ? state.stepPercentage : 10.0,
+          frequency: state.frequency,
+        );
+        break;
+    }
+  }
+
+  void updateStepPercentage(double percentage) {
+    state = state.copyWith(stepPercentage: percentage);
+  }
+
+  void updateFrequency(StepFrequency frequency) {
+    state = state.copyWith(frequency: frequency);
+  }
+
+  void reset() {
+    state = StepEMIParameters.none();
+  }
+}
+
+// Step EMI calculation notifier
+class StepEMICalculationNotifier extends StateNotifier<AsyncValue<StepEMIResult?>> {
+  StepEMICalculationNotifier(this._ref) : super(const AsyncValue.data(null));
+
+  final Ref _ref;
+
+  Future<void> calculateStepEMI() async {
+    final loanParameters = _ref.read(loanParametersProvider);
+    final stepParameters = _ref.read(stepEMIParametersProvider);
+    
+    state = const AsyncValue.loading();
+
+    try {
+      final result = StepEMICalculationUtils.calculateStepEMI(
+        principal: loanParameters.loanAmount,
+        annualRate: loanParameters.interestRate,
+        tenureYears: loanParameters.tenureYears,
+        parameters: stepParameters,
+      );
+
+      state = AsyncValue.data(result);
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  void clearResult() {
+    state = const AsyncValue.data(null);
+  }
+}
+
+// Combined EMI calculation notifier (includes step EMI)
+class EnhancedEMICalculationNotifier extends StateNotifier<AsyncValue<EMIResult?>> {
+  EnhancedEMICalculationNotifier(this._ref) : super(const AsyncValue.data(null));
+
+  final Ref _ref;
+
+  Future<void> calculateEMI() async {
+    final parameters = _ref.read(loanParametersProvider);
+    final stepParameters = _ref.read(stepEMIParametersProvider);
+    
+    state = const AsyncValue.loading();
+
+    try {
+      final useCase = _ref.read(calculateEMIUseCaseProvider);
+      final result = await useCase(parameters);
+
+      result.fold(
+        (error) => state = AsyncValue.error(error, StackTrace.current),
+        (emiResult) async {
+          // Calculate step EMI if enabled
+          EMIResult finalResult = emiResult;
+          
+          if (stepParameters.type != StepEMIType.none) {
+            final stepResult = StepEMICalculationUtils.calculateStepEMI(
+              principal: parameters.loanAmount,
+              annualRate: parameters.interestRate,
+              tenureYears: parameters.tenureYears,
+              parameters: stepParameters,
+            );
+
+            // Update EMI result with step EMI details
+            finalResult = EMIResult(
+              monthlyEMI: stepResult.averageEMI,
+              totalInterest: stepResult.totalInterest,
+              totalAmount: stepResult.totalAmount,
+              principalAmount: parameters.loanAmount,
+              taxBenefits: emiResult.taxBenefits,
+              pmayBenefit: emiResult.pmayBenefit,
+              breakdown: emiResult.breakdown,
+              stepEMIResult: stepResult,
+            );
+          }
+
+          state = AsyncValue.data(finalResult);
+        },
+      );
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  void clearResult() {
+    state = const AsyncValue.data(null);
+  }
+}
+
+// Providers for step EMI
+final stepEMIParametersProvider =
+    StateNotifierProvider<StepEMIParametersNotifier, StepEMIParameters>((ref) {
+      return StepEMIParametersNotifier();
+    });
+
+final stepEMICalculationProvider =
+    StateNotifierProvider<StepEMICalculationNotifier, AsyncValue<StepEMIResult?>>((ref) {
+      return StepEMICalculationNotifier(ref);
+    });
+
+final enhancedEMICalculationProvider =
+    StateNotifierProvider<EnhancedEMICalculationNotifier, AsyncValue<EMIResult?>>((ref) {
+      return EnhancedEMICalculationNotifier(ref);
+    });
+
+// Auto-calculate step EMI when parameters change
+final autoStepEMICalculationProvider = Provider<AsyncValue<StepEMIResult?>>((ref) {
+  final loanParameters = ref.watch(loanParametersProvider);
+  final stepParameters = ref.watch(stepEMIParametersProvider);
+  
+  if (stepParameters.type == StepEMIType.none) {
+    return const AsyncValue.data(null);
+  }
+
+  try {
+    final result = StepEMICalculationUtils.calculateStepEMI(
+      principal: loanParameters.loanAmount,
+      annualRate: loanParameters.interestRate,
+      tenureYears: loanParameters.tenureYears,
+      parameters: stepParameters,
+    );
+
+    return AsyncValue.data(result);
+  } catch (e, stackTrace) {
+    return AsyncValue.error(e, stackTrace);
+  }
+});
+
+// Provider for step EMI validation
+final stepEMIValidationProvider = Provider<Map<String, String?>>((ref) {
+  final stepParameters = ref.watch(stepEMIParametersProvider);
+  final loanParameters = ref.watch(loanParametersProvider);
+
+  return StepEMICalculationUtils.validateStepEMIParameters(
+    parameters: stepParameters,
+    loanAmount: loanParameters.loanAmount,
+    tenureYears: loanParameters.tenureYears,
+  );
+});

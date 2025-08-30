@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'step_emi.dart';
 
 /// Represents the complete EMI calculation result with tax benefits
 class EMIResult extends Equatable {
@@ -9,6 +10,7 @@ class EMIResult extends Equatable {
   final TaxBenefits taxBenefits;
   final PMAYBenefit? pmayBenefit;
   final LoanBreakdown breakdown;
+  final StepEMIResult? stepEMIResult; // Optional step EMI details
 
   const EMIResult({
     required this.monthlyEMI,
@@ -18,6 +20,7 @@ class EMIResult extends Equatable {
     required this.taxBenefits,
     this.pmayBenefit,
     required this.breakdown,
+    this.stepEMIResult,
   });
 
   @override
@@ -29,6 +32,7 @@ class EMIResult extends Equatable {
     taxBenefits,
     pmayBenefit,
     breakdown,
+    stepEMIResult,
   ];
 }
 

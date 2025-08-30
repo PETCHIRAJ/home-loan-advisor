@@ -3,7 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/calculation_providers.dart';
 import '../../widgets/calculator/loan_input_form.dart';
 import '../../widgets/calculator/enhanced_emi_results_card.dart';
+import '../../widgets/calculator/step_emi_selector.dart';
 import '../../widgets/common/app_scaffold.dart';
+import '../../../domain/entities/step_emi.dart';
 
 class CalculatorScreen extends ConsumerWidget {
   const CalculatorScreen({super.key});
@@ -11,7 +13,9 @@ class CalculatorScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final calculatorState = ref.watch(calculatorScreenStateProvider);
-    final emiCalculation = ref.watch(emiCalculationProvider);
+    final emiCalculation = ref.watch(enhancedEMICalculationProvider);
+    final stepEMIParameters = ref.watch(stepEMIParametersProvider);
+    final autoStepResult = ref.watch(autoStepEMICalculationProvider);
 
     return AppScaffold(
       title: 'EMI Calculator',
@@ -21,7 +25,8 @@ class CalculatorScreen extends ConsumerWidget {
           label: const Text('Clear'),
           onPressed: () {
             ref.read(loanParametersProvider.notifier).resetToDefaults();
-            ref.read(emiCalculationProvider.notifier).clearResult();
+            ref.read(enhancedEMICalculationProvider.notifier).clearResult();
+            ref.read(stepEMIParametersProvider.notifier).reset();
           },
         ),
       ],
@@ -58,6 +63,22 @@ class CalculatorScreen extends ConsumerWidget {
 
             const SizedBox(height: 16),
 
+            // Step EMI selector
+            StepEMISelector(
+              parameters: stepEMIParameters,
+              onParametersChanged: (parameters) {
+                ref.read(stepEMIParametersProvider.notifier).updateParameters(parameters);
+              },
+            ),
+
+            const SizedBox(height: 16),
+
+            // Step EMI preview (if enabled)
+            if (stepEMIParameters.type != StepEMIType.none && autoStepResult.hasValue && autoStepResult.value != null)
+              StepEMIPreview(result: autoStepResult.value!),
+
+            const SizedBox(height: 16),
+
             // Calculate button
             FilledButton(
               onPressed: calculatorState.isLoading
@@ -68,7 +89,7 @@ class CalculatorScreen extends ConsumerWidget {
                           .setLoading(true);
                       
                       await ref
-                          .read(emiCalculationProvider.notifier)
+                          .read(enhancedEMICalculationProvider.notifier)
                           .calculateEMI();
                       
                       ref
@@ -76,7 +97,7 @@ class CalculatorScreen extends ConsumerWidget {
                           .setLoading(false);
                       
                       // Check if calculation was successful and show results
-                      final calculationResult = ref.read(emiCalculationProvider);
+                      final calculationResult = ref.read(enhancedEMICalculationProvider);
                       if (calculationResult.hasValue && calculationResult.value != null) {
                         ref
                             .read(calculatorScreenStateProvider.notifier)
@@ -138,7 +159,7 @@ class CalculatorScreen extends ConsumerWidget {
                         OutlinedButton(
                           onPressed: () {
                             ref
-                                .read(emiCalculationProvider.notifier)
+                                .read(enhancedEMICalculationProvider.notifier)
                                 .calculateEMI();
                           },
                           child: const Text('Retry'),

@@ -48,7 +48,10 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Check and reload strategies when dependencies change (e.g., coming back to this tab)
-    _loadStrategies();
+    // Delay the provider modification to avoid modifying during build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadStrategies();
+    });
   }
 
   @override

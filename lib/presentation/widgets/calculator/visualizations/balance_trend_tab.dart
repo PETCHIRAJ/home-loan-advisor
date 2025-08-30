@@ -214,12 +214,17 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 60,
+                          reservedSize: 70,
                           interval: widget.parameters.loanAmount / 4,
                           getTitlesWidget: (value, meta) {
-                            return Text(
-                              value.toCompactFormat(),
-                              style: Theme.of(context).textTheme.labelSmall,
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Text(
+                                value.toCompactFormat(),
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontSize: 10,
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -227,13 +232,18 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 30,
+                          reservedSize: 35,
                           interval: (widget.parameters.tenureYears * 12) / 4,
                           getTitlesWidget: (value, meta) {
                             final years = (value / 12).round();
-                            return Text(
-                              '${years}Y',
-                              style: Theme.of(context).textTheme.labelSmall,
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                '${years}Y',
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontSize: 10,
+                                ),
+                              ),
                             );
                           },
                         ),

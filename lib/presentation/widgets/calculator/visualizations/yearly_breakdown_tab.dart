@@ -136,12 +136,17 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 50,
+                          reservedSize: 65,
                           interval: _getMaxY() / 4,
                           getTitlesWidget: (value, meta) {
-                            return Text(
-                              value.toCompactFormat(),
-                              style: Theme.of(context).textTheme.labelSmall,
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Text(
+                                value.toCompactFormat(),
+                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                  fontSize: 10,
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -149,7 +154,7 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 30,
+                          reservedSize: 35,
                           getTitlesWidget: (value, meta) {
                             final index = value.toInt();
                             if (index >= 0 &&
@@ -164,9 +169,14 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
                                   .breakdown
                                   .yearlyBreakdown[index]
                                   .year;
-                              return Text(
-                                'Y$year',
-                                style: Theme.of(context).textTheme.labelSmall,
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  'Y$year',
+                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    fontSize: 10,
+                                  ),
+                                ),
                               );
                             }
                             return const Text('');
