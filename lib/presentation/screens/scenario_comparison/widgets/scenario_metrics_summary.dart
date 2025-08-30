@@ -15,9 +15,7 @@ class ScenarioMetricsSummary extends ConsumerWidget {
     final metrics = ref.watch(comparisonMetricsProvider);
 
     if (scenariosWithResults.isEmpty || metrics == null) {
-      return const Center(
-        child: Text('No metrics available'),
-      );
+      return const Center(child: Text('No metrics available'));
     }
 
     return SingleChildScrollView(
@@ -27,14 +25,14 @@ class ScenarioMetricsSummary extends ConsumerWidget {
         children: [
           // Summary Cards
           _buildSummaryCards(context, metrics, bestScenario),
-          
+
           const SizedBox(height: 24),
-          
+
           // Detailed comparison table
           _buildComparisonTable(context, scenariosWithResults, bestScenario),
-          
+
           const SizedBox(height: 24),
-          
+
           // Differences analysis
           if (scenariosWithResults.length > 1)
             _buildDifferencesAnalysis(context, scenariosWithResults, metrics),
@@ -58,9 +56,9 @@ class ScenarioMetricsSummary extends ConsumerWidget {
       children: [
         Text(
           'Quick Summary',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         LayoutBuilder(
@@ -71,7 +69,8 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                 children: [
                   _MetricCard(
                     title: 'EMI Range',
-                    value: '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
+                    value:
+                        '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
                     subtitle: 'Difference: ${metrics.emiRange.toEMIFormat()}',
                     icon: Icons.payments,
                     color: Theme.of(context).colorScheme.primary,
@@ -79,8 +78,10 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                   const SizedBox(height: 12),
                   _MetricCard(
                     title: 'Interest Range',
-                    value: '₹${metrics.minTotalInterest.toIndianFormat()} - ₹${metrics.maxTotalInterest.toIndianFormat()}',
-                    subtitle: 'Max savings: ₹${metrics.totalInterestRange.toIndianFormat()}',
+                    value:
+                        '₹${metrics.minTotalInterest.toIndianFormat()} - ₹${metrics.maxTotalInterest.toIndianFormat()}',
+                    subtitle:
+                        'Max savings: ₹${metrics.totalInterestRange.toIndianFormat()}',
                     icon: Icons.trending_down,
                     color: FinancialColors.cost,
                   ),
@@ -88,7 +89,7 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                   _MetricCard(
                     title: 'Best Option',
                     value: bestScenario?.name ?? 'None',
-                    subtitle: bestScenario != null 
+                    subtitle: bestScenario != null
                         ? 'Total cost: ₹${bestScenario.totalCostAfterBenefits.toIndianFormat()}'
                         : 'No best option identified',
                     icon: Icons.star,
@@ -103,7 +104,8 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                   Expanded(
                     child: _MetricCard(
                       title: 'EMI Range',
-                      value: '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
+                      value:
+                          '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
                       subtitle: 'Difference: ${metrics.emiRange.toEMIFormat()}',
                       icon: Icons.payments,
                       color: Theme.of(context).colorScheme.primary,
@@ -113,8 +115,10 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                   Expanded(
                     child: _MetricCard(
                       title: 'Interest Range',
-                      value: '₹${metrics.minTotalInterest.toIndianFormat()} - ₹${metrics.maxTotalInterest.toIndianFormat()}',
-                      subtitle: 'Max savings: ₹${metrics.totalInterestRange.toIndianFormat()}',
+                      value:
+                          '₹${metrics.minTotalInterest.toIndianFormat()} - ₹${metrics.maxTotalInterest.toIndianFormat()}',
+                      subtitle:
+                          'Max savings: ₹${metrics.totalInterestRange.toIndianFormat()}',
                       icon: Icons.trending_down,
                       color: FinancialColors.cost,
                     ),
@@ -124,7 +128,7 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                     child: _MetricCard(
                       title: 'Best Option',
                       value: bestScenario?.name ?? 'None',
-                      subtitle: bestScenario != null 
+                      subtitle: bestScenario != null
                           ? 'Total cost: ₹${bestScenario.totalCostAfterBenefits.toIndianFormat()}'
                           : 'No best option identified',
                       icon: Icons.star,
@@ -150,9 +154,9 @@ class ScenarioMetricsSummary extends ConsumerWidget {
       children: [
         Text(
           'Detailed Comparison',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         Card(
@@ -173,10 +177,12 @@ class ScenarioMetricsSummary extends ConsumerWidget {
               rows: scenarios.map((scenario) {
                 final isBest = bestScenario?.id == scenario.id;
                 final result = scenario.result!;
-                
+
                 return DataRow(
-                  color: isBest 
-                      ? WidgetStateProperty.all(FinancialColors.savings.withValues(alpha: 0.1))
+                  color: isBest
+                      ? WidgetStateProperty.all(
+                          FinancialColors.savings.withValues(alpha: 0.1),
+                        )
                       : null,
                   cells: [
                     DataCell(
@@ -186,7 +192,9 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                           Text(
                             scenario.name,
                             style: TextStyle(
-                              fontWeight: isBest ? FontWeight.bold : FontWeight.normal,
+                              fontWeight: isBest
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
                             ),
                           ),
                           if (isBest) ...[
@@ -203,13 +211,23 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                     DataCell(Text(result.monthlyEMI.toEMIFormat())),
                     DataCell(Text('₹${result.totalInterest.toIndianFormat()}')),
                     DataCell(Text('₹${result.totalAmount.toIndianFormat()}')),
-                    DataCell(Text('₹${result.taxBenefits.totalAnnualSavings.toEMIFormat()}/year')),
-                    DataCell(Text('${scenario.effectiveInterestRate.toStringAsFixed(2)}%')),
+                    DataCell(
+                      Text(
+                        '₹${result.taxBenefits.totalAnnualSavings.toEMIFormat()}/year',
+                      ),
+                    ),
+                    DataCell(
+                      Text(
+                        '${scenario.effectiveInterestRate.toStringAsFixed(2)}%',
+                      ),
+                    ),
                     DataCell(
                       Text(
                         '₹${scenario.totalCostAfterBenefits.toIndianFormat()}',
                         style: TextStyle(
-                          fontWeight: isBest ? FontWeight.bold : FontWeight.normal,
+                          fontWeight: isBest
+                              ? FontWeight.bold
+                              : FontWeight.normal,
                           color: isBest ? FinancialColors.savings : null,
                         ),
                       ),
@@ -240,23 +258,28 @@ class ScenarioMetricsSummary extends ConsumerWidget {
       children: [
         Text(
           'Comparison with Base Scenario',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         ...otherScenarios.map((scenario) {
-          final emiDiff = scenario.result!.monthlyEMI - baseScenario.result!.monthlyEMI;
-          final interestDiff = scenario.result!.totalInterest - baseScenario.result!.totalInterest;
-          final totalCostDiff = scenario.totalCostAfterBenefits - baseScenario.totalCostAfterBenefits;
-          
+          final emiDiff =
+              scenario.result!.monthlyEMI - baseScenario.result!.monthlyEMI;
+          final interestDiff =
+              scenario.result!.totalInterest -
+              baseScenario.result!.totalInterest;
+          final totalCostDiff =
+              scenario.totalCostAfterBenefits -
+              baseScenario.totalCostAfterBenefits;
+
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
-            color: totalCostDiff < 0 
+            color: totalCostDiff < 0
                 ? FinancialColors.savings.withValues(alpha: 0.05)
-                : totalCostDiff > 0 
-                    ? FinancialColors.cost.withValues(alpha: 0.05)
-                    : null,
+                : totalCostDiff > 0
+                ? FinancialColors.cost.withValues(alpha: 0.05)
+                : null,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -272,21 +295,29 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                       ),
                       const Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
-                          color: totalCostDiff < 0 
+                          color: totalCostDiff < 0
                               ? FinancialColors.savings
-                              : totalCostDiff > 0 
-                                  ? FinancialColors.cost
-                                  : FinancialColors.neutral,
+                              : totalCostDiff > 0
+                              ? FinancialColors.cost
+                              : FinancialColors.neutral,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
-                          totalCostDiff < 0 ? 'SAVES MONEY' : totalCostDiff > 0 ? 'COSTS MORE' : 'SAME',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          totalCostDiff < 0
+                              ? 'SAVES MONEY'
+                              : totalCostDiff > 0
+                              ? 'COSTS MORE'
+                              : 'SAME',
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ),
                     ],
@@ -336,13 +367,15 @@ class ScenarioMetricsSummary extends ConsumerWidget {
       children: [
         Text(
           'Recommendations',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
         Card(
-          color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1),
+          color: Theme.of(
+            context,
+          ).colorScheme.primaryContainer.withValues(alpha: 0.1),
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -351,10 +384,7 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                 if (bestScenario != null) ...[
                   Row(
                     children: [
-                      Icon(
-                        Icons.star,
-                        color: FinancialColors.savings,
-                      ),
+                      Icon(Icons.star, color: FinancialColors.savings),
                       const SizedBox(width: 8),
                       Text(
                         'Best Option: ${bestScenario.name}',
@@ -372,30 +402,34 @@ class ScenarioMetricsSummary extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16),
                 ],
-                
+
                 // General recommendations
                 _RecommendationItem(
                   icon: Icons.timeline,
                   title: 'Consider shorter tenure',
-                  description: 'Shorter loan tenure typically results in lower total interest, despite higher EMI.',
+                  description:
+                      'Shorter loan tenure typically results in lower total interest, despite higher EMI.',
                 ),
                 const SizedBox(height: 12),
                 _RecommendationItem(
                   icon: Icons.trending_down,
                   title: 'Shop for lower rates',
-                  description: 'Even a 0.5% reduction in interest rate can save significant money over the loan tenure.',
+                  description:
+                      'Even a 0.5% reduction in interest rate can save significant money over the loan tenure.',
                 ),
                 const SizedBox(height: 12),
                 _RecommendationItem(
                   icon: Icons.account_balance_wallet,
                   title: 'Maximize tax benefits',
-                  description: 'Ensure you\'re claiming all eligible tax deductions to reduce effective interest rate.',
+                  description:
+                      'Ensure you\'re claiming all eligible tax deductions to reduce effective interest rate.',
                 ),
                 const SizedBox(height: 12),
                 _RecommendationItem(
                   icon: Icons.home_work,
                   title: 'Check PMAY eligibility',
-                  description: 'PMAY subsidy can significantly reduce your effective loan amount and total cost.',
+                  description:
+                      'PMAY subsidy can significantly reduce your effective loan amount and total cost.',
                 ),
               ],
             ),
@@ -446,15 +480,17 @@ class _MetricCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               value,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(
               subtitle,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
           ],
@@ -480,24 +516,25 @@ class _DifferenceItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text(label, style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(height: 4),
         Row(
           children: [
             Icon(
               isPositive ? Icons.arrow_downward : Icons.arrow_upward,
               size: 16,
-              color: isPositive ? FinancialColors.savings : FinancialColors.cost,
+              color: isPositive
+                  ? FinancialColors.savings
+                  : FinancialColors.cost,
             ),
             const SizedBox(width: 4),
             Text(
               value,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: isPositive ? FinancialColors.savings : FinancialColors.cost,
+                color: isPositive
+                    ? FinancialColors.savings
+                    : FinancialColors.cost,
               ),
             ),
           ],
@@ -523,11 +560,7 @@ class _RecommendationItem extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 20,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 12),
         Expanded(
           child: Column(
@@ -535,15 +568,17 @@ class _RecommendationItem extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.8),
                 ),
               ),
             ],

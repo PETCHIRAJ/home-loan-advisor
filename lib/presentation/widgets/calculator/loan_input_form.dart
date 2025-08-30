@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/extensions/number_extensions.dart';
 import '../../providers/calculation_providers.dart';
 import '../common/indian_currency_input_field.dart';
-import '../common/responsive_layout.dart';
 
 class LoanInputForm extends ConsumerWidget {
   const LoanInputForm({super.key});
@@ -70,7 +69,8 @@ class LoanInputForm extends ConsumerWidget {
               max: 30,
               step: 1,
               inputType: InputType.years,
-              onChanged: (value) => loanParamsNotifier.updateTenure(value.round()),
+              onChanged: (value) =>
+                  loanParamsNotifier.updateTenure(value.round()),
             ),
 
             const SizedBox(height: 24),
@@ -271,7 +271,6 @@ class _ImprovedNumberInputState extends State<_ImprovedNumberInput> {
     }
   }
 
-
   void _handleTextChange(String text) {
     _isEditing = true;
 
@@ -314,8 +313,11 @@ class _ImprovedNumberInputState extends State<_ImprovedNumberInput> {
           style: Theme.of(context).textTheme.bodyLarge,
           decoration: InputDecoration(
             hintText: _getPlaceholder(),
-            suffixText: widget.inputType == InputType.percentage ? '%' : 
-                       widget.inputType == InputType.years ? 'years' : null,
+            suffixText: widget.inputType == InputType.percentage
+                ? '%'
+                : widget.inputType == InputType.years
+                ? 'years'
+                : null,
             errorText: _errorText,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,

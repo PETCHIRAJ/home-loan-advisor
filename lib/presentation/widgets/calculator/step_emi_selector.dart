@@ -28,10 +28,7 @@ class StepEMISelector extends ConsumerWidget {
 class StepEMIPreview extends StatelessWidget {
   final StepEMIResult result;
 
-  const StepEMIPreview({
-    super.key,
-    required this.result,
-  });
+  const StepEMIPreview({super.key, required this.result});
 
   @override
   Widget build(BuildContext context) {
@@ -87,32 +84,32 @@ class StepEMIPreview extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: result.isMoreExpensive 
-                  ? colorScheme.errorContainer.withValues(alpha: 0.3)
-                  : colorScheme.primaryContainer.withValues(alpha: 0.3),
+                color: result.isMoreExpensive
+                    ? colorScheme.errorContainer.withValues(alpha: 0.3)
+                    : colorScheme.primaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
                 children: [
                   Icon(
-                    result.isMoreExpensive 
-                      ? Icons.trending_up 
-                      : Icons.trending_down,
+                    result.isMoreExpensive
+                        ? Icons.trending_up
+                        : Icons.trending_down,
                     size: 20,
-                    color: result.isMoreExpensive 
-                      ? colorScheme.error
-                      : colorScheme.primary,
+                    color: result.isMoreExpensive
+                        ? colorScheme.error
+                        : colorScheme.primary,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       result.isMoreExpensive
-                        ? 'Costs ₹${result.interestSavedVsRegular.abs().toStringAsFixed(0)} more than regular EMI'
-                        : 'Saves ₹${result.interestSavedVsRegular.toStringAsFixed(0)} vs regular EMI',
+                          ? 'Costs ₹${result.interestSavedVsRegular.abs().toStringAsFixed(0)} more than regular EMI'
+                          : 'Saves ₹${result.interestSavedVsRegular.toStringAsFixed(0)} vs regular EMI',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: result.isMoreExpensive 
-                          ? colorScheme.onErrorContainer
-                          : colorScheme.onPrimaryContainer,
+                        color: result.isMoreExpensive
+                            ? colorScheme.onErrorContainer
+                            : colorScheme.onPrimaryContainer,
                       ),
                     ),
                   ),
@@ -127,7 +124,9 @@ class StepEMIPreview extends StatelessWidget {
 
   Widget _buildProgressionChart(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final yearlyBreakdown = result.yearlyBreakdown.take(5).toList(); // Show first 5 years
+    final yearlyBreakdown = result.yearlyBreakdown
+        .take(5)
+        .toList(); // Show first 5 years
 
     return SizedBox(
       height: 60,
@@ -136,7 +135,7 @@ class StepEMIPreview extends StatelessWidget {
           final index = entry.key;
           final yearly = entry.value;
           final maxEMI = yearlyBreakdown.fold<double>(
-            0, 
+            0,
             (max, item) => item.emiAmount > max ? item.emiAmount : max,
           );
           final heightRatio = yearly.emiAmount / maxEMI;
@@ -161,9 +160,9 @@ class StepEMIPreview extends StatelessWidget {
                   // Year label
                   Text(
                     'Y${yearly.year}',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: 10,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(fontSize: 10),
                   ),
                 ],
               ),
@@ -187,17 +186,11 @@ class StepEMIPreview extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.2),
-        ),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
-          Icon(
-            icon,
-            size: 16,
-            color: colorScheme.primary,
-          ),
+          Icon(icon, size: 16, color: colorScheme.primary),
           const SizedBox(height: 4),
           Text(
             title,
@@ -207,9 +200,9 @@ class StepEMIPreview extends StatelessWidget {
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
           ),
         ],
       ),

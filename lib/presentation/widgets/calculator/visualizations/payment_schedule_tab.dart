@@ -183,9 +183,9 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                 width: 40,
                 child: Text(
                   _isYearlyView ? 'Yr' : 'Mo',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -193,9 +193,9 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                 flex: 3,
                 child: Text(
                   _isYearlyView ? 'Annual EMI' : 'Monthly EMI',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -205,9 +205,9 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                 flex: 2,
                 child: Text(
                   'Principal',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -217,9 +217,9 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                 flex: 2,
                 child: Text(
                   'Interest',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -229,9 +229,9 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
                 flex: 3,
                 child: Text(
                   'Outstanding',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
                   textAlign: TextAlign.center,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -243,10 +243,7 @@ class _PaymentScheduleTabState extends State<PaymentScheduleTab>
 
         // Scrollable Table Content
         ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: 200,
-            maxHeight: 400,
-          ),
+          constraints: const BoxConstraints(minHeight: 200, maxHeight: 400),
           child: AnimatedBuilder(
             animation: _animation,
             builder: (context, child) {

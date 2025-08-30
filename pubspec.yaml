@@ -35,6 +35,9 @@ dependencies:
   
   # Either/Result pattern
   fpdart: ^1.1.0
+  
+  # Serialization
+  json_annotation: ^4.9.0
 
 dev_dependencies:
   flutter_test:
@@ -45,7 +48,6 @@ dev_dependencies:
   build_runner: ^2.4.13
   riverpod_generator: ^2.4.0
   json_serializable: ^6.8.0
-  json_annotation: ^4.9.0
   
   # Testing
   mockito: ^5.4.4

@@ -30,8 +30,10 @@ class PrepaymentCalculatorState {
 }
 
 /// State notifier for prepayment calculator
-class PrepaymentCalculatorStateNotifier extends StateNotifier<PrepaymentCalculatorState> {
-  PrepaymentCalculatorStateNotifier() : super(const PrepaymentCalculatorState());
+class PrepaymentCalculatorStateNotifier
+    extends StateNotifier<PrepaymentCalculatorState> {
+  PrepaymentCalculatorStateNotifier()
+    : super(const PrepaymentCalculatorState());
 
   /// Calculate prepayment result for a scenario
   Future<PrepaymentResult?> calculatePrepayment({
@@ -57,10 +59,7 @@ class PrepaymentCalculatorStateNotifier extends StateNotifier<PrepaymentCalculat
 
       return result;
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return null;
     }
   }
@@ -81,7 +80,10 @@ class PrepaymentCalculatorStateNotifier extends StateNotifier<PrepaymentCalculat
       );
 
       // Add all results to history
-      final updatedHistory = [...state.calculationHistory, ...comparison.scenarios];
+      final updatedHistory = [
+        ...state.calculationHistory,
+        ...comparison.scenarios,
+      ];
       state = state.copyWith(
         isLoading: false,
         calculationHistory: updatedHistory,
@@ -89,10 +91,7 @@ class PrepaymentCalculatorStateNotifier extends StateNotifier<PrepaymentCalculat
 
       return comparison;
     } catch (e) {
-      state = state.copyWith(
-        isLoading: false,
-        errorMessage: e.toString(),
-      );
+      state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return null;
     }
   }
@@ -162,7 +161,8 @@ class PrepaymentScenarioState {
 }
 
 /// State notifier for current prepayment scenario
-class PrepaymentScenarioStateNotifier extends StateNotifier<PrepaymentScenarioState> {
+class PrepaymentScenarioStateNotifier
+    extends StateNotifier<PrepaymentScenarioState> {
   PrepaymentScenarioStateNotifier() : super(const PrepaymentScenarioState());
 
   void updateType(PrepaymentType type) {
@@ -199,15 +199,17 @@ class PrepaymentScenarioStateNotifier extends StateNotifier<PrepaymentScenarioSt
 }
 
 /// Providers
-final prepaymentCalculatorStateProvider = 
-    StateNotifierProvider<PrepaymentCalculatorStateNotifier, PrepaymentCalculatorState>(
-  (ref) => PrepaymentCalculatorStateNotifier(),
-);
+final prepaymentCalculatorStateProvider =
+    StateNotifierProvider<
+      PrepaymentCalculatorStateNotifier,
+      PrepaymentCalculatorState
+    >((ref) => PrepaymentCalculatorStateNotifier());
 
-final prepaymentScenarioStateProvider = 
-    StateNotifierProvider<PrepaymentScenarioStateNotifier, PrepaymentScenarioState>(
-  (ref) => PrepaymentScenarioStateNotifier(),
-);
+final prepaymentScenarioStateProvider =
+    StateNotifierProvider<
+      PrepaymentScenarioStateNotifier,
+      PrepaymentScenarioState
+    >((ref) => PrepaymentScenarioStateNotifier());
 
 /// Provider for optimal prepayment calculation
 final optimalPrepaymentProvider = Provider.family<double, Map<String, dynamic>>(
@@ -215,7 +217,8 @@ final optimalPrepaymentProvider = Provider.family<double, Map<String, dynamic>>(
     final availableFunds = params['availableFunds'] as double;
     final outstandingBalance = params['outstandingBalance'] as double;
     final currentInterestRate = params['currentInterestRate'] as double;
-    final alternativeInvestmentRate = params['alternativeInvestmentRate'] as double? ?? 8.0;
+    final alternativeInvestmentRate =
+        params['alternativeInvestmentRate'] as double? ?? 8.0;
 
     return PrepaymentCalculationUtils.calculateOptimalPrepaymentAmount(
       availableFunds: availableFunds,
@@ -227,36 +230,33 @@ final optimalPrepaymentProvider = Provider.family<double, Map<String, dynamic>>(
 );
 
 /// Provider for tax-adjusted prepayment benefit
-final taxAdjustedBenefitProvider = Provider.family<double, Map<String, dynamic>>(
-  (ref, params) {
-    final interestSaved = params['interestSaved'] as double;
-    final taxSlabPercentage = params['taxSlabPercentage'] as double;
-    final isSelfOccupied = params['isSelfOccupied'] as bool? ?? true;
+final taxAdjustedBenefitProvider =
+    Provider.family<double, Map<String, dynamic>>((ref, params) {
+      final interestSaved = params['interestSaved'] as double;
+      final taxSlabPercentage = params['taxSlabPercentage'] as double;
+      final isSelfOccupied = params['isSelfOccupied'] as bool? ?? true;
 
-    return PrepaymentCalculationUtils.calculateTaxAdjustedBenefit(
-      interestSaved: interestSaved,
-      taxSlabPercentage: taxSlabPercentage,
-      isSelfOccupied: isSelfOccupied,
-    );
-  },
-);
+      return PrepaymentCalculationUtils.calculateTaxAdjustedBenefit(
+        interestSaved: interestSaved,
+        taxSlabPercentage: taxSlabPercentage,
+        isSelfOccupied: isSelfOccupied,
+      );
+    });
 
 /// Provider for quick prepayment calculations
-final quickPrepaymentResultProvider = 
-    Provider.family<PrepaymentResult?, Map<String, dynamic>>(
-  (ref, params) {
-    try {
-      final scenario = params['scenario'] as PrepaymentScenario;
-      final loanParams = params['loanParams'] as LoanParameters;
-      final originalEMI = params['originalEMI'] as EMIResult;
+final quickPrepaymentResultProvider =
+    Provider.family<PrepaymentResult?, Map<String, dynamic>>((ref, params) {
+      try {
+        final scenario = params['scenario'] as PrepaymentScenario;
+        final loanParams = params['loanParams'] as LoanParameters;
+        final originalEMI = params['originalEMI'] as EMIResult;
 
-      return PrepaymentCalculationUtils.calculatePrepaymentResult(
-        scenario: scenario,
-        loanParams: loanParams,
-        originalEMI: originalEMI,
-      );
-    } catch (e) {
-      return null;
-    }
-  },
-);
+        return PrepaymentCalculationUtils.calculatePrepaymentResult(
+          scenario: scenario,
+          loanParams: loanParams,
+          originalEMI: originalEMI,
+        );
+      } catch (e) {
+        return null;
+      }
+    });

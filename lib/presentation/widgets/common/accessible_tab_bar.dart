@@ -24,7 +24,7 @@ class AccessibleTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
       height: height,
       padding: padding ?? const EdgeInsets.symmetric(horizontal: 4),
@@ -44,12 +44,12 @@ class AccessibleTabBar extends StatelessWidget {
         indicatorPadding: const EdgeInsets.all(4),
         labelColor: colorScheme.onPrimary,
         unselectedLabelColor: colorScheme.onSurface,
-        labelStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-          fontWeight: FontWeight.w500,
-        ),
+        labelStyle: Theme.of(
+          context,
+        ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
+        unselectedLabelStyle: Theme.of(
+          context,
+        ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w500),
         splashFactory: NoSplash.splashFactory,
         overlayColor: WidgetStateProperty.all(Colors.transparent),
         dividerColor: Colors.transparent,
@@ -64,16 +64,15 @@ class AccessibleTabBar extends StatelessWidget {
       height: height,
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 8,
-          ),
-          child: tab.child ?? Text(
-            tab.text ?? '',
-            textAlign: TextAlign.center,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child:
+              tab.child ??
+              Text(
+                tab.text ?? '',
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
         ),
       ),
     );
@@ -81,14 +80,7 @@ class AccessibleTabBar extends StatelessWidget {
 }
 
 /// Enhanced button component with proper touch targets and Material 3 styling
-enum ButtonType { 
-  primary, 
-  secondary, 
-  outlined, 
-  text,
-  small, 
-  large 
-}
+enum ButtonType { primary, secondary, outlined, text, small, large }
 
 class AccessibleButton extends StatelessWidget {
   final String text;
@@ -127,9 +119,7 @@ class AccessibleButton extends StatelessWidget {
             height: 16,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                _getTextColor(context),
-              ),
+              valueColor: AlwaysStoppedAnimation<Color>(_getTextColor(context)),
             ),
           ),
           const SizedBox(width: 8),
@@ -189,7 +179,7 @@ class AccessibleButton extends StatelessWidget {
 
   ButtonStyle _getButtonStyle(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return ElevatedButton.styleFrom(
       backgroundColor: _getBackgroundColor(context),
       foregroundColor: _getTextColor(context),
@@ -199,22 +189,22 @@ class AccessibleButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: type == ButtonType.outlined 
-          ? BorderSide(color: colorScheme.outline)
-          : BorderSide.none,
+        side: type == ButtonType.outlined
+            ? BorderSide(color: colorScheme.outline)
+            : BorderSide.none,
       ),
-      overlayColor: WidgetStateProperty.resolveWith<Color?>(
-        (Set<WidgetState> states) {
-          if (states.contains(WidgetState.hovered)) {
-            return _getTextColor(context).withValues(alpha: 0.08);
-          }
-          if (states.contains(WidgetState.focused) || 
-              states.contains(WidgetState.pressed)) {
-            return _getTextColor(context).withValues(alpha: 0.12);
-          }
-          return null;
-        },
-      ),
+      overlayColor: WidgetStateProperty.resolveWith<Color?>((
+        Set<WidgetState> states,
+      ) {
+        if (states.contains(WidgetState.hovered)) {
+          return _getTextColor(context).withValues(alpha: 0.08);
+        }
+        if (states.contains(WidgetState.focused) ||
+            states.contains(WidgetState.pressed)) {
+          return _getTextColor(context).withValues(alpha: 0.12);
+        }
+        return null;
+      }).resolve({}),
     );
   }
 

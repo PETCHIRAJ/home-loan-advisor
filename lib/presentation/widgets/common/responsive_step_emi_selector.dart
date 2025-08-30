@@ -49,9 +49,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
       children: [
         Text(
           'EMI Structure',
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: ResponsiveSpacing.xs),
         Text(
@@ -70,12 +70,12 @@ class ResponsiveStepEMISelector extends StatelessWidget {
       children: [
         Text(
           'EMI Type',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: ResponsiveSpacing.sm),
-        
+
         // Responsive layout for EMI type cards
         LayoutBuilder(
           builder: (context, constraints) {
@@ -83,10 +83,14 @@ class ResponsiveStepEMISelector extends StatelessWidget {
               // Mobile: Stack vertically
               return Column(
                 children: StepEMIType.values
-                    .map((type) => Padding(
-                          padding: const EdgeInsets.only(bottom: ResponsiveSpacing.sm),
-                          child: _buildEMITypeCard(context, type),
-                        ))
+                    .map(
+                      (type) => Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: ResponsiveSpacing.sm,
+                        ),
+                        child: _buildEMITypeCard(context, type),
+                      ),
+                    )
                     .toList(),
               );
             } else {
@@ -114,15 +118,15 @@ class ResponsiveStepEMISelector extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Material(
-      color: isSelected 
-        ? colorScheme.primaryContainer.withValues(alpha: 0.3)
-        : colorScheme.surface,
+      color: isSelected
+          ? colorScheme.primaryContainer.withValues(alpha: 0.3)
+          : colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: isSelected 
-            ? colorScheme.primary
-            : colorScheme.outline.withValues(alpha: 0.3),
+          color: isSelected
+              ? colorScheme.primary
+              : colorScheme.outline.withValues(alpha: 0.3),
           width: isSelected ? 2 : 1,
         ),
       ),
@@ -141,21 +145,21 @@ class ResponsiveStepEMISelector extends StatelessWidget {
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: isSelected 
-                    ? colorScheme.primary.withValues(alpha: 0.2)
-                    : colorScheme.surfaceContainerHighest,
+                  color: isSelected
+                      ? colorScheme.primary.withValues(alpha: 0.2)
+                      : colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
                   _getIconForEMIType(type),
-                  color: isSelected 
-                    ? colorScheme.primary
-                    : colorScheme.onSurface,
+                  color: isSelected
+                      ? colorScheme.primary
+                      : colorScheme.onSurface,
                   size: 20,
                 ),
               ),
               const SizedBox(width: ResponsiveSpacing.sm),
-              
+
               // Title and description
               Expanded(
                 child: Column(
@@ -165,9 +169,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
                     Text(
                       type.displayName,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: isSelected 
-                          ? colorScheme.primary
-                          : colorScheme.onSurface,
+                        color: isSelected
+                            ? colorScheme.primary
+                            : colorScheme.onSurface,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -175,9 +179,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
                     Text(
                       type.description,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: isSelected 
-                          ? colorScheme.onPrimaryContainer
-                          : colorScheme.onSurfaceVariant,
+                        color: isSelected
+                            ? colorScheme.onPrimaryContainer
+                            : colorScheme.onSurfaceVariant,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -185,14 +189,10 @@ class ResponsiveStepEMISelector extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Selection indicator
               if (isSelected)
-                Icon(
-                  Icons.check_circle,
-                  color: colorScheme.primary,
-                  size: 20,
-                ),
+                Icon(Icons.check_circle, color: colorScheme.primary, size: 20),
             ],
           ),
         ),
@@ -206,22 +206,22 @@ class ResponsiveStepEMISelector extends StatelessWidget {
       children: [
         Text(
           'Step Configuration',
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w600,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
         ),
         const SizedBox(height: ResponsiveSpacing.lg),
-        
+
         // Responsive percentage selector
         _buildResponsivePercentageSelector(context),
-        
+
         const SizedBox(height: ResponsiveSpacing.xl),
-        
+
         // Frequency selector
         _buildResponsiveFrequencySelector(context),
-        
+
         const SizedBox(height: ResponsiveSpacing.lg),
-        
+
         // Configuration preview
         _buildConfigurationPreview(context),
       ],
@@ -229,26 +229,27 @@ class ResponsiveStepEMISelector extends StatelessWidget {
   }
 
   Widget _buildResponsivePercentageSelector(BuildContext context) {
-    final suggestedPercentages = StepEMICalculationUtils.getSuggestedStepPercentages();
-    
+    final suggestedPercentages =
+        StepEMICalculationUtils.getSuggestedStepPercentages();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             Icon(
-              parameters.type == StepEMIType.stepUp 
-                ? Icons.trending_up 
-                : Icons.trending_down,
+              parameters.type == StepEMIType.stepUp
+                  ? Icons.trending_up
+                  : Icons.trending_down,
               size: 20,
               color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: ResponsiveSpacing.sm),
             Text(
               'Step Percentage',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -272,13 +273,17 @@ class ResponsiveStepEMISelector extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   padding: EdgeInsets.zero,
                   itemCount: suggestedPercentages.length,
-                  separatorBuilder: (context, index) => 
-                    const SizedBox(width: ResponsiveSpacing.sm),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: ResponsiveSpacing.sm),
                   itemBuilder: (context, index) {
                     final percentage = suggestedPercentages[index];
                     final isSelected = parameters.stepPercentage == percentage;
-                    
-                    return _buildPercentageChip(context, percentage, isSelected);
+
+                    return _buildPercentageChip(
+                      context,
+                      percentage,
+                      isSelected,
+                    );
                   },
                 ),
               );
@@ -300,16 +305,16 @@ class ResponsiveStepEMISelector extends StatelessWidget {
   }
 
   Widget _buildPercentageChip(
-    BuildContext context, 
-    double percentage, 
+    BuildContext context,
+    double percentage,
     bool isSelected,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Material(
-      color: isSelected 
-        ? colorScheme.primary
-        : colorScheme.surfaceContainerHighest,
+      color: isSelected
+          ? colorScheme.primary
+          : colorScheme.surfaceContainerHighest,
       borderRadius: BorderRadius.circular(24),
       child: InkWell(
         onTap: () => onParametersChanged(
@@ -329,9 +334,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
             child: Text(
               '${percentage.toStringAsFixed(percentage % 1 == 0 ? 0 : 1)}%',
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                color: isSelected 
-                  ? colorScheme.onPrimary
-                  : colorScheme.onSurface,
+                color: isSelected
+                    ? colorScheme.onPrimary
+                    : colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -355,9 +360,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
             const SizedBox(width: ResponsiveSpacing.sm),
             Text(
               'Step Frequency',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -382,7 +387,11 @@ class ResponsiveStepEMISelector extends StatelessWidget {
                     width: double.infinity,
                     height: ResponsiveSpacing.minTouchTarget,
                     margin: const EdgeInsets.only(bottom: ResponsiveSpacing.xs),
-                    child: _buildFrequencyButton(context, frequency, isSelected),
+                    child: _buildFrequencyButton(
+                      context,
+                      frequency,
+                      isSelected,
+                    ),
                   );
                 }).toList(),
               );
@@ -418,29 +427,26 @@ class ResponsiveStepEMISelector extends StatelessWidget {
   }
 
   Widget _buildFrequencyButton(
-    BuildContext context, 
-    StepFrequency frequency, 
+    BuildContext context,
+    StepFrequency frequency,
     bool isSelected,
   ) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Material(
-      color: isSelected 
-        ? colorScheme.primary
-        : colorScheme.surfaceContainerHighest,
+      color: isSelected
+          ? colorScheme.primary
+          : colorScheme.surfaceContainerHighest,
       borderRadius: BorderRadius.circular(8),
       child: InkWell(
-        onTap: () => onParametersChanged(
-          parameters.copyWith(frequency: frequency),
-        ),
+        onTap: () =>
+            onParametersChanged(parameters.copyWith(frequency: frequency)),
         borderRadius: BorderRadius.circular(8),
         child: Center(
           child: Text(
             frequency.displayName,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: isSelected 
-                ? colorScheme.onPrimary
-                : colorScheme.onSurface,
+              color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -453,7 +459,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
     if (parameters.type == StepEMIType.none) return const SizedBox.shrink();
 
     final colorScheme = Theme.of(context).colorScheme;
-    final changeVerb = parameters.type == StepEMIType.stepUp ? 'increases' : 'decreases';
+    final changeVerb = parameters.type == StepEMIType.stepUp
+        ? 'increases'
+        : 'decreases';
     final benefitText = _getConfigurationBenefit();
 
     return Container(
@@ -461,9 +469,7 @@ class ResponsiveStepEMISelector extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.2),
-        ),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -488,9 +494,9 @@ class ResponsiveStepEMISelector extends StatelessWidget {
           const SizedBox(height: ResponsiveSpacing.sm),
           Text(
             'Your EMI $changeVerb by ${parameters.stepPercentage}% ${parameters.frequency.displayName.toLowerCase()}',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
           ),
           if (benefitText.isNotEmpty) ...[
             const SizedBox(height: ResponsiveSpacing.xs),
@@ -533,24 +539,24 @@ class ResponsiveStepEMISelector extends StatelessWidget {
     if (newType == parameters.type) return;
 
     StepEMIParameters newParameters;
-    
+
     switch (newType) {
       case StepEMIType.none:
         newParameters = StepEMIParameters.none();
         break;
       case StepEMIType.stepUp:
         newParameters = StepEMIParameters.stepUp(
-          stepPercentage: parameters.type == StepEMIType.stepDown 
-            ? parameters.stepPercentage 
-            : 10.0,
+          stepPercentage: parameters.type == StepEMIType.stepDown
+              ? parameters.stepPercentage
+              : 10.0,
           frequency: parameters.frequency,
         );
         break;
       case StepEMIType.stepDown:
         newParameters = StepEMIParameters.stepDown(
-          stepPercentage: parameters.type == StepEMIType.stepUp 
-            ? parameters.stepPercentage 
-            : 10.0,
+          stepPercentage: parameters.type == StepEMIType.stepUp
+              ? parameters.stepPercentage
+              : 10.0,
           frequency: parameters.frequency,
         );
         break;
@@ -656,9 +662,9 @@ class _ExpandableCardState extends State<ExpandableCard>
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: ResponsiveSpacing.sm),
-              
+
               // Content
               AnimatedBuilder(
                 animation: _expandAnimation,
@@ -673,7 +679,7 @@ class _ExpandableCardState extends State<ExpandableCard>
                   );
                 },
               ),
-              
+
               // Read more/less indicator
               if (_shouldShowReadMore()) ...[
                 const SizedBox(height: ResponsiveSpacing.xs),

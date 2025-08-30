@@ -6,10 +6,7 @@ import '../../../../core/extensions/number_extensions.dart';
 class StrategyDetailsSheet extends StatefulWidget {
   final PersonalizedStrategyResult strategy;
 
-  const StrategyDetailsSheet({
-    super.key,
-    required this.strategy,
-  });
+  const StrategyDetailsSheet({super.key, required this.strategy});
 
   @override
   State<StrategyDetailsSheet> createState() => _StrategyDetailsSheetState();
@@ -28,15 +25,11 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
       duration: const Duration(milliseconds: 300),
       vsync: this,
     );
-    _slideAnimation = Tween<double>(
-      begin: 1.0,
-      end: 0.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    _slideAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
     _tabController = TabController(length: 3, vsync: this);
-    
+
     _animationController.forward();
   }
 
@@ -56,12 +49,17 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
       animation: _slideAnimation,
       builder: (context, child) {
         return Transform.translate(
-          offset: Offset(0, MediaQuery.of(context).size.height * _slideAnimation.value),
+          offset: Offset(
+            0,
+            MediaQuery.of(context).size.height * _slideAnimation.value,
+          ),
           child: Container(
             height: MediaQuery.of(context).size.height * 0.9,
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
               boxShadow: [
                 BoxShadow(
                   color: theme.shadowColor.withValues(alpha: 0.1),
@@ -103,9 +101,9 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                           ),
                         ),
                       ),
-                      
+
                       const SizedBox(width: 16),
-                      
+
                       // Title and feasibility
                       Expanded(
                         child: Column(
@@ -128,7 +126,10 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                                 Text(
                                   widget.strategy.feasibility.displayName,
                                   style: theme.textTheme.bodyMedium?.copyWith(
-                                    color: _getFeasibilityColor(widget.strategy.feasibility, theme),
+                                    color: _getFeasibilityColor(
+                                      widget.strategy.feasibility,
+                                      theme,
+                                    ),
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -137,7 +138,7 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                           ],
                         ),
                       ),
-                      
+
                       // Close button
                       IconButton(
                         onPressed: () => Navigator.of(context).pop(),
@@ -169,7 +170,8 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                       _buildSavingsStat(
                         context,
                         title: 'Total Savings',
-                        value: widget.strategy.personalizedSavings.toIndianFormat(),
+                        value: widget.strategy.personalizedSavings
+                            .toIndianFormat(),
                         color: theme.colorScheme.primary,
                       ),
                       Container(
@@ -180,7 +182,8 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                       _buildSavingsStat(
                         context,
                         title: 'Time Saved',
-                        value: '${(widget.strategy.tenureReductionMonths / 12).toStringAsFixed(1)} Years',
+                        value:
+                            '${(widget.strategy.tenureReductionMonths / 12).toStringAsFixed(1)} Years',
                         color: theme.colorScheme.tertiary,
                       ),
                     ],
@@ -193,7 +196,9 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.5),
+                    color: theme.colorScheme.surfaceVariant.withValues(
+                      alpha: 0.5,
+                    ),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: TabBar(
@@ -235,7 +240,9 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                         // TODO: Implement strategy activation
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('${strategyMeta['title']} will be activated!'),
+                            content: Text(
+                              '${strategyMeta['title']} will be activated!',
+                            ),
                             behavior: SnackBarBehavior.floating,
                           ),
                         );
@@ -254,7 +261,10 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
     );
   }
 
-  Widget _buildOverviewTab(BuildContext context, Map<String, dynamic> strategyMeta) {
+  Widget _buildOverviewTab(
+    BuildContext context,
+    Map<String, dynamic> strategyMeta,
+  ) {
     final theme = Theme.of(context);
 
     return SingleChildScrollView(
@@ -264,10 +274,9 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
         children: [
           // Description
           Text(
-            strategyMeta['description'] ?? 'This strategy can help you save money on your home loan.',
-            style: theme.textTheme.bodyLarge?.copyWith(
-              height: 1.5,
-            ),
+            strategyMeta['description'] ??
+                'This strategy can help you save money on your home loan.',
+            style: theme.textTheme.bodyLarge?.copyWith(height: 1.5),
           ),
 
           const SizedBox(height: 24),
@@ -280,7 +289,7 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
             ),
           ),
           const SizedBox(height: 16),
-          
+
           Container(
             height: 200,
             padding: const EdgeInsets.all(16),
@@ -301,27 +310,26 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
             ),
           ),
           const SizedBox(height: 12),
-          
-          ..._getBenefits(strategyMeta).map((benefit) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.check_circle,
-                  size: 20,
-                  color: theme.colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    benefit,
-                    style: theme.textTheme.bodyMedium,
+
+          ..._getBenefits(strategyMeta).map(
+            (benefit) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    size: 20,
+                    color: theme.colorScheme.primary,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(benefit, style: theme.textTheme.bodyMedium),
+                  ),
+                ],
+              ),
             ),
-          )),
+          ),
 
           const SizedBox(height: 24),
 
@@ -329,10 +337,16 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: _getFeasibilityColor(widget.strategy.feasibility, theme).withValues(alpha: 0.1),
+              color: _getFeasibilityColor(
+                widget.strategy.feasibility,
+                theme,
+              ).withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: _getFeasibilityColor(widget.strategy.feasibility, theme).withValues(alpha: 0.3),
+                color: _getFeasibilityColor(
+                  widget.strategy.feasibility,
+                  theme,
+                ).withValues(alpha: 0.3),
               ),
             ),
             child: Column(
@@ -368,7 +382,10 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
     );
   }
 
-  Widget _buildStepsTab(BuildContext context, Map<String, dynamic> strategyMeta) {
+  Widget _buildStepsTab(
+    BuildContext context,
+    Map<String, dynamic> strategyMeta,
+  ) {
     final theme = Theme.of(context);
     final steps = _getImplementationSteps(strategyMeta);
 
@@ -422,23 +439,23 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
                       ),
                   ],
                 ),
-                
+
                 const SizedBox(width: 16),
-                
+
                 // Step content
                 Expanded(
                   child: Container(
                     margin: EdgeInsets.only(bottom: isLast ? 0 : 16),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.surfaceVariant.withValues(alpha: 0.3),
+                      color: theme.colorScheme.surfaceVariant.withValues(
+                        alpha: 0.3,
+                      ),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
                       step,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        height: 1.4,
-                      ),
+                      style: theme.textTheme.bodyMedium?.copyWith(height: 1.4),
                     ),
                   ),
                 ),
@@ -456,27 +473,26 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
             ),
           ),
           const SizedBox(height: 12),
-          
-          ..._getRequirements(strategyMeta).map((requirement) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.assignment_turned_in,
-                  size: 20,
-                  color: theme.colorScheme.secondary,
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    requirement,
-                    style: theme.textTheme.bodyMedium,
+
+          ..._getRequirements(strategyMeta).map(
+            (requirement) => Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    Icons.assignment_turned_in,
+                    size: 20,
+                    color: theme.colorScheme.secondary,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(requirement, style: theme.textTheme.bodyMedium),
+                  ),
+                ],
+              ),
             ),
-          )),
+          ),
         ],
       ),
     );
@@ -499,30 +515,54 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
           const SizedBox(height: 16),
 
           // Current vs New EMI
-          _buildDetailRow(context, 'Current EMI', widget.strategy.currentEMI.toEMIFormat()),
-          _buildDetailRow(context, 'New EMI', widget.strategy.newEMI.toEMIFormat()),
           _buildDetailRow(
-            context, 
-            'EMI Difference', 
-            '${widget.strategy.newEMI > widget.strategy.currentEMI ? '+' : '-'}${(widget.strategy.newEMI - widget.strategy.currentEMI).abs().toEMIFormat()}'
+            context,
+            'Current EMI',
+            widget.strategy.currentEMI.toEMIFormat(),
+          ),
+          _buildDetailRow(
+            context,
+            'New EMI',
+            widget.strategy.newEMI.toEMIFormat(),
+          ),
+          _buildDetailRow(
+            context,
+            'EMI Difference',
+            '${widget.strategy.newEMI > widget.strategy.currentEMI ? '+' : '-'}${(widget.strategy.newEMI - widget.strategy.currentEMI).abs().toEMIFormat()}',
           ),
 
           const Divider(height: 32),
 
           // Tenure details
-          _buildDetailRow(context, 'Current Tenure', '${widget.strategy.currentTenureMonths} months'),
-          _buildDetailRow(context, 'New Tenure', '${widget.strategy.newTenureMonths} months'),
           _buildDetailRow(
-            context, 
-            'Time Saved', 
-            '${widget.strategy.tenureReductionMonths} months (${(widget.strategy.tenureReductionMonths / 12).toStringAsFixed(1)} years)'
+            context,
+            'Current Tenure',
+            '${widget.strategy.currentTenureMonths} months',
+          ),
+          _buildDetailRow(
+            context,
+            'New Tenure',
+            '${widget.strategy.newTenureMonths} months',
+          ),
+          _buildDetailRow(
+            context,
+            'Time Saved',
+            '${widget.strategy.tenureReductionMonths} months (${(widget.strategy.tenureReductionMonths / 12).toStringAsFixed(1)} years)',
           ),
 
           const Divider(height: 32),
 
           // Savings details
-          _buildDetailRow(context, 'Interest Saved', widget.strategy.totalInterestSaved.toIndianFormat()),
-          _buildDetailRow(context, 'ROI on Investment', '${widget.strategy.roiOnInvestment.toStringAsFixed(2)}%'),
+          _buildDetailRow(
+            context,
+            'Interest Saved',
+            widget.strategy.totalInterestSaved.toIndianFormat(),
+          ),
+          _buildDetailRow(
+            context,
+            'ROI on Investment',
+            '${widget.strategy.roiOnInvestment.toStringAsFixed(2)}%',
+          ),
 
           const SizedBox(height: 24),
 
@@ -535,7 +575,7 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
               ),
             ),
             const SizedBox(height: 12),
-            
+
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16),
@@ -546,15 +586,17 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: widget.strategy.calculationDetails.entries
-                    .map((entry) => Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Text(
-                        '${entry.key}: ${entry.value}',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          fontFamily: 'monospace',
+                    .map(
+                      (entry) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Text(
+                          '${entry.key}: ${entry.value}',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontFamily: 'monospace',
+                          ),
                         ),
                       ),
-                    ))
+                    )
                     .toList(),
               ),
             ),
@@ -640,9 +682,15 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
               },
             ),
           ),
-          leftTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          leftTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
         ),
         gridData: const FlGridData(show: false),
         borderData: FlBorderData(show: false),
@@ -693,37 +741,43 @@ class _StrategyDetailsSheetState extends State<StrategyDetailsSheet>
         return {
           'emoji': '💰',
           'title': 'Extra EMI Strategy',
-          'description': 'Pay one additional EMI every year to save massive interest. This is one of the most effective ways to reduce your loan burden without significantly impacting your monthly budget.',
+          'description':
+              'Pay one additional EMI every year to save massive interest. This is one of the most effective ways to reduce your loan burden without significantly impacting your monthly budget.',
         };
       case 'emi_step_up_5percent':
         return {
           'emoji': '📈',
           'title': '5% EMI Increase Yearly',
-          'description': 'Increase your EMI by 5% every year as your income grows. This strategy aligns with your income growth and can dramatically reduce your loan tenure.',
+          'description':
+              'Increase your EMI by 5% every year as your income grows. This strategy aligns with your income growth and can dramatically reduce your loan tenure.',
         };
       case 'lump_sum_prepayment':
         return {
           'emoji': '💸',
           'title': 'Lump Sum Prepayment',
-          'description': 'Use bonus, inheritance, or savings for one-time prepayment. Even a single large prepayment can save you lakhs in interest over the loan tenure.',
+          'description':
+              'Use bonus, inheritance, or savings for one-time prepayment. Even a single large prepayment can save you lakhs in interest over the loan tenure.',
         };
       case 'refinance_lower_rate':
         return {
           'emoji': '🏦',
           'title': 'Refinance at Lower Rate',
-          'description': 'Switch to a bank offering lower interest rates. Though it requires effort, refinancing can save you significant money over the long term.',
+          'description':
+              'Switch to a bank offering lower interest rates. Though it requires effort, refinancing can save you significant money over the long term.',
         };
       case 'emi_round_up':
         return {
           'emoji': '🎯',
           'title': 'Round-up EMI Strategy',
-          'description': 'Round your EMI to the nearest ₹1,000 for effortless saving. This small change can make a big difference over time without straining your budget.',
+          'description':
+              'Round your EMI to the nearest ₹1,000 for effortless saving. This small change can make a big difference over time without straining your budget.',
         };
       default:
         return {
           'emoji': '💡',
           'title': 'Money-Saving Strategy',
-          'description': 'Save money on your home loan with this effective strategy.',
+          'description':
+              'Save money on your home loan with this effective strategy.',
         };
     }
   }

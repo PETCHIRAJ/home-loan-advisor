@@ -16,13 +16,8 @@ class ComparisonCharts extends ConsumerStatefulWidget {
 class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
     with SingleTickerProviderStateMixin {
   late TabController _chartTabController;
-  
-  final List<String> _chartTabs = [
-    'EMI',
-    'Interest',
-    'Total Cost',
-    'Timeline',
-  ];
+
+  final List<String> _chartTabs = ['EMI', 'Interest', 'Total Cost', 'Timeline'];
 
   @override
   void initState() {
@@ -51,7 +46,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
         Container(
           margin: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+            color: Theme.of(
+              context,
+            ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(8),
           ),
           child: TabBar(
@@ -65,9 +62,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
             ),
             labelColor: Colors.white,
             unselectedLabelColor: Theme.of(context).colorScheme.onSurface,
-            labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            labelStyle: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
             tabs: _chartTabs.map((tab) => Tab(text: tab)).toList(),
           ),
         ),
@@ -88,7 +85,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
     );
   }
 
-  Widget _buildEMIChart(List<LoanScenario> scenarios, LoanScenario? bestScenario) {
+  Widget _buildEMIChart(
+    List<LoanScenario> scenarios,
+    LoanScenario? bestScenario,
+  ) {
     return Card(
       margin: const EdgeInsets.all(16),
       child: Padding(
@@ -98,22 +98,28 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
           children: [
             Text(
               'Monthly EMI Comparison',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'Compare monthly payment amounts across scenarios',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),
             Expanded(
               child: BarChart(
                 BarChartData(
-                  maxY: scenarios.map((s) => s.result!.monthlyEMI).reduce((a, b) => a > b ? a : b) * 1.1,
+                  maxY:
+                      scenarios
+                          .map((s) => s.result!.monthlyEMI)
+                          .reduce((a, b) => a > b ? a : b) *
+                      1.1,
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
@@ -121,9 +127,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                         return BarTooltipItem(
                           '${scenario.name}\n${scenario.result!.monthlyEMI.toEMIFormat()}',
                           Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ) ?? const TextStyle(),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ) ??
+                              const TextStyle(),
                         );
                       },
                     ),
@@ -154,10 +161,11 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                               child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(
-                                  name.length > 10 ? '${name.substring(0, 10)}...' : name,
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    fontSize: 10,
-                                  ),
+                                  name.length > 10
+                                      ? '${name.substring(0, 10)}...'
+                                      : name,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -167,15 +175,19 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                         },
                       ),
                     ),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
                   borderData: FlBorderData(show: false),
                   barGroups: scenarios.asMap().entries.map((entry) {
                     final index = entry.key;
                     final scenario = entry.value;
                     final isBest = bestScenario?.id == scenario.id;
-                    
+
                     return BarChartGroupData(
                       x: index,
                       barRods: [
@@ -183,7 +195,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                           toY: scenario.result!.monthlyEMI,
                           color: _getScenarioColor(context, scenario, isBest),
                           width: 20,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(4),
+                          ),
                         ),
                       ],
                     );
@@ -197,7 +211,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
     );
   }
 
-  Widget _buildInterestChart(List<LoanScenario> scenarios, LoanScenario? bestScenario) {
+  Widget _buildInterestChart(
+    List<LoanScenario> scenarios,
+    LoanScenario? bestScenario,
+  ) {
     return Card(
       margin: const EdgeInsets.all(16),
       child: Padding(
@@ -207,22 +224,28 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
           children: [
             Text(
               'Total Interest Comparison',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'Total interest paid over the loan tenure',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),
             Expanded(
               child: BarChart(
                 BarChartData(
-                  maxY: scenarios.map((s) => s.result!.totalInterest).reduce((a, b) => a > b ? a : b) * 1.1,
+                  maxY:
+                      scenarios
+                          .map((s) => s.result!.totalInterest)
+                          .reduce((a, b) => a > b ? a : b) *
+                      1.1,
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
@@ -230,9 +253,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                         return BarTooltipItem(
                           '${scenario.name}\n₹${scenario.result!.totalInterest.toIndianFormat()}',
                           Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ) ?? const TextStyle(),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ) ??
+                              const TextStyle(),
                         );
                       },
                     ),
@@ -247,9 +271,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                             padding: const EdgeInsets.only(right: 4),
                             child: Text(
                               '₹${(value / 100000).toInt()}L',
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                fontSize: 10,
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(fontSize: 10),
                             ),
                           );
                         },
@@ -268,10 +292,11 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                               child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(
-                                  name.length > 10 ? '${name.substring(0, 10)}...' : name,
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    fontSize: 10,
-                                  ),
+                                  name.length > 10
+                                      ? '${name.substring(0, 10)}...'
+                                      : name,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -281,15 +306,19 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                         },
                       ),
                     ),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
                   borderData: FlBorderData(show: false),
                   barGroups: scenarios.asMap().entries.map((entry) {
                     final index = entry.key;
                     final scenario = entry.value;
                     final isBest = bestScenario?.id == scenario.id;
-                    
+
                     return BarChartGroupData(
                       x: index,
                       barRods: [
@@ -297,7 +326,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                           toY: scenario.result!.totalInterest,
                           color: _getScenarioColor(context, scenario, isBest),
                           width: 20,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(4),
+                          ),
                         ),
                       ],
                     );
@@ -311,7 +342,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
     );
   }
 
-  Widget _buildTotalCostChart(List<LoanScenario> scenarios, LoanScenario? bestScenario) {
+  Widget _buildTotalCostChart(
+    List<LoanScenario> scenarios,
+    LoanScenario? bestScenario,
+  ) {
     return Card(
       margin: const EdgeInsets.all(16),
       child: Padding(
@@ -321,22 +355,28 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
           children: [
             Text(
               'Total Cost After Benefits',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'Total cost including tax benefits and subsidies',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),
             Expanded(
               child: BarChart(
                 BarChartData(
-                  maxY: scenarios.map((s) => s.totalCostAfterBenefits).reduce((a, b) => a > b ? a : b) * 1.1,
+                  maxY:
+                      scenarios
+                          .map((s) => s.totalCostAfterBenefits)
+                          .reduce((a, b) => a > b ? a : b) *
+                      1.1,
                   barTouchData: BarTouchData(
                     touchTooltipData: BarTouchTooltipData(
                       getTooltipItem: (group, groupIndex, rod, rodIndex) {
@@ -344,9 +384,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                         return BarTooltipItem(
                           '${scenario.name}\n₹${scenario.totalCostAfterBenefits.toIndianFormat()}',
                           Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ) ?? const TextStyle(),
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ) ??
+                              const TextStyle(),
                         );
                       },
                     ),
@@ -361,9 +402,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                             padding: const EdgeInsets.only(right: 4),
                             child: Text(
                               '₹${(value / 100000).toInt()}L',
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                fontSize: 10,
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(fontSize: 10),
                             ),
                           );
                         },
@@ -382,10 +423,11 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                               child: RotatedBox(
                                 quarterTurns: -1,
                                 child: Text(
-                                  name.length > 10 ? '${name.substring(0, 10)}...' : name,
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    fontSize: 10,
-                                  ),
+                                  name.length > 10
+                                      ? '${name.substring(0, 10)}...'
+                                      : name,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(fontSize: 10),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
@@ -395,15 +437,19 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                         },
                       ),
                     ),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
                   borderData: FlBorderData(show: false),
                   barGroups: scenarios.asMap().entries.map((entry) {
                     final index = entry.key;
                     final scenario = entry.value;
                     final isBest = bestScenario?.id == scenario.id;
-                    
+
                     return BarChartGroupData(
                       x: index,
                       barRods: [
@@ -411,7 +457,9 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                           toY: scenario.totalCostAfterBenefits,
                           color: _getScenarioColor(context, scenario, isBest),
                           width: 20,
-                          borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(4),
+                          ),
                         ),
                       ],
                     );
@@ -425,7 +473,10 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
     );
   }
 
-  Widget _buildTimelineChart(List<LoanScenario> scenarios, LoanScenario? bestScenario) {
+  Widget _buildTimelineChart(
+    List<LoanScenario> scenarios,
+    LoanScenario? bestScenario,
+  ) {
     // Create timeline data showing cumulative interest over time
     return Card(
       margin: const EdgeInsets.all(16),
@@ -436,15 +487,17 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
           children: [
             Text(
               'Interest Accumulation Timeline',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               'How interest accumulates over time for each scenario',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 24),
@@ -459,13 +512,14 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                           final scenario = scenarios[scenarioIndex];
                           final year = spot.x.toInt();
                           final cumulativeInterest = spot.y;
-                          
+
                           return LineTooltipItem(
                             '${scenario.name}\nYear $year: ₹${cumulativeInterest.toIndianFormat()}',
                             Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ) ?? const TextStyle(),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ) ??
+                                const TextStyle(),
                           );
                         }).toList();
                       },
@@ -493,31 +547,38 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
                             padding: const EdgeInsets.only(right: 4),
                             child: Text(
                               '₹${(value / 100000).toInt()}L',
-                              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                fontSize: 10,
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelSmall?.copyWith(fontSize: 10),
                             ),
                           );
                         },
                       ),
                     ),
-                    rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                    topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    rightTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
+                    topTitles: const AxisTitles(
+                      sideTitles: SideTitles(showTitles: false),
+                    ),
                   ),
                   borderData: FlBorderData(show: false),
                   gridData: const FlGridData(show: true),
                   lineBarsData: scenarios.map((scenario) {
                     final isBest = bestScenario?.id == scenario.id;
-                    
+
                     // Generate cumulative interest data points
                     final spots = <FlSpot>[];
                     double cumulativeInterest = 0;
-                    
-                    for (final yearData in scenario.result!.breakdown.yearlyBreakdown) {
+
+                    for (final yearData
+                        in scenario.result!.breakdown.yearlyBreakdown) {
                       cumulativeInterest += yearData.interestPaid;
-                      spots.add(FlSpot(yearData.year.toDouble(), cumulativeInterest));
+                      spots.add(
+                        FlSpot(yearData.year.toDouble(), cumulativeInterest),
+                      );
                     }
-                    
+
                     return LineChartBarData(
                       spots: spots,
                       color: _getScenarioColor(context, scenario, isBest),
@@ -570,14 +631,18 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
     );
   }
 
-  Color _getScenarioColor(BuildContext context, LoanScenario scenario, bool isBest) {
+  Color _getScenarioColor(
+    BuildContext context,
+    LoanScenario scenario,
+    bool isBest,
+  ) {
     if (isBest) {
       return FinancialColors.savings;
     }
     if (scenario.isBaseScenario) {
       return Theme.of(context).colorScheme.primary;
     }
-    
+
     // Generate color based on scenario ID hash
     final hash = scenario.id.hashCode;
     final colors = [
@@ -587,7 +652,7 @@ class _ComparisonChartsState extends ConsumerState<ComparisonCharts>
       FinancialColors.privateBank,
       FinancialColors.nbfc,
     ];
-    
+
     return colors[hash.abs() % colors.length];
   }
 }

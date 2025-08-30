@@ -7,7 +7,9 @@ import '../../domain/usecases/calculate_emi_usecase.dart';
 import '../providers/app_providers.dart';
 
 /// Provider for ScenarioComparisonUseCase
-final scenarioComparisonUseCaseProvider = Provider<ScenarioComparisonUseCase>((ref) {
+final scenarioComparisonUseCaseProvider = Provider<ScenarioComparisonUseCase>((
+  ref,
+) {
   final calculationRepo = ref.watch(calculationRepositoryProvider);
   final calculateEMIUseCase = CalculateEMIUseCase(calculationRepo);
   return ScenarioComparisonUseCase(calculateEMIUseCase);
@@ -43,10 +45,12 @@ class ScenarioComparisonState {
 }
 
 /// Provider for scenario comparison state
-class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> {
+class ScenarioComparisonNotifier
+    extends StateNotifier<ScenarioComparisonState> {
   final ScenarioComparisonUseCase _useCase;
 
-  ScenarioComparisonNotifier(this._useCase) : super(const ScenarioComparisonState());
+  ScenarioComparisonNotifier(this._useCase)
+    : super(const ScenarioComparisonState());
 
   /// Initialize comparison with base scenario
   Future<void> initializeComparison(
@@ -54,18 +58,15 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
     EMIResult baseResult,
   ) async {
     state = state.copyWith(isLoading: true, error: null);
-    
+
     try {
       final comparison = await _useCase.createScenarioComparison(
         baseParameters,
         baseResult,
         includePresets: true,
       );
-      
-      state = state.copyWith(
-        comparison: comparison,
-        isLoading: false,
-      );
+
+      state = state.copyWith(comparison: comparison, isLoading: false);
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
@@ -110,7 +111,9 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
     state = state.copyWith(isLoading: true);
 
     try {
-      final scenarioIndex = comparison.scenarios.indexWhere((s) => s.id == scenarioId);
+      final scenarioIndex = comparison.scenarios.indexWhere(
+        (s) => s.id == scenarioId,
+      );
       if (scenarioIndex == -1) {
         state = state.copyWith(isLoading: false, error: 'Scenario not found');
         return;
@@ -135,10 +138,7 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
         bestScenarioId: bestScenarioId,
       );
 
-      state = state.copyWith(
-        comparison: updatedComparison,
-        isLoading: false,
-      );
+      state = state.copyWith(comparison: updatedComparison, isLoading: false);
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
@@ -165,8 +165,10 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
         parameters: parameters,
       );
 
-      final calculatedScenario = await _useCase.calculateScenarioEMI(customScenario);
-      
+      final calculatedScenario = await _useCase.calculateScenarioEMI(
+        customScenario,
+      );
+
       final updatedScenarios = List<LoanScenario>.from(comparison.scenarios)
         ..add(calculatedScenario);
 
@@ -216,7 +218,10 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
   }
 
   /// Apply scenario preset
-  Future<void> applyScenarioPreset(String scenarioId, ScenarioPreset preset) async {
+  Future<void> applyScenarioPreset(
+    String scenarioId,
+    ScenarioPreset preset,
+  ) async {
     final comparison = state.comparison;
     if (comparison == null) return;
 
@@ -249,12 +254,18 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
         break;
       case ScenarioPreset.lowerAmount:
         newParameters = baseParams.copyWith(
-          loanAmount: (baseParams.loanAmount * 0.8).clamp(100000, double.infinity),
+          loanAmount: (baseParams.loanAmount * 0.8).clamp(
+            100000,
+            double.infinity,
+          ),
         );
         break;
       case ScenarioPreset.higherAmount:
         newParameters = baseParams.copyWith(
-          loanAmount: (baseParams.loanAmount * 1.2).clamp(100000, double.infinity),
+          loanAmount: (baseParams.loanAmount * 1.2).clamp(
+            100000,
+            double.infinity,
+          ),
         );
         break;
     }
@@ -284,10 +295,13 @@ class ScenarioComparisonNotifier extends StateNotifier<ScenarioComparisonState> 
   }
 }
 
-final scenarioComparisonProvider = StateNotifierProvider<ScenarioComparisonNotifier, ScenarioComparisonState>((ref) {
-  final useCase = ref.watch(scenarioComparisonUseCaseProvider);
-  return ScenarioComparisonNotifier(useCase);
-});
+final scenarioComparisonProvider =
+    StateNotifierProvider<ScenarioComparisonNotifier, ScenarioComparisonState>((
+      ref,
+    ) {
+      final useCase = ref.watch(scenarioComparisonUseCaseProvider);
+      return ScenarioComparisonNotifier(useCase);
+    });
 
 /// Provider for enabled scenarios
 final enabledScenariosProvider = Provider<List<LoanScenario>>((ref) {
@@ -317,13 +331,16 @@ final comparisonMetricsProvider = Provider<ScenarioComparisonMetrics?>((ref) {
 final filteredScenariosProvider = Provider<List<LoanScenario>>((ref) {
   final state = ref.watch(scenarioComparisonProvider);
   final comparison = state.comparison;
-  
+
   if (comparison == null) return [];
-  
+
   if (state.showPresetsOnly) {
     // Show base scenario + enabled preset scenarios
     return comparison.scenarios
-        .where((s) => s.isBaseScenario || (s.isEnabled && !s.id.startsWith('custom_')))
+        .where(
+          (s) =>
+              s.isBaseScenario || (s.isEnabled && !s.id.startsWith('custom_')),
+        )
         .toList();
   } else {
     // Show all enabled scenarios

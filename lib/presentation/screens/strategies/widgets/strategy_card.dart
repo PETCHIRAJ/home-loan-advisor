@@ -6,16 +6,12 @@ class StrategyCard extends StatelessWidget {
   final PersonalizedStrategyResult strategy;
   final VoidCallback onTap;
 
-  const StrategyCard({
-    super.key,
-    required this.strategy,
-    required this.onTap,
-  });
+  const StrategyCard({super.key, required this.strategy, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     // Get strategy metadata based on strategyId
     final strategyMeta = _getStrategyMetadata(strategy.strategyId);
 
@@ -61,10 +57,7 @@ class StrategyCard extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          '💰',
-                          style: const TextStyle(fontSize: 12),
-                        ),
+                        Text('💰', style: const TextStyle(fontSize: 12)),
                         const SizedBox(width: 4),
                         Text(
                           'SAVE ${strategy.personalizedSavings.toCompactFormat()}',
@@ -76,7 +69,7 @@ class StrategyCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  
+
                   // Feasibility badge
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -98,7 +91,10 @@ class StrategyCard extends StatelessWidget {
                         Text(
                           strategy.feasibility.displayName,
                           style: theme.textTheme.labelSmall?.copyWith(
-                            color: _getFeasibilityTextColor(strategy.feasibility, theme),
+                            color: _getFeasibilityTextColor(
+                              strategy.feasibility,
+                              theme,
+                            ),
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -129,9 +125,9 @@ class StrategyCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(width: 12),
-                  
+
                   // Title and description
                   Expanded(
                     child: Column(
@@ -145,7 +141,8 @@ class StrategyCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          strategyMeta['description'] ?? 'Save money on your home loan',
+                          strategyMeta['description'] ??
+                              'Save money on your home loan',
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -169,33 +166,38 @@ class StrategyCard extends StatelessWidget {
                       context,
                       icon: Icons.trending_down,
                       label: 'EMI Impact',
-                      value: strategy.newEMI > strategy.currentEMI 
-                        ? '+${(strategy.newEMI - strategy.currentEMI).toCompactFormat()}'
-                        : '-${(strategy.currentEMI - strategy.newEMI).toCompactFormat()}',
-                      color: strategy.newEMI > strategy.currentEMI 
-                        ? theme.colorScheme.error
-                        : theme.colorScheme.primary,
+                      value: strategy.newEMI > strategy.currentEMI
+                          ? '+${(strategy.newEMI - strategy.currentEMI).toCompactFormat()}'
+                          : '-${(strategy.currentEMI - strategy.newEMI).toCompactFormat()}',
+                      color: strategy.newEMI > strategy.currentEMI
+                          ? theme.colorScheme.error
+                          : theme.colorScheme.primary,
                     ),
-                  
+
                   if (strategy.newEMI != strategy.currentEMI)
                     const SizedBox(width: 8),
-                  
+
                   // Tenure reduction
                   if (strategy.tenureReductionMonths > 0)
                     _buildStatChip(
                       context,
                       icon: Icons.schedule,
                       label: 'Time Saved',
-                      value: '${(strategy.tenureReductionMonths / 12).toStringAsFixed(1)}Y',
+                      value:
+                          '${(strategy.tenureReductionMonths / 12).toStringAsFixed(1)}Y',
                       color: theme.colorScheme.tertiary,
                     ),
-                  
+
                   const Spacer(),
-                  
+
                   // Quick win label
-                  if (strategyMeta['quickWin'] != null && strategyMeta['quickWin'].isNotEmpty)
+                  if (strategyMeta['quickWin'] != null &&
+                      strategyMeta['quickWin'].isNotEmpty)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.tertiaryContainer,
                         borderRadius: BorderRadius.circular(8),
@@ -241,7 +243,7 @@ class StrategyCard extends StatelessWidget {
     required Color color,
   }) {
     final theme = Theme.of(context);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
@@ -252,11 +254,7 @@ class StrategyCard extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            icon,
-            size: 12,
-            color: color,
-          ),
+          Icon(icon, size: 12, color: color),
           const SizedBox(width: 4),
           Text(
             value,
@@ -283,7 +281,10 @@ class StrategyCard extends StatelessWidget {
     }
   }
 
-  Color _getFeasibilityTextColor(StrategyFeasibility feasibility, ThemeData theme) {
+  Color _getFeasibilityTextColor(
+    StrategyFeasibility feasibility,
+    ThemeData theme,
+  ) {
     switch (feasibility) {
       case StrategyFeasibility.highlyRecommended:
         return theme.colorScheme.primary;
@@ -302,21 +303,24 @@ class StrategyCard extends StatelessWidget {
         return {
           'emoji': '💰',
           'title': 'Extra EMI Strategy',
-          'description': 'Pay one additional EMI every year to save massive interest',
+          'description':
+              'Pay one additional EMI every year to save massive interest',
           'quickWin': 'Quick Win',
         };
       case 'emi_step_up_5percent':
         return {
           'emoji': '📈',
           'title': '5% EMI Increase Yearly',
-          'description': 'Increase your EMI by 5% every year as your income grows',
+          'description':
+              'Increase your EMI by 5% every year as your income grows',
           'quickWin': 'High Impact',
         };
       case 'lump_sum_prepayment':
         return {
           'emoji': '💸',
           'title': 'Lump Sum Prepayment',
-          'description': 'Use bonus, inheritance, or savings for one-time prepayment',
+          'description':
+              'Use bonus, inheritance, or savings for one-time prepayment',
           'quickWin': 'Instant Impact',
         };
       case 'refinance_lower_rate':
@@ -330,7 +334,8 @@ class StrategyCard extends StatelessWidget {
         return {
           'emoji': '🎯',
           'title': 'Round-up EMI Strategy',
-          'description': 'Round your EMI to the nearest ₹1,000 for effortless saving',
+          'description':
+              'Round your EMI to the nearest ₹1,000 for effortless saving',
           'quickWin': 'Effortless',
         };
       default:

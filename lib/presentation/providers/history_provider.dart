@@ -16,9 +16,7 @@ Future<SharedPreferences> sharedPreferences(Ref ref) async {
 
 /// Calculation history repository provider
 @riverpod
-CalculationHistoryRepository calculationHistoryRepository(
-  Ref ref,
-) {
+CalculationHistoryRepository calculationHistoryRepository(Ref ref) {
   final prefs = ref.watch(sharedPreferencesProvider).valueOrNull;
   if (prefs == null) {
     throw Exception('SharedPreferences not available');
@@ -31,11 +29,8 @@ CalculationHistoryRepository calculationHistoryRepository(
 Future<List<CalculationHistory>> calculationHistory(Ref ref) async {
   final repository = ref.watch(calculationHistoryRepositoryProvider);
   final result = await repository.getAllHistory();
-  
-  return result.fold(
-    (error) => throw Exception(error),
-    (history) => history,
-  );
+
+  return result.fold((error) => throw Exception(error), (history) => history);
 }
 
 /// History items provider (lighter weight for list display)
@@ -43,11 +38,8 @@ Future<List<CalculationHistory>> calculationHistory(Ref ref) async {
 Future<List<HistoryItem>> historyItems(Ref ref) async {
   final repository = ref.watch(calculationHistoryRepositoryProvider);
   final result = await repository.getAllHistoryItems();
-  
-  return result.fold(
-    (error) => throw Exception(error),
-    (items) => items,
-  );
+
+  return result.fold((error) => throw Exception(error), (items) => items);
 }
 
 /// Bookmarked history provider
@@ -55,11 +47,8 @@ Future<List<HistoryItem>> historyItems(Ref ref) async {
 Future<List<CalculationHistory>> bookmarkedHistory(Ref ref) async {
   final repository = ref.watch(calculationHistoryRepositoryProvider);
   final result = await repository.getBookmarkedHistory();
-  
-  return result.fold(
-    (error) => throw Exception(error),
-    (history) => history,
-  );
+
+  return result.fold((error) => throw Exception(error), (history) => history);
 }
 
 /// History statistics provider
@@ -67,11 +56,8 @@ Future<List<CalculationHistory>> bookmarkedHistory(Ref ref) async {
 Future<HistoryStats> historyStats(Ref ref) async {
   final repository = ref.watch(calculationHistoryRepositoryProvider);
   final result = await repository.getHistoryStats();
-  
-  return result.fold(
-    (error) => throw Exception(error),
-    (stats) => stats,
-  );
+
+  return result.fold((error) => throw Exception(error), (stats) => stats);
 }
 
 /// History filter state provider
@@ -91,10 +77,7 @@ class HistoryFilterNotifier extends _$HistoryFilterNotifier {
   }
 
   void updateDateRange(DateTime? startDate, DateTime? endDate) {
-    state = state.copyWith(
-      startDate: startDate,
-      endDate: endDate,
-    );
+    state = state.copyWith(startDate: startDate, endDate: endDate);
   }
 
   void updateSearchQuery(String query) {
@@ -144,9 +127,9 @@ class HistoryFilterState {
 Future<List<HistoryItem>> filteredHistoryItems(Ref ref) async {
   final allItems = await ref.watch(historyItemsProvider.future);
   final filterState = ref.watch(historyFilterNotifierProvider);
-  
+
   List<HistoryItem> filtered = [...allItems];
-  
+
   // Apply filters
   switch (filterState.currentFilter) {
     case HistoryFilter.all:
@@ -158,54 +141,78 @@ Future<List<HistoryItem>> filteredHistoryItems(Ref ref) async {
       final today = DateTime.now();
       final startOfDay = DateTime(today.year, today.month, today.day);
       final endOfDay = startOfDay.add(const Duration(days: 1));
-      filtered = filtered.where((item) => 
-        item.timestamp.isAfter(startOfDay) && item.timestamp.isBefore(endOfDay)
-      ).toList();
+      filtered = filtered
+          .where(
+            (item) =>
+                item.timestamp.isAfter(startOfDay) &&
+                item.timestamp.isBefore(endOfDay),
+          )
+          .toList();
       break;
     case HistoryFilter.thisWeek:
       final now = DateTime.now();
       final startOfWeek = now.subtract(Duration(days: now.weekday - 1));
-      filtered = filtered.where((item) => 
-        item.timestamp.isAfter(startOfWeek.subtract(const Duration(days: 1)))
-      ).toList();
+      filtered = filtered
+          .where(
+            (item) => item.timestamp.isAfter(
+              startOfWeek.subtract(const Duration(days: 1)),
+            ),
+          )
+          .toList();
       break;
     case HistoryFilter.thisMonth:
       final now = DateTime.now();
       final startOfMonth = DateTime(now.year, now.month, 1);
-      filtered = filtered.where((item) => 
-        item.timestamp.isAfter(startOfMonth.subtract(const Duration(days: 1)))
-      ).toList();
+      filtered = filtered
+          .where(
+            (item) => item.timestamp.isAfter(
+              startOfMonth.subtract(const Duration(days: 1)),
+            ),
+          )
+          .toList();
       break;
     case HistoryFilter.lastMonth:
       final now = DateTime.now();
       final startOfLastMonth = DateTime(now.year, now.month - 1, 1);
       final endOfLastMonth = DateTime(now.year, now.month, 1);
-      filtered = filtered.where((item) => 
-        item.timestamp.isAfter(startOfLastMonth.subtract(const Duration(days: 1))) &&
-        item.timestamp.isBefore(endOfLastMonth)
-      ).toList();
+      filtered = filtered
+          .where(
+            (item) =>
+                item.timestamp.isAfter(
+                  startOfLastMonth.subtract(const Duration(days: 1)),
+                ) &&
+                item.timestamp.isBefore(endOfLastMonth),
+          )
+          .toList();
       break;
     case HistoryFilter.customRange:
       if (filterState.startDate != null && filterState.endDate != null) {
-        filtered = filtered.where((item) => 
-          item.timestamp.isAfter(filterState.startDate!.subtract(const Duration(days: 1))) &&
-          item.timestamp.isBefore(filterState.endDate!.add(const Duration(days: 1)))
-        ).toList();
+        filtered = filtered
+            .where(
+              (item) =>
+                  item.timestamp.isAfter(
+                    filterState.startDate!.subtract(const Duration(days: 1)),
+                  ) &&
+                  item.timestamp.isBefore(
+                    filterState.endDate!.add(const Duration(days: 1)),
+                  ),
+            )
+            .toList();
       }
       break;
   }
-  
+
   // Apply search query
   if (filterState.searchQuery.isNotEmpty) {
     final query = filterState.searchQuery.toLowerCase();
     filtered = filtered.where((item) {
       return (item.name?.toLowerCase().contains(query) ?? false) ||
-             item.loanAmount.toString().contains(query) ||
-             item.interestRate.toString().contains(query) ||
-             item.tenureYears.toString().contains(query);
+          item.loanAmount.toString().contains(query) ||
+          item.interestRate.toString().contains(query) ||
+          item.tenureYears.toString().contains(query);
     }).toList();
   }
-  
+
   // Apply sorting
   switch (filterState.sortBy) {
     case HistorySortBy.dateNewest:
@@ -233,7 +240,7 @@ Future<List<HistoryItem>> filteredHistoryItems(Ref ref) async {
       filtered.sort((a, b) => a.interestRate.compareTo(b.interestRate));
       break;
   }
-  
+
   return filtered;
 }
 
@@ -245,26 +252,32 @@ Future<Map<String, List<HistoryItem>>> groupedHistoryItems(Ref ref) async {
   final today = DateTime(now.year, now.month, now.day);
   final yesterday = today.subtract(const Duration(days: 1));
   final thisWeekStart = today.subtract(Duration(days: now.weekday - 1));
-  
+
   final grouped = <String, List<HistoryItem>>{};
-  
+
   for (final item in items) {
-    final itemDate = DateTime(item.timestamp.year, item.timestamp.month, item.timestamp.day);
-    
+    final itemDate = DateTime(
+      item.timestamp.year,
+      item.timestamp.month,
+      item.timestamp.day,
+    );
+
     String groupKey;
     if (itemDate == today) {
       groupKey = 'Today';
     } else if (itemDate == yesterday) {
       groupKey = 'Yesterday';
-    } else if (itemDate.isAfter(thisWeekStart.subtract(const Duration(days: 1)))) {
+    } else if (itemDate.isAfter(
+      thisWeekStart.subtract(const Duration(days: 1)),
+    )) {
       groupKey = 'This Week';
     } else {
       groupKey = 'Older';
     }
-    
+
     grouped[groupKey] = [...(grouped[groupKey] ?? []), item];
   }
-  
+
   return grouped;
 }
 
@@ -284,7 +297,7 @@ class HistoryActions extends _$HistoryActions {
     bool isBookmarked = false,
   }) async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final history = CalculationHistory(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       timestamp: DateTime.now(),
@@ -292,129 +305,104 @@ class HistoryActions extends _$HistoryActions {
       result: result,
       name: name,
       isBookmarked: isBookmarked,
-      metadata: {
-        'version': '1.0',
-        'source': 'calculator',
-      },
+      metadata: {'version': '1.0', 'source': 'calculator'},
     );
-    
+
     final saveResult = await repository.saveHistory(history);
-    
-    saveResult.fold(
-      (error) => throw Exception(error),
-      (_) {
-        // Invalidate providers to refresh the UI
-        ref.invalidate(calculationHistoryProvider);
-        ref.invalidate(historyItemsProvider);
-        ref.invalidate(historyStatsProvider);
-      },
-    );
+
+    saveResult.fold((error) => throw Exception(error), (_) {
+      // Invalidate providers to refresh the UI
+      ref.invalidate(calculationHistoryProvider);
+      ref.invalidate(historyItemsProvider);
+      ref.invalidate(historyStatsProvider);
+    });
   }
 
   /// Update an existing history item
   Future<void> updateHistory(CalculationHistory history) async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final updateResult = await repository.updateHistory(history);
-    
-    updateResult.fold(
-      (error) => throw Exception(error),
-      (_) {
-        // Invalidate providers to refresh the UI
-        ref.invalidate(calculationHistoryProvider);
-        ref.invalidate(historyItemsProvider);
-        ref.invalidate(historyStatsProvider);
-      },
-    );
+
+    updateResult.fold((error) => throw Exception(error), (_) {
+      // Invalidate providers to refresh the UI
+      ref.invalidate(calculationHistoryProvider);
+      ref.invalidate(historyItemsProvider);
+      ref.invalidate(historyStatsProvider);
+    });
   }
 
   /// Delete a history item
   Future<void> deleteHistory(String id) async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final deleteResult = await repository.deleteHistory(id);
-    
-    deleteResult.fold(
-      (error) => throw Exception(error),
-      (_) {
-        // Invalidate providers to refresh the UI
-        ref.invalidate(calculationHistoryProvider);
-        ref.invalidate(historyItemsProvider);
-        ref.invalidate(historyStatsProvider);
-      },
-    );
+
+    deleteResult.fold((error) => throw Exception(error), (_) {
+      // Invalidate providers to refresh the UI
+      ref.invalidate(calculationHistoryProvider);
+      ref.invalidate(historyItemsProvider);
+      ref.invalidate(historyStatsProvider);
+    });
   }
 
   /// Toggle bookmark status
   Future<void> toggleBookmark(String id) async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     // Get the current history item
     final historyResult = await repository.getHistoryById(id);
-    
-    await historyResult.fold(
-      (error) => throw Exception(error),
-      (history) async {
-        if (history != null) {
-          final updatedHistory = history.copyWith(
-            isBookmarked: !history.isBookmarked,
-          );
-          await updateHistory(updatedHistory);
-        }
-      },
-    );
+
+    await historyResult.fold((error) => throw Exception(error), (
+      history,
+    ) async {
+      if (history != null) {
+        final updatedHistory = history.copyWith(
+          isBookmarked: !history.isBookmarked,
+        );
+        await updateHistory(updatedHistory);
+      }
+    });
   }
 
   /// Clear all history
   Future<void> clearAllHistory() async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final clearResult = await repository.clearAllHistory();
-    
-    clearResult.fold(
-      (error) => throw Exception(error),
-      (_) {
-        // Invalidate providers to refresh the UI
-        ref.invalidate(calculationHistoryProvider);
-        ref.invalidate(historyItemsProvider);
-        ref.invalidate(historyStatsProvider);
-      },
-    );
+
+    clearResult.fold((error) => throw Exception(error), (_) {
+      // Invalidate providers to refresh the UI
+      ref.invalidate(calculationHistoryProvider);
+      ref.invalidate(historyItemsProvider);
+      ref.invalidate(historyStatsProvider);
+    });
   }
 
   /// Get history item by ID
   Future<CalculationHistory?> getHistoryById(String id) async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final result = await repository.getHistoryById(id);
-    
-    return result.fold(
-      (error) => throw Exception(error),
-      (history) => history,
-    );
+
+    return result.fold((error) => throw Exception(error), (history) => history);
   }
 
   /// Export history as CSV
   Future<String> exportAsCSV() async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final result = await repository.exportHistoryAsCSV();
-    
-    return result.fold(
-      (error) => throw Exception(error),
-      (csv) => csv,
-    );
+
+    return result.fold((error) => throw Exception(error), (csv) => csv);
   }
 
   /// Export history as text
   Future<String> exportAsText() async {
     final repository = ref.read(calculationHistoryRepositoryProvider);
-    
+
     final result = await repository.exportHistoryAsText();
-    
-    return result.fold(
-      (error) => throw Exception(error),
-      (text) => text,
-    );
+
+    return result.fold((error) => throw Exception(error), (text) => text);
   }
 }

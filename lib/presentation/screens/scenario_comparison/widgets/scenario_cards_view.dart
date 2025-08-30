@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/entities/loan_scenario.dart';
 import '../../../providers/scenario_comparison_providers.dart';
-import 'scenario_card.dart';
 import 'scenario_presets_sheet.dart';
 import 'add_custom_scenario_dialog.dart';
 import '../../../widgets/common/responsive_scenario_cards.dart';
@@ -17,9 +16,7 @@ class ScenarioCardsView extends ConsumerWidget {
     final bestScenario = ref.watch(bestScenarioProvider);
 
     if (filteredScenarios.isEmpty) {
-      return const Center(
-        child: Text('No scenarios available'),
-      );
+      return const Center(child: Text('No scenarios available'));
     }
 
     return CustomScrollView(
@@ -66,9 +63,7 @@ class ScenarioCardsView extends ConsumerWidget {
         ),
 
         // Bottom spacing
-        const SliverToBoxAdapter(
-          child: SizedBox(height: 80),
-        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 80)),
       ],
     );
   }
@@ -88,7 +83,11 @@ class ScenarioCardsView extends ConsumerWidget {
     );
   }
 
-  void _editScenario(BuildContext context, WidgetRef ref, LoanScenario scenario) {
+  void _editScenario(
+    BuildContext context,
+    WidgetRef ref,
+    LoanScenario scenario,
+  ) {
     showDialog(
       context: context,
       builder: (context) => EditScenarioDialog(scenario: scenario),
@@ -100,10 +99,7 @@ class ScenarioCardsView extends ConsumerWidget {
 class EditScenarioDialog extends ConsumerStatefulWidget {
   final LoanScenario scenario;
 
-  const EditScenarioDialog({
-    super.key,
-    required this.scenario,
-  });
+  const EditScenarioDialog({super.key, required this.scenario});
 
   @override
   ConsumerState<EditScenarioDialog> createState() => _EditScenarioDialogState();
@@ -160,7 +156,9 @@ class _EditScenarioDialogState extends ConsumerState<EditScenarioDialog> {
                 labelText: 'Interest Rate',
                 suffixText: '% p.a.',
               ),
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
@@ -179,10 +177,7 @@ class _EditScenarioDialogState extends ConsumerState<EditScenarioDialog> {
           onPressed: () => Navigator.of(context).pop(),
           child: const Text('Cancel'),
         ),
-        ElevatedButton(
-          onPressed: _updateScenario,
-          child: const Text('Update'),
-        ),
+        ElevatedButton(onPressed: _updateScenario, child: const Text('Update')),
       ],
     );
   }

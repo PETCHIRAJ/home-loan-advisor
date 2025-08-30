@@ -1,18 +1,10 @@
 import 'package:equatable/equatable.dart';
 
 /// Represents different types of prepayment strategies
-enum PrepaymentType {
-  oneTime,
-  recurring,
-  extraEMI,
-}
+enum PrepaymentType { oneTime, recurring, extraEMI }
 
 /// Represents the frequency of recurring prepayments
-enum PrepaymentFrequency {
-  monthly,
-  quarterly,
-  yearly,
-}
+enum PrepaymentFrequency { monthly, quarterly, yearly }
 
 /// Represents a prepayment scenario input
 class PrepaymentScenario extends Equatable {
@@ -52,13 +44,13 @@ class PrepaymentScenario extends Equatable {
 
   @override
   List<Object?> get props => [
-        type,
-        amount,
-        frequency,
-        startMonth,
-        startYear,
-        extraEMIsPerYear,
-      ];
+    type,
+    amount,
+    frequency,
+    startMonth,
+    startYear,
+    extraEMIsPerYear,
+  ];
 }
 
 /// Represents the result of prepayment calculations
@@ -76,12 +68,7 @@ class PrepaymentResult extends Equatable {
   });
 
   @override
-  List<Object?> get props => [
-        scenario,
-        comparison,
-        breakdown,
-        benefits,
-      ];
+  List<Object?> get props => [scenario, comparison, breakdown, benefits];
 }
 
 /// Compares original loan vs loan with prepayments
@@ -113,15 +100,15 @@ class LoanComparison extends Equatable {
 
   @override
   List<Object?> get props => [
-        originalEMI,
-        newEMI,
-        originalTenureMonths,
-        newTenureMonths,
-        originalTotalInterest,
-        newTotalInterest,
-        originalTotalAmount,
-        newTotalAmount,
-      ];
+    originalEMI,
+    newEMI,
+    originalTenureMonths,
+    newTenureMonths,
+    originalTotalInterest,
+    newTotalInterest,
+    originalTotalAmount,
+    newTotalAmount,
+  ];
 }
 
 /// Detailed breakdown of prepayment schedule
@@ -138,10 +125,10 @@ class PrepaymentBreakdown extends Equatable {
 
   @override
   List<Object?> get props => [
-        totalPrepaymentAmount,
-        schedule,
-        balanceProgression,
-      ];
+    totalPrepaymentAmount,
+    schedule,
+    balanceProgression,
+  ];
 }
 
 /// Individual prepayment in the schedule
@@ -160,11 +147,11 @@ class PrepaymentSchedule extends Equatable {
 
   @override
   List<Object?> get props => [
-        month,
-        amount,
-        outstandingBeforePrepayment,
-        outstandingAfterPrepayment,
-      ];
+    month,
+    amount,
+    outstandingBeforePrepayment,
+    outstandingAfterPrepayment,
+  ];
 }
 
 /// Monthly balance progression for comparison
@@ -183,11 +170,11 @@ class MonthlyBalance extends Equatable {
 
   @override
   List<Object?> get props => [
-        month,
-        originalBalance,
-        newBalance,
-        cumulativeSavings,
-      ];
+    month,
+    originalBalance,
+    newBalance,
+    cumulativeSavings,
+  ];
 }
 
 /// Benefits and ROI analysis of prepayment
@@ -215,7 +202,7 @@ class PrepaymentBenefits extends Equatable {
   // Calculated properties
   int get tenureReducedYears => tenureReducedMonths ~/ 12;
   int get tenureReducedRemainingMonths => tenureReducedMonths % 12;
-  
+
   String get formattedTenureReduction {
     if (tenureReducedYears > 0 && tenureReducedRemainingMonths > 0) {
       return '$tenureReducedYears years $tenureReducedRemainingMonths months';
@@ -228,15 +215,15 @@ class PrepaymentBenefits extends Equatable {
 
   @override
   List<Object?> get props => [
-        totalPrepaymentAmount,
-        totalInterestSaved,
-        totalAmountSaved,
-        tenureReducedMonths,
-        roiPercentage,
-        breakEvenMonths,
-        monthlyTaxSavingsLost,
-        netBenefit,
-      ];
+    totalPrepaymentAmount,
+    totalInterestSaved,
+    totalAmountSaved,
+    tenureReducedMonths,
+    roiPercentage,
+    breakEvenMonths,
+    monthlyTaxSavingsLost,
+    netBenefit,
+  ];
 }
 
 /// Comparison data for multiple scenarios

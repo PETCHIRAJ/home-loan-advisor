@@ -31,7 +31,8 @@ class IndianCurrencyInputField extends StatefulWidget {
   });
 
   @override
-  State<IndianCurrencyInputField> createState() => _IndianCurrencyInputFieldState();
+  State<IndianCurrencyInputField> createState() =>
+      _IndianCurrencyInputFieldState();
 }
 
 class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
@@ -46,19 +47,19 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
     super.initState();
     _controller = TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
-    
+
     if (widget.initialValue != null && widget.initialValue! > 0) {
       _controller.text = widget.initialValue.toString();
       _updateFormatting(_controller.text);
     }
-    
+
     _focusNode.addListener(_onFocusChanged);
   }
 
   @override
   void didUpdateWidget(IndianCurrencyInputField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialValue != oldWidget.initialValue && 
+    if (widget.initialValue != oldWidget.initialValue &&
         widget.initialValue != null &&
         _controller.text != widget.initialValue.toString()) {
       _controller.text = widget.initialValue.toString();
@@ -83,7 +84,7 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
         // Formatted display when not focused
         if (!_focusNode.hasFocus && _formattedValue.isNotEmpty)
           _buildFormattedDisplay(context),
-        
+
         // Input field
         TextFormField(
           controller: _controller,
@@ -97,15 +98,13 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
             helperMaxLines: 2,
             prefixIcon: const Icon(Icons.currency_rupee, size: 20),
             suffixIcon: _controller.text.isNotEmpty && widget.enabled
-              ? IconButton(
-                  icon: const Icon(Icons.clear, size: 20),
-                  onPressed: _clearField,
-                )
-              : null,
+                ? IconButton(
+                    icon: const Icon(Icons.clear, size: 20),
+                    onPressed: _clearField,
+                  )
+                : null,
             errorText: _isValid ? null : _getErrorText(),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(
@@ -132,11 +131,11 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
             _IndianCurrencyInputFormatter(),
           ],
         ),
-        
+
         // Value breakdown helper
         if (_controller.text.isNotEmpty && !_focusNode.hasFocus && _isValid)
           _buildValueBreakdown(context),
-          
+
         // Quick amount buttons for common values
         if (_focusNode.hasFocus && _controller.text.isEmpty)
           _buildQuickAmountButtons(context),
@@ -146,7 +145,7 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
 
   Widget _buildFormattedDisplay(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
@@ -157,17 +156,11 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
       decoration: BoxDecoration(
         color: colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: colorScheme.primary.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: colorScheme.primary.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
-          Icon(
-            Icons.currency_rupee,
-            size: 18,
-            color: colorScheme.primary,
-          ),
+          Icon(Icons.currency_rupee, size: 18, color: colorScheme.primary),
           const SizedBox(width: ResponsiveSpacing.sm),
           Expanded(
             child: Text(
@@ -179,11 +172,7 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
             ),
           ),
           if (_isValid)
-            Icon(
-              Icons.check_circle,
-              size: 16,
-              color: colorScheme.primary,
-            ),
+            Icon(Icons.check_circle, size: 16, color: colorScheme.primary),
         ],
       ),
     );
@@ -234,10 +223,13 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
               return ActionChip(
                 label: Text(amount['label'] as String),
                 onPressed: () {
-                  _controller.text = (amount['value'] as double).toStringAsFixed(0);
+                  _controller.text = (amount['value'] as double)
+                      .toStringAsFixed(0);
                   _onTextChanged(_controller.text);
                 },
-                backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                backgroundColor: Theme.of(
+                  context,
+                ).colorScheme.secondaryContainer,
                 labelStyle: Theme.of(context).textTheme.bodySmall,
               );
             }).toList(),
@@ -250,10 +242,10 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
   void _onTextChanged(String value) {
     _updateFormatting(value);
     _validateInput(value);
-    
+
     final numericValue = double.tryParse(value) ?? 0;
     widget.onValueChanged(numericValue);
-    
+
     setState(() {
       _helpText = _generateHelpText(numericValue);
     });
@@ -271,15 +263,15 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
   void _validateInput(String value) {
     final numericValue = double.tryParse(value) ?? 0;
     bool isValid = true;
-    
+
     if (widget.minValue != null && numericValue < widget.minValue!) {
       isValid = false;
     }
-    
+
     if (widget.maxValue != null && numericValue > widget.maxValue!) {
       isValid = false;
     }
-    
+
     setState(() {
       _isValid = isValid;
     });
@@ -296,31 +288,29 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
 
   String _generateHelpText(double value) {
     if (value == 0) return widget.helperText ?? '';
-    
+
     final baseHelp = widget.helperText ?? '';
     final breakdown = _getValueInWords(value);
-    
-    return baseHelp.isNotEmpty 
-      ? '$baseHelp • $breakdown'
-      : breakdown;
+
+    return baseHelp.isNotEmpty ? '$baseHelp • $breakdown' : breakdown;
   }
 
   String _getValueInWords(double value) {
     if (value >= 10000000) {
       final crores = value / 10000000;
-      return crores % 1 == 0 
-        ? '${crores.toInt()} Crore'
-        : '${crores.toStringAsFixed(2)} Crore';
+      return crores % 1 == 0
+          ? '${crores.toInt()} Crore'
+          : '${crores.toStringAsFixed(2)} Crore';
     } else if (value >= 100000) {
       final lakhs = value / 100000;
       return lakhs % 1 == 0
-        ? '${lakhs.toInt()} Lakh'
-        : '${lakhs.toStringAsFixed(1)} Lakh';
+          ? '${lakhs.toInt()} Lakh'
+          : '${lakhs.toStringAsFixed(1)} Lakh';
     } else if (value >= 1000) {
       final thousands = value / 1000;
       return thousands % 1 == 0
-        ? '${thousands.toInt()} Thousand'
-        : '${thousands.toStringAsFixed(1)} Thousand';
+          ? '${thousands.toInt()} Thousand'
+          : '${thousands.toStringAsFixed(1)} Thousand';
     }
     return value.toStringAsFixed(0);
   }
@@ -340,17 +330,17 @@ class _IndianCurrencyInputFieldState extends State<IndianCurrencyInputField> {
 
   String? _getErrorText() {
     final value = double.tryParse(_controller.text) ?? 0;
-    
+
     if (widget.minValue != null && value < widget.minValue!) {
       final minFormatted = _formatIndianCurrency(widget.minValue!);
       return 'Minimum value: $minFormatted';
     }
-    
+
     if (widget.maxValue != null && value > widget.maxValue!) {
       final maxFormatted = _formatIndianCurrency(widget.maxValue!);
       return 'Maximum value: $maxFormatted';
     }
-    
+
     return null;
   }
 
@@ -381,13 +371,13 @@ class _IndianCurrencyInputFormatter extends TextInputFormatter {
     if (newText.isEmpty) {
       return newValue;
     }
-    
+
     // Count decimal points
     final decimalCount = '.'.allMatches(newText).length;
     if (decimalCount > 1) {
       return oldValue;
     }
-    
+
     // Limit decimal places to 2
     if (newText.contains('.')) {
       final parts = newText.split('.');
@@ -395,19 +385,19 @@ class _IndianCurrencyInputFormatter extends TextInputFormatter {
         return oldValue;
       }
     }
-    
+
     // Prevent leading zeros (except for 0.x format)
-    if (newText.length > 1 && 
-        newText.startsWith('0') && 
+    if (newText.length > 1 &&
+        newText.startsWith('0') &&
         !newText.startsWith('0.')) {
       return oldValue;
     }
-    
+
     // Validate that the result is a valid number
     if (double.tryParse(newText) == null && newText != '.') {
       return oldValue;
     }
-    
+
     return newValue;
   }
 }
@@ -453,19 +443,24 @@ class _PercentageInputFieldState extends State<PercentageInputField> {
     super.initState();
     _controller = TextEditingController();
     _focusNode = widget.focusNode ?? FocusNode();
-    
+
     if (widget.initialValue != null) {
-      _controller.text = widget.initialValue!.toStringAsFixed(widget.decimalPlaces);
+      _controller.text = widget.initialValue!.toStringAsFixed(
+        widget.decimalPlaces,
+      );
     }
   }
 
   @override
   void didUpdateWidget(PercentageInputField oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.initialValue != oldWidget.initialValue && 
+    if (widget.initialValue != oldWidget.initialValue &&
         widget.initialValue != null &&
-        _controller.text != widget.initialValue!.toStringAsFixed(widget.decimalPlaces)) {
-      _controller.text = widget.initialValue!.toStringAsFixed(widget.decimalPlaces);
+        _controller.text !=
+            widget.initialValue!.toStringAsFixed(widget.decimalPlaces)) {
+      _controller.text = widget.initialValue!.toStringAsFixed(
+        widget.decimalPlaces,
+      );
     }
   }
 
@@ -492,26 +487,22 @@ class _PercentageInputFieldState extends State<PercentageInputField> {
         suffixText: '% p.a.',
         prefixIcon: const Icon(Icons.percent, size: 20),
         suffixIcon: _controller.text.isNotEmpty && widget.enabled
-          ? IconButton(
-              icon: const Icon(Icons.clear, size: 20),
-              onPressed: () {
-                _controller.clear();
-                widget.onValueChanged(0);
-                setState(() {
-                  _isValid = true;
-                });
-              },
-            )
-          : null,
+            ? IconButton(
+                icon: const Icon(Icons.clear, size: 20),
+                onPressed: () {
+                  _controller.clear();
+                  widget.onValueChanged(0);
+                  setState(() {
+                    _isValid = true;
+                  });
+                },
+              )
+            : null,
         errorText: _isValid ? null : _getErrorText(),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.outline,
-          ),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -522,9 +513,7 @@ class _PercentageInputFieldState extends State<PercentageInputField> {
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-          ),
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.error),
         ),
       ),
       onChanged: _onTextChanged,
@@ -537,7 +526,7 @@ class _PercentageInputFieldState extends State<PercentageInputField> {
 
   void _onTextChanged(String value) {
     _validateInput(value);
-    
+
     final numericValue = double.tryParse(value) ?? 0;
     widget.onValueChanged(numericValue);
   }
@@ -545,15 +534,15 @@ class _PercentageInputFieldState extends State<PercentageInputField> {
   void _validateInput(String value) {
     final numericValue = double.tryParse(value) ?? 0;
     bool isValid = true;
-    
+
     if (widget.minValue != null && numericValue < widget.minValue!) {
       isValid = false;
     }
-    
+
     if (widget.maxValue != null && numericValue > widget.maxValue!) {
       isValid = false;
     }
-    
+
     setState(() {
       _isValid = isValid;
     });
@@ -561,15 +550,15 @@ class _PercentageInputFieldState extends State<PercentageInputField> {
 
   String? _getErrorText() {
     final value = double.tryParse(_controller.text) ?? 0;
-    
+
     if (widget.minValue != null && value < widget.minValue!) {
       return 'Minimum: ${widget.minValue}%';
     }
-    
+
     if (widget.maxValue != null && value > widget.maxValue!) {
       return 'Maximum: ${widget.maxValue}%';
     }
-    
+
     return null;
   }
 }
@@ -586,17 +575,17 @@ class _PercentageInputFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     final newText = newValue.text;
-    
+
     if (newText.isEmpty) {
       return newValue;
     }
-    
+
     // Count decimal points
     final decimalCount = '.'.allMatches(newText).length;
     if (decimalCount > 1) {
       return oldValue;
     }
-    
+
     // Limit decimal places
     if (newText.contains('.')) {
       final parts = newText.split('.');
@@ -604,19 +593,19 @@ class _PercentageInputFormatter extends TextInputFormatter {
         return oldValue;
       }
     }
-    
+
     // Prevent leading zeros (except for 0.x format)
-    if (newText.length > 1 && 
-        newText.startsWith('0') && 
+    if (newText.length > 1 &&
+        newText.startsWith('0') &&
         !newText.startsWith('0.')) {
       return oldValue;
     }
-    
+
     // Validate number
     if (double.tryParse(newText) == null && newText != '.') {
       return oldValue;
     }
-    
+
     return newValue;
   }
 }

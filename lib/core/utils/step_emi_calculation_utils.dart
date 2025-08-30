@@ -47,7 +47,7 @@ class StepEMICalculationUtils {
         totalInterest = result['totalInterest'];
         totalAmount = result['totalAmount'];
         break;
-      
+
       case StepEMIType.stepDown:
         final result = _calculateStepDownEMI(
           principal: principal,
@@ -59,16 +59,19 @@ class StepEMICalculationUtils {
         totalInterest = result['totalInterest'];
         totalAmount = result['totalAmount'];
         break;
-      
+
       default:
         steps = [];
         totalInterest = 0;
         totalAmount = 0;
     }
 
-    final averageEMI = steps.isNotEmpty 
-      ? steps.map((s) => s.emiAmount * s.durationMonths).reduce((a, b) => a + b) / (tenureYears * 12).toDouble()
-      : 0.0;
+    final averageEMI = steps.isNotEmpty
+        ? steps
+                  .map((s) => s.emiAmount * s.durationMonths)
+                  .reduce((a, b) => a + b) /
+              (tenureYears * 12).toDouble()
+        : 0.0;
 
     final interestSavedVsRegular = regularTotalInterest - totalInterest;
     final isMoreExpensive = totalInterest > regularTotalInterest;
@@ -122,24 +125,33 @@ class StepEMICalculationUtils {
       double stepRemainingPrincipal = remainingPrincipal;
 
       // Calculate payments for this step period
-      for (int month = 0; month < stepMonths && stepRemainingPrincipal > 0.01; month++) {
+      for (
+        int month = 0;
+        month < stepMonths && stepRemainingPrincipal > 0.01;
+        month++
+      ) {
         final interestPayment = stepRemainingPrincipal * monthlyRate;
-        final principalPayment = (currentEMI - interestPayment).clamp(0, stepRemainingPrincipal);
-        
+        final principalPayment = (currentEMI - interestPayment).clamp(
+          0,
+          stepRemainingPrincipal,
+        );
+
         stepPrincipalPaid += principalPayment;
         stepInterestPaid += interestPayment;
         stepRemainingPrincipal -= principalPayment;
       }
 
-      steps.add(StepEMIDetail(
-        stepNumber: stepNumber,
-        startMonth: currentMonth,
-        endMonth: endMonth,
-        emiAmount: currentEMI,
-        principalPaid: stepPrincipalPaid,
-        interestPaid: stepInterestPaid,
-        outstandingBalance: stepRemainingPrincipal,
-      ));
+      steps.add(
+        StepEMIDetail(
+          stepNumber: stepNumber,
+          startMonth: currentMonth,
+          endMonth: endMonth,
+          emiAmount: currentEMI,
+          principalPaid: stepPrincipalPaid,
+          interestPaid: stepInterestPaid,
+          outstandingBalance: stepRemainingPrincipal,
+        ),
+      );
 
       totalInterestPaid += stepInterestPaid;
       remainingPrincipal = stepRemainingPrincipal;
@@ -197,24 +209,33 @@ class StepEMICalculationUtils {
       double stepRemainingPrincipal = remainingPrincipal;
 
       // Calculate payments for this step period
-      for (int month = 0; month < stepMonths && stepRemainingPrincipal > 0.01; month++) {
+      for (
+        int month = 0;
+        month < stepMonths && stepRemainingPrincipal > 0.01;
+        month++
+      ) {
         final interestPayment = stepRemainingPrincipal * monthlyRate;
-        final principalPayment = (currentEMI - interestPayment).clamp(0, stepRemainingPrincipal);
-        
+        final principalPayment = (currentEMI - interestPayment).clamp(
+          0,
+          stepRemainingPrincipal,
+        );
+
         stepPrincipalPaid += principalPayment;
         stepInterestPaid += interestPayment;
         stepRemainingPrincipal -= principalPayment;
       }
 
-      steps.add(StepEMIDetail(
-        stepNumber: stepNumber,
-        startMonth: currentMonth,
-        endMonth: endMonth,
-        emiAmount: currentEMI,
-        principalPaid: stepPrincipalPaid,
-        interestPaid: stepInterestPaid,
-        outstandingBalance: stepRemainingPrincipal,
-      ));
+      steps.add(
+        StepEMIDetail(
+          stepNumber: stepNumber,
+          startMonth: currentMonth,
+          endMonth: endMonth,
+          emiAmount: currentEMI,
+          principalPaid: stepPrincipalPaid,
+          interestPaid: stepInterestPaid,
+          outstandingBalance: stepRemainingPrincipal,
+        ),
+      );
 
       totalInterestPaid += stepInterestPaid;
       remainingPrincipal = stepRemainingPrincipal;
@@ -245,7 +266,7 @@ class StepEMICalculationUtils {
   }) {
     // Use iterative approach to find initial EMI
     double low = principal * monthlyRate * 0.5; // Lower bound
-    double high = principal * monthlyRate * 2;   // Upper bound
+    double high = principal * monthlyRate * 2; // Upper bound
     double tolerance = 0.01;
 
     for (int iteration = 0; iteration < 100; iteration++) {
@@ -283,7 +304,7 @@ class StepEMICalculationUtils {
   }) {
     // Use iterative approach to find initial EMI
     double low = principal * monthlyRate * 0.8; // Lower bound
-    double high = principal * monthlyRate * 3;   // Upper bound
+    double high = principal * monthlyRate * 3; // Upper bound
     double tolerance = 0.01;
 
     for (int iteration = 0; iteration < 100; iteration++) {
@@ -324,10 +345,17 @@ class StepEMICalculationUtils {
     double currentEMI = initialEMI;
     int stepNumber = 1;
 
-    for (int month = 1; month <= totalMonths && remainingPrincipal > 0.01; month++) {
+    for (
+      int month = 1;
+      month <= totalMonths && remainingPrincipal > 0.01;
+      month++
+    ) {
       final interestPayment = remainingPrincipal * monthlyRate;
-      final principalPayment = (currentEMI - interestPayment).clamp(0, remainingPrincipal);
-      
+      final principalPayment = (currentEMI - interestPayment).clamp(
+        0,
+        remainingPrincipal,
+      );
+
       remainingPrincipal -= principalPayment;
 
       // Check if we need to step up EMI
@@ -354,10 +382,17 @@ class StepEMICalculationUtils {
     double currentEMI = initialEMI;
     int stepNumber = 1;
 
-    for (int month = 1; month <= totalMonths && remainingPrincipal > 0.01; month++) {
+    for (
+      int month = 1;
+      month <= totalMonths && remainingPrincipal > 0.01;
+      month++
+    ) {
       final interestPayment = remainingPrincipal * monthlyRate;
-      final principalPayment = (currentEMI - interestPayment).clamp(0, remainingPrincipal);
-      
+      final principalPayment = (currentEMI - interestPayment).clamp(
+        0,
+        remainingPrincipal,
+      );
+
       remainingPrincipal -= principalPayment;
 
       // Check if we need to step down EMI
@@ -382,7 +417,7 @@ class StepEMICalculationUtils {
       annualRate: annualRate,
       tenureYears: tenureYears,
     );
-    
+
     final totalInterest = CalculationUtils.calculateTotalInterest(
       emi: regularEMI,
       tenureYears: tenureYears,
@@ -442,7 +477,8 @@ class StepEMICalculationUtils {
     // Check if step interval is reasonable for loan tenure
     final totalSteps = (tenureYears * 12) / parameters.frequency.monthsInterval;
     if (totalSteps < 2) {
-      errors['frequency'] = 'Step frequency is too low for the given loan tenure';
+      errors['frequency'] =
+          'Step frequency is too low for the given loan tenure';
     }
 
     return errors;
@@ -462,12 +498,16 @@ class StepEMICalculationUtils {
       parameters: parameters,
     );
 
-    return result.yearlyBreakdown.map((yearly) => {
-      'year': yearly.year,
-      'emi': yearly.emiAmount,
-      'principal': yearly.principalPaid,
-      'interest': yearly.interestPaid,
-      'balance': yearly.outstandingBalance,
-    }).toList();
+    return result.yearlyBreakdown
+        .map(
+          (yearly) => {
+            'year': yearly.year,
+            'emi': yearly.emiAmount,
+            'principal': yearly.principalPaid,
+            'interest': yearly.interestPaid,
+            'balance': yearly.outstandingBalance,
+          },
+        )
+        .toList();
   }
 }

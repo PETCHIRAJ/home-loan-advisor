@@ -10,10 +10,7 @@ class ScenarioComparisonUseCase {
   ScenarioComparisonUseCase(this._calculateEMIUseCase);
 
   /// Create a base scenario from current loan parameters and EMI result
-  LoanScenario createBaseScenario(
-    LoanParameters parameters,
-    EMIResult result,
-  ) {
+  LoanScenario createBaseScenario(LoanParameters parameters, EMIResult result) {
     return LoanScenario(
       id: 'base',
       name: 'Current Scenario',
@@ -30,64 +27,82 @@ class ScenarioComparisonUseCase {
     final scenarios = <LoanScenario>[];
 
     // Lower Rate scenario
-    scenarios.add(LoanScenario(
-      id: 'lower_rate',
-      name: ScenarioPreset.lowerRate.displayName,
-      description: ScenarioPreset.lowerRate.description,
-      parameters: baseParams.copyWith(
-        interestRate: (baseParams.interestRate - 0.5).clamp(1.0, 50.0),
+    scenarios.add(
+      LoanScenario(
+        id: 'lower_rate',
+        name: ScenarioPreset.lowerRate.displayName,
+        description: ScenarioPreset.lowerRate.description,
+        parameters: baseParams.copyWith(
+          interestRate: (baseParams.interestRate - 0.5).clamp(1.0, 50.0),
+        ),
       ),
-    ));
+    );
 
     // Higher Rate scenario
-    scenarios.add(LoanScenario(
-      id: 'higher_rate',
-      name: ScenarioPreset.higherRate.displayName,
-      description: ScenarioPreset.higherRate.description,
-      parameters: baseParams.copyWith(
-        interestRate: (baseParams.interestRate + 0.5).clamp(1.0, 50.0),
+    scenarios.add(
+      LoanScenario(
+        id: 'higher_rate',
+        name: ScenarioPreset.higherRate.displayName,
+        description: ScenarioPreset.higherRate.description,
+        parameters: baseParams.copyWith(
+          interestRate: (baseParams.interestRate + 0.5).clamp(1.0, 50.0),
+        ),
       ),
-    ));
+    );
 
     // Shorter Tenure scenario
-    scenarios.add(LoanScenario(
-      id: 'shorter_tenure',
-      name: ScenarioPreset.shorterTenure.displayName,
-      description: ScenarioPreset.shorterTenure.description,
-      parameters: baseParams.copyWith(
-        tenureYears: (baseParams.tenureYears - 5).clamp(1, 50),
+    scenarios.add(
+      LoanScenario(
+        id: 'shorter_tenure',
+        name: ScenarioPreset.shorterTenure.displayName,
+        description: ScenarioPreset.shorterTenure.description,
+        parameters: baseParams.copyWith(
+          tenureYears: (baseParams.tenureYears - 5).clamp(1, 50),
+        ),
       ),
-    ));
+    );
 
     // Longer Tenure scenario
-    scenarios.add(LoanScenario(
-      id: 'longer_tenure',
-      name: ScenarioPreset.longerTenure.displayName,
-      description: ScenarioPreset.longerTenure.description,
-      parameters: baseParams.copyWith(
-        tenureYears: (baseParams.tenureYears + 5).clamp(1, 50),
+    scenarios.add(
+      LoanScenario(
+        id: 'longer_tenure',
+        name: ScenarioPreset.longerTenure.displayName,
+        description: ScenarioPreset.longerTenure.description,
+        parameters: baseParams.copyWith(
+          tenureYears: (baseParams.tenureYears + 5).clamp(1, 50),
+        ),
       ),
-    ));
+    );
 
     // Lower Amount scenario
-    scenarios.add(LoanScenario(
-      id: 'lower_amount',
-      name: ScenarioPreset.lowerAmount.displayName,
-      description: ScenarioPreset.lowerAmount.description,
-      parameters: baseParams.copyWith(
-        loanAmount: (baseParams.loanAmount * 0.8).clamp(100000, double.infinity),
+    scenarios.add(
+      LoanScenario(
+        id: 'lower_amount',
+        name: ScenarioPreset.lowerAmount.displayName,
+        description: ScenarioPreset.lowerAmount.description,
+        parameters: baseParams.copyWith(
+          loanAmount: (baseParams.loanAmount * 0.8).clamp(
+            100000,
+            double.infinity,
+          ),
+        ),
       ),
-    ));
+    );
 
     // Higher Amount scenario
-    scenarios.add(LoanScenario(
-      id: 'higher_amount',
-      name: ScenarioPreset.higherAmount.displayName,
-      description: ScenarioPreset.higherAmount.description,
-      parameters: baseParams.copyWith(
-        loanAmount: (baseParams.loanAmount * 1.2).clamp(100000, double.infinity),
+    scenarios.add(
+      LoanScenario(
+        id: 'higher_amount',
+        name: ScenarioPreset.higherAmount.displayName,
+        description: ScenarioPreset.higherAmount.description,
+        parameters: baseParams.copyWith(
+          loanAmount: (baseParams.loanAmount * 1.2).clamp(
+            100000,
+            double.infinity,
+          ),
+        ),
       ),
-    ));
+    );
 
     return scenarios;
   }
@@ -97,7 +112,8 @@ class ScenarioComparisonUseCase {
     try {
       final resultEither = await _calculateEMIUseCase.call(scenario.parameters);
       return resultEither.fold(
-        (error) => scenario, // Return scenario without result if calculation fails
+        (error) =>
+            scenario, // Return scenario without result if calculation fails
         (result) => scenario.copyWith(result: result),
       );
     } catch (e) {
@@ -111,7 +127,7 @@ class ScenarioComparisonUseCase {
     List<LoanScenario> scenarios,
   ) async {
     final results = <LoanScenario>[];
-    
+
     for (final scenario in scenarios) {
       if (scenario.result == null) {
         final calculatedScenario = await calculateScenarioEMI(scenario);
@@ -120,7 +136,7 @@ class ScenarioComparisonUseCase {
         results.add(scenario);
       }
     }
-    
+
     return results;
   }
 
@@ -147,8 +163,12 @@ class ScenarioComparisonUseCase {
     }
 
     final emis = scenariosWithResults.map((s) => s.result!.monthlyEMI).toList();
-    final totalInterests = scenariosWithResults.map((s) => s.result!.totalInterest).toList();
-    final totalAmounts = scenariosWithResults.map((s) => s.result!.totalAmount).toList();
+    final totalInterests = scenariosWithResults
+        .map((s) => s.result!.totalInterest)
+        .toList();
+    final totalAmounts = scenariosWithResults
+        .map((s) => s.result!.totalAmount)
+        .toList();
     final taxBenefits = scenariosWithResults
         .map((s) => s.result!.taxBenefits.totalAnnualSavings)
         .toList();
@@ -159,17 +179,26 @@ class ScenarioComparisonUseCase {
       for (int j = i + 1; j < scenariosWithResults.length; j++) {
         final scenario1 = scenariosWithResults[i];
         final scenario2 = scenariosWithResults[j];
-        
-        differences.add(ScenarioDifference(
-          fromScenarioId: scenario1.id,
-          toScenarioId: scenario2.id,
-          emiDifference: scenario2.result!.monthlyEMI - scenario1.result!.monthlyEMI,
-          totalInterestDifference: scenario2.result!.totalInterest - scenario1.result!.totalInterest,
-          totalAmountDifference: scenario2.result!.totalAmount - scenario1.result!.totalAmount,
-          taxBenefitsDifference: scenario2.result!.taxBenefits.totalAnnualSavings - 
-              scenario1.result!.taxBenefits.totalAnnualSavings,
-          effectiveRateDifference: scenario2.effectiveInterestRate - scenario1.effectiveInterestRate,
-        ));
+
+        differences.add(
+          ScenarioDifference(
+            fromScenarioId: scenario1.id,
+            toScenarioId: scenario2.id,
+            emiDifference:
+                scenario2.result!.monthlyEMI - scenario1.result!.monthlyEMI,
+            totalInterestDifference:
+                scenario2.result!.totalInterest -
+                scenario1.result!.totalInterest,
+            totalAmountDifference:
+                scenario2.result!.totalAmount - scenario1.result!.totalAmount,
+            taxBenefitsDifference:
+                scenario2.result!.taxBenefits.totalAnnualSavings -
+                scenario1.result!.taxBenefits.totalAnnualSavings,
+            effectiveRateDifference:
+                scenario2.effectiveInterestRate -
+                scenario1.effectiveInterestRate,
+          ),
+        );
       }
     }
 
@@ -196,7 +225,8 @@ class ScenarioComparisonUseCase {
 
     LoanScenario bestScenario = scenariosWithResults.first;
     for (final scenario in scenariosWithResults) {
-      if (scenario.totalCostAfterBenefits < bestScenario.totalCostAfterBenefits) {
+      if (scenario.totalCostAfterBenefits <
+          bestScenario.totalCostAfterBenefits) {
         bestScenario = scenario;
       }
     }
@@ -250,7 +280,7 @@ class ScenarioComparisonUseCase {
       parameters: newParameters,
       result: null, // Clear existing result
     );
-    
+
     return await calculateScenarioEMI(updatedScenario);
   }
 

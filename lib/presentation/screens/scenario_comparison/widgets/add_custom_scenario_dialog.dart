@@ -7,10 +7,12 @@ class AddCustomScenarioDialog extends ConsumerStatefulWidget {
   const AddCustomScenarioDialog({super.key});
 
   @override
-  ConsumerState<AddCustomScenarioDialog> createState() => _AddCustomScenarioDialogState();
+  ConsumerState<AddCustomScenarioDialog> createState() =>
+      _AddCustomScenarioDialogState();
 }
 
-class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialog> {
+class _AddCustomScenarioDialogState
+    extends ConsumerState<AddCustomScenarioDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -18,7 +20,7 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
   final _interestRateController = TextEditingController();
   final _tenureController = TextEditingController();
   final _annualIncomeController = TextEditingController();
-  
+
   int _taxSlabPercentage = 20;
   bool _isSelfOccupied = true;
   bool _isFirstTimeHomeBuyer = false;
@@ -80,7 +82,7 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                 // Scenario details
                 _buildSectionTitle('Scenario Details'),
                 const SizedBox(height: 12),
-                
+
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
@@ -94,9 +96,9 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                     return null;
                   },
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _descriptionController,
                   decoration: const InputDecoration(
@@ -111,7 +113,7 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                 // Loan parameters
                 _buildSectionTitle('Loan Parameters'),
                 const SizedBox(height: 12),
-                
+
                 TextFormField(
                   controller: _loanAmountController,
                   decoration: const InputDecoration(
@@ -120,11 +122,12 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                     hintText: '2500000',
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (value) => _validateNumber(value, 'loan amount', 100000),
+                  validator: (value) =>
+                      _validateNumber(value, 'loan amount', 100000),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _interestRateController,
                   decoration: const InputDecoration(
@@ -132,12 +135,15 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                     suffixText: '% p.a.',
                     hintText: '8.5',
                   ),
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                  validator: (value) => _validateNumber(value, 'interest rate', 1, 50),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
+                  validator: (value) =>
+                      _validateNumber(value, 'interest rate', 1, 50),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 TextFormField(
                   controller: _tenureController,
                   decoration: const InputDecoration(
@@ -154,7 +160,7 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                 // Personal details
                 _buildSectionTitle('Personal Details'),
                 const SizedBox(height: 12),
-                
+
                 TextFormField(
                   controller: _annualIncomeController,
                   decoration: const InputDecoration(
@@ -163,11 +169,12 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                     hintText: '1500000',
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (value) => _validateNumber(value, 'annual income', 100000),
+                  validator: (value) =>
+                      _validateNumber(value, 'annual income', 100000),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -187,7 +194,8 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                                 child: Text('$rate%'),
                               );
                             }).toList(),
-                            onChanged: (value) => setState(() => _taxSlabPercentage = value!),
+                            onChanged: (value) =>
+                                setState(() => _taxSlabPercentage = value!),
                           ),
                         ],
                       ),
@@ -204,12 +212,14 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                           const SizedBox(height: 8),
                           DropdownButtonFormField<int>(
                             value: _age,
-                            items: List.generate(43, (index) => 25 + index).map((age) {
-                              return DropdownMenuItem(
-                                value: age,
-                                child: Text('$age years'),
-                              );
-                            }).toList(),
+                            items: List.generate(43, (index) => 25 + index).map(
+                              (age) {
+                                return DropdownMenuItem(
+                                  value: age,
+                                  child: Text('$age years'),
+                                );
+                              },
+                            ).toList(),
                             onChanged: (value) => setState(() => _age = value!),
                           ),
                         ],
@@ -217,9 +227,9 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 Row(
                   children: [
                     Expanded(
@@ -234,10 +244,17 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                           DropdownButtonFormField<String>(
                             value: _employmentType,
                             items: const [
-                              DropdownMenuItem(value: 'salaried', child: Text('Salaried')),
-                              DropdownMenuItem(value: 'self_employed', child: Text('Self Employed')),
+                              DropdownMenuItem(
+                                value: 'salaried',
+                                child: Text('Salaried'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'self_employed',
+                                child: Text('Self Employed'),
+                              ),
                             ],
-                            onChanged: (value) => setState(() => _employmentType = value!),
+                            onChanged: (value) =>
+                                setState(() => _employmentType = value!),
                           ),
                         ],
                       ),
@@ -255,10 +272,17 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                           DropdownButtonFormField<String>(
                             value: _gender,
                             items: const [
-                              DropdownMenuItem(value: 'male', child: Text('Male')),
-                              DropdownMenuItem(value: 'female', child: Text('Female')),
+                              DropdownMenuItem(
+                                value: 'male',
+                                child: Text('Male'),
+                              ),
+                              DropdownMenuItem(
+                                value: 'female',
+                                child: Text('Female'),
+                              ),
                             ],
-                            onChanged: (value) => setState(() => _gender = value!),
+                            onChanged: (value) =>
+                                setState(() => _gender = value!),
                           ),
                         ],
                       ),
@@ -271,20 +295,25 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
                 // Property details
                 _buildSectionTitle('Property Details'),
                 const SizedBox(height: 12),
-                
+
                 SwitchListTile(
                   title: const Text('Self-occupied property'),
-                  subtitle: const Text('Check if you will live in this property'),
+                  subtitle: const Text(
+                    'Check if you will live in this property',
+                  ),
                   value: _isSelfOccupied,
                   onChanged: (value) => setState(() => _isSelfOccupied = value),
                   contentPadding: EdgeInsets.zero,
                 ),
-                
+
                 SwitchListTile(
                   title: const Text('First-time home buyer'),
-                  subtitle: const Text('Check if this is your first home purchase'),
+                  subtitle: const Text(
+                    'Check if this is your first home purchase',
+                  ),
                   value: _isFirstTimeHomeBuyer,
-                  onChanged: (value) => setState(() => _isFirstTimeHomeBuyer = value),
+                  onChanged: (value) =>
+                      setState(() => _isFirstTimeHomeBuyer = value),
                   contentPadding: EdgeInsets.zero,
                 ),
               ],
@@ -315,24 +344,29 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
     );
   }
 
-  String? _validateNumber(String? value, String fieldName, [double? min, double? max]) {
+  String? _validateNumber(
+    String? value,
+    String fieldName, [
+    double? min,
+    double? max,
+  ]) {
     if (value == null || value.trim().isEmpty) {
       return 'Please enter $fieldName';
     }
-    
+
     final number = double.tryParse(value);
     if (number == null) {
       return 'Please enter a valid number for $fieldName';
     }
-    
+
     if (min != null && number < min) {
       return '$fieldName must be at least $min';
     }
-    
+
     if (max != null && number > max) {
       return '$fieldName must not exceed $max';
     }
-    
+
     return null;
   }
 
@@ -363,7 +397,11 @@ class _AddCustomScenarioDialogState extends ConsumerState<AddCustomScenarioDialo
 
     ref
         .read(scenarioComparisonProvider.notifier)
-        .addCustomScenario(name, description.isEmpty ? name : description, parameters);
+        .addCustomScenario(
+          name,
+          description.isEmpty ? name : description,
+          parameters,
+        );
 
     Navigator.of(context).pop();
 

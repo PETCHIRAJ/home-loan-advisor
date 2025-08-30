@@ -27,7 +27,7 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return DraggableScrollableSheet(
       initialChildSize: 0.7,
       minChildSize: 0.5,
@@ -50,7 +50,7 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              
+
               // Header
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -71,7 +71,7 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
                   ],
                 ),
               ),
-              
+
               // Content
               Expanded(
                 child: SingleChildScrollView(
@@ -84,28 +84,29 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
                       _buildSectionHeader('Filter by'),
                       const SizedBox(height: 12),
                       _buildFilterOptions(),
-                      
+
                       const SizedBox(height: 24),
-                      
+
                       // Date range section (only show if custom range is selected)
-                      if (_filterState.currentFilter == HistoryFilter.customRange) ...[
+                      if (_filterState.currentFilter ==
+                          HistoryFilter.customRange) ...[
                         _buildSectionHeader('Date Range'),
                         const SizedBox(height: 12),
                         _buildDateRangeSelector(),
                         const SizedBox(height: 24),
                       ],
-                      
+
                       // Sort section
                       _buildSectionHeader('Sort by'),
                       const SizedBox(height: 12),
                       _buildSortOptions(),
-                      
+
                       const SizedBox(height: 80), // Space for apply button
                     ],
                   ),
                 ),
               ),
-              
+
               // Apply button
               Container(
                 padding: const EdgeInsets.all(20),
@@ -159,30 +160,30 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
       children: filterOptions.map((option) {
         final (filter, title, icon) = option;
         final isSelected = _filterState.currentFilter == filter;
-        
+
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: ListTile(
             leading: Icon(
               icon,
-              color: isSelected 
-                  ? Theme.of(context).colorScheme.primary 
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.onSurfaceVariant,
             ),
             title: Text(
               title,
               style: TextStyle(
-                color: isSelected 
-                    ? Theme.of(context).colorScheme.primary 
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
                     : Theme.of(context).colorScheme.onSurface,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
-            trailing: isSelected 
+            trailing: isSelected
                 ? Icon(
                     Icons.check_circle,
                     color: Theme.of(context).colorScheme.primary,
-                  ) 
+                  )
                 : null,
             onTap: () {
               setState(() {
@@ -192,7 +193,10 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 4,
+            ),
           ),
         );
       }).toList(),
@@ -202,7 +206,7 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
   Widget _buildDateRangeSelector() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Row(
       children: [
         Expanded(
@@ -255,42 +259,58 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
     final sortOptions = [
       (HistorySortBy.dateNewest, 'Date (Newest First)', Icons.schedule),
       (HistorySortBy.dateOldest, 'Date (Oldest First)', Icons.history),
-      (HistorySortBy.loanAmountHigh, 'Loan Amount (High to Low)', Icons.trending_down),
-      (HistorySortBy.loanAmountLow, 'Loan Amount (Low to High)', Icons.trending_up),
+      (
+        HistorySortBy.loanAmountHigh,
+        'Loan Amount (High to Low)',
+        Icons.trending_down,
+      ),
+      (
+        HistorySortBy.loanAmountLow,
+        'Loan Amount (Low to High)',
+        Icons.trending_up,
+      ),
       (HistorySortBy.emiHigh, 'EMI (High to Low)', Icons.money_off),
       (HistorySortBy.emiLow, 'EMI (Low to High)', Icons.attach_money),
-      (HistorySortBy.interestRateHigh, 'Interest Rate (High to Low)', Icons.percent),
-      (HistorySortBy.interestRateLow, 'Interest Rate (Low to High)', Icons.low_priority),
+      (
+        HistorySortBy.interestRateHigh,
+        'Interest Rate (High to Low)',
+        Icons.percent,
+      ),
+      (
+        HistorySortBy.interestRateLow,
+        'Interest Rate (Low to High)',
+        Icons.low_priority,
+      ),
     ];
 
     return Column(
       children: sortOptions.map((option) {
         final (sortBy, title, icon) = option;
         final isSelected = _filterState.sortBy == sortBy;
-        
+
         return Padding(
           padding: const EdgeInsets.only(bottom: 8),
           child: ListTile(
             leading: Icon(
               icon,
-              color: isSelected 
-                  ? Theme.of(context).colorScheme.primary 
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
                   : Theme.of(context).colorScheme.onSurfaceVariant,
             ),
             title: Text(
               title,
               style: TextStyle(
-                color: isSelected 
-                    ? Theme.of(context).colorScheme.primary 
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
                     : Theme.of(context).colorScheme.onSurface,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
-            trailing: isSelected 
+            trailing: isSelected
                 ? Icon(
                     Icons.check_circle,
                     color: Theme.of(context).colorScheme.primary,
-                  ) 
+                  )
                 : null,
             onTap: () {
               setState(() {
@@ -300,7 +320,10 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 4,
+            ),
           ),
         );
       }).toList(),
@@ -340,14 +363,14 @@ class _HistoryFilterSheetState extends ConsumerState<HistoryFilterSheet> {
 
   void _applyFilters() {
     final notifier = ref.read(historyFilterNotifierProvider.notifier);
-    
+
     notifier.updateFilter(_filterState.currentFilter);
     notifier.updateSortBy(_filterState.sortBy);
-    
+
     if (_filterState.currentFilter == HistoryFilter.customRange) {
       notifier.updateDateRange(_tempStartDate, _tempEndDate);
     }
-    
+
     Navigator.of(context).pop();
   }
 }

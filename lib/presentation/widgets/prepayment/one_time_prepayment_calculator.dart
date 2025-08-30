@@ -20,13 +20,15 @@ class OneTimePrepaymentCalculator extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<OneTimePrepaymentCalculator> createState() => _OneTimePrepaymentCalculatorState();
+  ConsumerState<OneTimePrepaymentCalculator> createState() =>
+      _OneTimePrepaymentCalculatorState();
 }
 
-class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentCalculator> {
+class _OneTimePrepaymentCalculatorState
+    extends ConsumerState<OneTimePrepaymentCalculator> {
   final _formKey = GlobalKey<FormState>();
   final _prepaymentAmountController = TextEditingController();
-  
+
   double _prepaymentAmount = 100000;
   int _selectedYear = 1;
   int _selectedMonth = 1;
@@ -34,8 +36,18 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
   bool _isCalculating = false;
 
   final List<String> _months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   @override
@@ -101,7 +113,9 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
           children: [
             // Description Card
             Card(
-              color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.primaryContainer.withValues(alpha: 0.3),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -117,10 +131,11 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                         const SizedBox(width: 8),
                         Text(
                           'One-time Prepayment',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                       ],
                     ),
@@ -133,7 +148,7 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
 
             Expanded(
@@ -150,9 +165,8 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                           children: [
                             Text(
                               'Prepayment Amount',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
 
@@ -165,13 +179,16 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                                 hintText: 'Enter prepayment amount',
                                 prefixIcon: const Icon(Icons.currency_rupee),
                                 border: const OutlineInputBorder(),
-                                helperText: 'Minimum: ₹10,000 | Maximum: Outstanding Balance',
+                                helperText:
+                                    'Minimum: ₹10,000 | Maximum: Outstanding Balance',
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter prepayment amount';
                                 }
-                                final amount = double.tryParse(value.replaceAll(',', ''));
+                                final amount = double.tryParse(
+                                  value.replaceAll(',', ''),
+                                );
                                 if (amount == null) {
                                   return 'Please enter a valid amount';
                                 }
@@ -184,7 +201,9 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                                 return null;
                               },
                               onChanged: (value) {
-                                final amount = double.tryParse(value.replaceAll(',', ''));
+                                final amount = double.tryParse(
+                                  value.replaceAll(',', ''),
+                                );
                                 if (amount != null) {
                                   setState(() {
                                     _prepaymentAmount = amount;
@@ -201,13 +220,15 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                               children: [
                                 Text(
                                   'Quick Amount Selection',
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(height: 8),
                                 Slider(
-                                  value: _prepaymentAmount.clamp(10000, widget.loanParameters.loanAmount),
+                                  value: _prepaymentAmount.clamp(
+                                    10000,
+                                    widget.loanParameters.loanAmount,
+                                  ),
                                   min: 10000,
                                   max: widget.loanParameters.loanAmount,
                                   divisions: 20,
@@ -215,20 +236,28 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                                   onChanged: (value) {
                                     setState(() {
                                       _prepaymentAmount = value;
-                                      _prepaymentAmountController.text = value.toInt().toString();
+                                      _prepaymentAmountController.text = value
+                                          .toInt()
+                                          .toString();
                                     });
                                   },
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       '₹10K',
-                                      style: Theme.of(context).textTheme.bodySmall,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                     ),
                                     Text(
-                                      widget.loanParameters.loanAmount.toCompactIndianFormat(),
-                                      style: Theme.of(context).textTheme.bodySmall,
+                                      widget.loanParameters.loanAmount
+                                          .toCompactIndianFormat(),
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
@@ -246,8 +275,14 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                                 _buildQuickAmountChip('2L', 200000),
                                 _buildQuickAmountChip('5L', 500000),
                                 _buildQuickAmountChip('10L', 1000000),
-                                _buildQuickAmountChip('25% of Loan', widget.loanParameters.loanAmount * 0.25),
-                                _buildQuickAmountChip('50% of Loan', widget.loanParameters.loanAmount * 0.50),
+                                _buildQuickAmountChip(
+                                  '25% of Loan',
+                                  widget.loanParameters.loanAmount * 0.25,
+                                ),
+                                _buildQuickAmountChip(
+                                  '50% of Loan',
+                                  widget.loanParameters.loanAmount * 0.50,
+                                ),
                               ],
                             ),
                           ],
@@ -266,9 +301,8 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                           children: [
                             Text(
                               'When to Make Prepayment',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
 
@@ -276,13 +310,17 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Year',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                       ),
                                       const SizedBox(height: 8),
                                       DropdownButtonFormField<int>(
@@ -313,13 +351,17 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Month',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                       ),
                                       const SizedBox(height: 8),
                                       DropdownButtonFormField<int>(
@@ -355,7 +397,9 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
@@ -363,15 +407,22 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
                                   Icon(
                                     Icons.schedule,
                                     size: 16,
-                                    color: Theme.of(context).colorScheme.primary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       'Prepayment will be made in ${_months[_selectedMonth - 1]} of Year $_selectedYear',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.primary,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -428,16 +479,18 @@ class _OneTimePrepaymentCalculatorState extends ConsumerState<OneTimePrepaymentC
           color: isSelected
               ? Theme.of(context).colorScheme.onPrimary
               : canAfford
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
       backgroundColor: isSelected
           ? Theme.of(context).colorScheme.primary
           : canAfford
-              ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
-              : Theme.of(context).colorScheme.surfaceContainerHighest,
+          ? Theme.of(
+              context,
+            ).colorScheme.primaryContainer.withValues(alpha: 0.3)
+          : Theme.of(context).colorScheme.surfaceContainerHighest,
       onPressed: canAfford
           ? () {
               setState(() {

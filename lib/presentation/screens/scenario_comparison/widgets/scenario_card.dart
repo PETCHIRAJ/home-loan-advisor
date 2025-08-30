@@ -23,7 +23,7 @@ class ScenarioCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasResult = scenario.result != null;
     final isEnabled = scenario.isEnabled;
-    
+
     return Card(
       color: _getCardColor(context),
       elevation: isBest ? 4 : 1,
@@ -43,11 +43,7 @@ class ScenarioCard extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
-                      Icons.star,
-                      size: 12,
-                      color: Colors.white,
-                    ),
+                    const Icon(Icons.star, size: 12, color: Colors.white),
                     const SizedBox(width: 4),
                     Text(
                       'BEST',
@@ -97,23 +93,28 @@ class ScenarioCard extends StatelessWidget {
                         children: [
                           Text(
                             scenario.name,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: isEnabled 
-                                  ? null 
-                                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isEnabled
+                                      ? null
+                                      : Theme.of(context).colorScheme.onSurface
+                                            .withValues(alpha: 0.6),
+                                ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             scenario.description,
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: isEnabled 
-                                  ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8)
-                                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: isEnabled
+                                      ? Theme.of(context).colorScheme.onSurface
+                                            .withValues(alpha: 0.8)
+                                      : Theme.of(context).colorScheme.onSurface
+                                            .withValues(alpha: 0.4),
+                                ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -189,7 +190,8 @@ class ScenarioCard extends StatelessWidget {
                     _buildResultRow(
                       context,
                       'Tax Savings/Year',
-                      scenario.result!.taxBenefits.totalAnnualSavings.toEMIFormat(),
+                      scenario.result!.taxBenefits.totalAnnualSavings
+                          .toEMIFormat(),
                       FinancialColors.taxBenefit,
                     ),
                   ],
@@ -203,15 +205,15 @@ class ScenarioCard extends StatelessWidget {
                     ),
                   ],
                 ] else if (!hasResult && isEnabled) ...[
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  const Center(child: CircularProgressIndicator()),
                 ] else if (!isEnabled) ...[
                   Center(
                     child: Text(
                       'Scenario disabled',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.6),
                         fontStyle: FontStyle.italic,
                       ),
                     ),
@@ -235,7 +237,8 @@ class ScenarioCard extends StatelessWidget {
                           ),
                         ),
                       ],
-                      if (onEdit != null && onRemove != null) const SizedBox(width: 8),
+                      if (onEdit != null && onRemove != null)
+                        const SizedBox(width: 8),
                       if (onRemove != null) ...[
                         Expanded(
                           child: OutlinedButton.icon(
@@ -243,8 +246,12 @@ class ScenarioCard extends StatelessWidget {
                             icon: const Icon(Icons.delete, size: 16),
                             label: const Text('Remove'),
                             style: OutlinedButton.styleFrom(
-                              foregroundColor: Theme.of(context).colorScheme.error,
-                              side: BorderSide(color: Theme.of(context).colorScheme.error),
+                              foregroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
+                              side: BorderSide(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
                               padding: const EdgeInsets.symmetric(vertical: 8),
                             ),
                           ),
@@ -266,7 +273,9 @@ class ScenarioCard extends StatelessWidget {
       return FinancialColors.savings.withValues(alpha: 0.05);
     }
     if (scenario.isBaseScenario) {
-      return Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1);
+      return Theme.of(
+        context,
+      ).colorScheme.primaryContainer.withValues(alpha: 0.1);
     }
     if (!scenario.isEnabled) {
       return Theme.of(context).colorScheme.surface.withValues(alpha: 0.5);
@@ -286,7 +295,7 @@ class ScenarioCard extends StatelessWidget {
         Icon(
           icon,
           size: 16,
-          color: isEnabled 
+          color: isEnabled
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
         ),
@@ -295,9 +304,13 @@ class ScenarioCard extends StatelessWidget {
           child: Text(
             label,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: isEnabled 
-                  ? Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8)
-                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+              color: isEnabled
+                  ? Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.8)
+                  : Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.4),
             ),
           ),
         ),
@@ -305,9 +318,11 @@ class ScenarioCard extends StatelessWidget {
           value,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.w600,
-            color: isEnabled 
+            color: isEnabled
                 ? null
-                : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                : Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
         ),
       ],
@@ -324,10 +339,7 @@ class ScenarioCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text(label, style: Theme.of(context).textTheme.bodySmall),
         Text(
           value,
           style: FinancialTypography.moneySmall.copyWith(

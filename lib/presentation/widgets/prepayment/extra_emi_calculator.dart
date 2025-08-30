@@ -25,7 +25,7 @@ class ExtraEMICalculator extends ConsumerStatefulWidget {
 
 class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
   final _formKey = GlobalKey<FormState>();
-  
+
   int _extraEMIsPerYear = 1;
   int _startYear = 1;
   PrepaymentResult? _calculationResult;
@@ -60,7 +60,8 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
     try {
       final scenario = PrepaymentScenario(
         type: PrepaymentType.extraEMI,
-        amount: widget.emiResult.monthlyEMI, // Extra EMI amount equals regular EMI
+        amount:
+            widget.emiResult.monthlyEMI, // Extra EMI amount equals regular EMI
         startMonth: 1,
         startYear: _startYear,
         extraEMIsPerYear: _extraEMIsPerYear,
@@ -102,7 +103,9 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
           children: [
             // Description Card
             Card(
-              color: Theme.of(context).colorScheme.tertiaryContainer.withValues(alpha: 0.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.tertiaryContainer.withValues(alpha: 0.3),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -118,10 +121,11 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                         const SizedBox(width: 8),
                         Text(
                           'Extra EMI Strategy',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.tertiary,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.tertiary,
+                              ),
                         ),
                       ],
                     ),
@@ -134,7 +138,7 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
 
             Expanded(
@@ -151,26 +155,30 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                           children: [
                             Text(
                               'Extra EMI Strategy',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 8),
                             Text(
                               'Current EMI: ${widget.emiResult.monthlyEMI.toEMIFormat()}',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                             ),
                             const SizedBox(height: 16),
 
                             // Strategy Options
                             Column(
                               children: [1, 2, 3, 4].map((extraEMIs) {
-                                final isSelected = _extraEMIsPerYear == extraEMIs;
-                                final annualExtraAmount = widget.emiResult.monthlyEMI * extraEMIs;
-                                
+                                final isSelected =
+                                    _extraEMIsPerYear == extraEMIs;
+                                final annualExtraAmount =
+                                    widget.emiResult.monthlyEMI * extraEMIs;
+
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 12),
                                   child: InkWell(
@@ -184,18 +192,26 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                                       padding: const EdgeInsets.all(16),
                                       decoration: BoxDecoration(
                                         color: isSelected
-                                            ? Theme.of(context).colorScheme.tertiaryContainer
-                                            : Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.tertiaryContainer
+                                            : Theme.of(context)
+                                                  .colorScheme
+                                                  .surfaceContainerHighest
+                                                  .withValues(alpha: 0.3),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
                                           color: isSelected
-                                              ? Theme.of(context).colorScheme.tertiary
+                                              ? Theme.of(
+                                                  context,
+                                                ).colorScheme.tertiary
                                               : Theme.of(context).dividerColor,
                                           width: isSelected ? 2 : 1,
                                         ),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
                                             children: [
@@ -207,48 +223,82 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                                                     _extraEMIsPerYear = value!;
                                                   });
                                                 },
-                                                activeColor: Theme.of(context).colorScheme.tertiary,
+                                                activeColor: Theme.of(
+                                                  context,
+                                                ).colorScheme.tertiary,
                                               ),
                                               const SizedBox(width: 8),
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       _strategyNames[extraEMIs]!,
-                                                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
-                                                        color: isSelected ? Theme.of(context).colorScheme.tertiary : null,
-                                                      ),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .titleSmall
+                                                          ?.copyWith(
+                                                            fontWeight:
+                                                                isSelected
+                                                                ? FontWeight
+                                                                      .bold
+                                                                : FontWeight
+                                                                      .w600,
+                                                            color: isSelected
+                                                                ? Theme.of(
+                                                                        context,
+                                                                      )
+                                                                      .colorScheme
+                                                                      .tertiary
+                                                                : null,
+                                                          ),
                                                     ),
                                                     const SizedBox(height: 4),
                                                     Text(
                                                       _strategyDescriptions[extraEMIs]!,
-                                                      style: Theme.of(context).textTheme.bodySmall,
+                                                      style: Theme.of(
+                                                        context,
+                                                      ).textTheme.bodySmall,
                                                     ),
                                                   ],
                                                 ),
                                               ),
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
                                                     '$extraEMIs Extra EMI${extraEMIs > 1 ? 's' : ''}',
-                                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                                      fontWeight: FontWeight.w500,
-                                                    ),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodySmall
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
                                                   ),
                                                   const SizedBox(height: 2),
                                                   Text(
-                                                    annualExtraAmount.toCompactIndianFormat(),
-                                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Theme.of(context).colorScheme.tertiary,
-                                                    ),
+                                                    annualExtraAmount
+                                                        .toCompactIndianFormat(),
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium
+                                                        ?.copyWith(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .tertiary,
+                                                        ),
                                                   ),
                                                   Text(
                                                     'per year',
-                                                    style: Theme.of(context).textTheme.bodySmall,
+                                                    style: Theme.of(
+                                                      context,
+                                                    ).textTheme.bodySmall,
                                                   ),
                                                 ],
                                               ),
@@ -277,9 +327,8 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                           children: [
                             Text(
                               'When to Start',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
 
@@ -288,9 +337,8 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                               children: [
                                 Text(
                                   'Starting Year',
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(height: 8),
                                 DropdownButtonFormField<int>(
@@ -323,7 +371,9 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
@@ -331,15 +381,22 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                                   Icon(
                                     Icons.schedule,
                                     size: 16,
-                                    color: Theme.of(context).colorScheme.tertiary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.tertiary,
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       'Extra EMIs will start from Year $_startYear, $_extraEMIsPerYear time${_extraEMIsPerYear > 1 ? 's' : ''} per year',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: Theme.of(context).colorScheme.tertiary,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.tertiary,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -354,7 +411,9 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
 
                     // Benefits Preview Card
                     Card(
-                      color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primaryContainer.withValues(alpha: 0.3),
                       child: Padding(
                         padding: const EdgeInsets.all(16),
                         child: Column(
@@ -370,15 +429,18 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                                 const SizedBox(width: 8),
                                 Text(
                                   'Why Extra EMI Works',
-                                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.primary,
-                                  ),
+                                  style: Theme.of(context).textTheme.titleSmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.primary,
+                                      ),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 12),
-                            
+
                             _buildBenefitPoint(
                               'Principal Reduction',
                               'Each extra EMI directly reduces your outstanding principal',
@@ -415,7 +477,9 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         backgroundColor: Theme.of(context).colorScheme.tertiary,
-                        foregroundColor: Theme.of(context).colorScheme.onTertiary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onTertiary,
                       ),
                       child: _isCalculating
                           ? const SizedBox(
@@ -448,11 +512,7 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          size: 16,
-          color: Theme.of(context).colorScheme.primary,
-        ),
+        Icon(icon, size: 16, color: Theme.of(context).colorScheme.primary),
         const SizedBox(width: 8),
         Expanded(
           child: Column(
@@ -460,14 +520,11 @@ class _ExtraEMICalculatorState extends ConsumerState<ExtraEMICalculator> {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
-              Text(
-                description,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
+              Text(description, style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
         ),

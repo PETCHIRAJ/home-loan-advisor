@@ -20,19 +20,17 @@ class PrepaymentCalculatorScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<PrepaymentCalculatorScreen> createState() => _PrepaymentCalculatorScreenState();
+  ConsumerState<PrepaymentCalculatorScreen> createState() =>
+      _PrepaymentCalculatorScreenState();
 }
 
-class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculatorScreen>
+class _PrepaymentCalculatorScreenState
+    extends ConsumerState<PrepaymentCalculatorScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
   int _selectedIndex = 0;
 
-  final List<String> _tabLabels = [
-    'One-time',
-    'Recurring',
-    'Extra EMI',
-  ];
+  final List<String> _tabLabels = ['One-time', 'Recurring', 'Extra EMI'];
 
   final List<IconData> _tabIcons = [
     Icons.payment,
@@ -80,7 +78,7 @@ class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculato
                     ),
                   ),
                   const SizedBox(height: 12),
-                  
+
                   LayoutBuilder(
                     builder: (context, constraints) {
                       if (constraints.maxWidth < 600) {
@@ -118,7 +116,8 @@ class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculato
                               width: (constraints.maxWidth - 24) / 2,
                               child: _buildSummaryRow(
                                 'Loan Amount',
-                                widget.loanParameters.loanAmount.toIndianFormat(),
+                                widget.loanParameters.loanAmount
+                                    .toIndianFormat(),
                               ),
                             ),
                             SizedBox(
@@ -178,10 +177,11 @@ class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculato
                         const SizedBox(width: 8),
                         Text(
                           'Choose Prepayment Strategy',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                       ],
                     ),
@@ -193,12 +193,18 @@ class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculato
                   padding: ResponsivePadding.adaptive(
                     context,
                     mobile: const EdgeInsets.all(ResponsiveSpacing.sm),
-                    tablet: const EdgeInsets.symmetric(horizontal: ResponsiveSpacing.md),
-                    desktop: const EdgeInsets.symmetric(horizontal: ResponsiveSpacing.lg),
+                    tablet: const EdgeInsets.symmetric(
+                      horizontal: ResponsiveSpacing.md,
+                    ),
+                    desktop: const EdgeInsets.symmetric(
+                      horizontal: ResponsiveSpacing.lg,
+                    ),
                   ),
                   child: AccessibleTabBar(
                     controller: _tabController,
-                    isScrollable: MediaQuery.of(context).size.width < AppBreakpoints.tablet,
+                    isScrollable:
+                        MediaQuery.of(context).size.width <
+                        AppBreakpoints.tablet,
                     onTap: (index) {
                       setState(() {
                         _selectedIndex = index;
@@ -239,10 +245,7 @@ class _PrepaymentCalculatorScreenState extends ConsumerState<PrepaymentCalculato
       children: [
         Expanded(
           flex: 2,
-          child: Text(
-            label,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+          child: Text(label, style: Theme.of(context).textTheme.bodyMedium),
         ),
         const SizedBox(width: 8),
         Expanded(

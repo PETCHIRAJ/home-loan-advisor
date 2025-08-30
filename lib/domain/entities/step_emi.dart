@@ -4,11 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'step_emi.g.dart';
 
 /// Types of step EMI options
-enum StepEMIType {
-  none,
-  stepUp,
-  stepDown,
-}
+enum StepEMIType { none, stepUp, stepDown }
 
 extension StepEMITypeExtension on StepEMIType {
   String get displayName {
@@ -35,10 +31,7 @@ extension StepEMITypeExtension on StepEMIType {
 }
 
 /// Frequency of step changes
-enum StepFrequency {
-  yearly,
-  biYearly,
-}
+enum StepFrequency { yearly, biYearly }
 
 extension StepFrequencyExtension on StepFrequency {
   String get displayName {
@@ -161,7 +154,7 @@ class StepEMIDetail extends Equatable {
   String get yearRange {
     final startYear = ((startMonth - 1) ~/ 12) + 1;
     final endYear = ((endMonth - 1) ~/ 12) + 1;
-    
+
     if (startYear == endYear) {
       return 'Year $startYear';
     } else {
@@ -223,11 +216,11 @@ class StepEMIResult extends Equatable {
   /// Get yearly breakdown for chart visualization
   List<YearlyStepEMI> get yearlyBreakdown {
     final Map<int, YearlyStepEMI> yearlyMap = {};
-    
+
     for (final step in steps) {
       final startYear = ((step.startMonth - 1) ~/ 12) + 1;
       final endYear = ((step.endMonth - 1) ~/ 12) + 1;
-      
+
       for (int year = startYear; year <= endYear; year++) {
         if (yearlyMap.containsKey(year)) {
           // Update existing year data
@@ -248,7 +241,7 @@ class StepEMIResult extends Equatable {
         }
       }
     }
-    
+
     return yearlyMap.values.toList()..sort((a, b) => a.year.compareTo(b.year));
   }
 

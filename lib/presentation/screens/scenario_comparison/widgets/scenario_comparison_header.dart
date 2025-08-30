@@ -26,12 +26,11 @@ class ScenarioComparisonHeader extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1),
+        color: Theme.of(
+          context,
+        ).colorScheme.primaryContainer.withValues(alpha: 0.1),
         border: Border(
-          bottom: BorderSide(
-            color: Theme.of(context).dividerColor,
-            width: 1,
-          ),
+          bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1),
         ),
       ),
       child: Column(
@@ -47,14 +46,17 @@ class ScenarioComparisonHeader extends ConsumerWidget {
               const SizedBox(width: 8),
               Text(
                 'Compare Loan Scenarios',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const Spacer(),
               if (enabledScenarios.isNotEmpty)
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
                     borderRadius: BorderRadius.circular(12),
@@ -119,7 +121,9 @@ class ScenarioComparisonHeader extends ConsumerWidget {
           // Loading indicator
           if (isLoading) ...[
             LinearProgressIndicator(
-              backgroundColor: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+              backgroundColor: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.2),
             ),
             const SizedBox(height: 12),
           ],
@@ -151,7 +155,9 @@ class ScenarioComparisonHeader extends ConsumerWidget {
                   child: Text(
                     'Enable scenarios from the list below to compare different loan options',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.8),
                     ),
                   ),
                 ),
@@ -175,7 +181,8 @@ class ScenarioComparisonHeader extends ConsumerWidget {
           children: [
             _SummaryChip(
               label: 'EMI Range',
-              value: '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
+              value:
+                  '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
               icon: Icons.payments,
             ),
           ],
@@ -205,7 +212,8 @@ class ScenarioComparisonHeader extends ConsumerWidget {
         Expanded(
           child: _SummaryChip(
             label: 'EMI Range',
-            value: '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
+            value:
+                '${metrics.minEMI.toEMIFormat()} - ${metrics.maxEMI.toEMIFormat()}',
             icon: Icons.payments,
           ),
         ),
@@ -213,7 +221,8 @@ class ScenarioComparisonHeader extends ConsumerWidget {
         Expanded(
           child: _SummaryChip(
             label: 'Interest Savings',
-            value: '₹${(metrics.maxTotalInterest - metrics.minTotalInterest).toIndianFormat()}',
+            value:
+                '₹${(metrics.maxTotalInterest - metrics.minTotalInterest).toIndianFormat()}',
             icon: Icons.savings,
             color: FinancialColors.savings,
           ),
@@ -254,10 +263,7 @@ class _SummaryChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: chipColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: chipColor.withValues(alpha: 0.3),
-          width: 1,
-        ),
+        border: Border.all(color: chipColor.withValues(alpha: 0.3), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,9 +284,9 @@ class _SummaryChip extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

@@ -79,7 +79,7 @@ class LoanParametersNotifier extends StateNotifier<domain.LoanParameters> {
       gender: 'male',
     );
   }
-  
+
   void loadFromHistory(domain.LoanParameters parameters) {
     state = parameters;
   }
@@ -360,13 +360,17 @@ class StepEMIParametersNotifier extends StateNotifier<StepEMIParameters> {
         break;
       case StepEMIType.stepUp:
         state = StepEMIParameters.stepUp(
-          stepPercentage: state.stepPercentage > 0 ? state.stepPercentage : 10.0,
+          stepPercentage: state.stepPercentage > 0
+              ? state.stepPercentage
+              : 10.0,
           frequency: state.frequency,
         );
         break;
       case StepEMIType.stepDown:
         state = StepEMIParameters.stepDown(
-          stepPercentage: state.stepPercentage > 0 ? state.stepPercentage : 10.0,
+          stepPercentage: state.stepPercentage > 0
+              ? state.stepPercentage
+              : 10.0,
           frequency: state.frequency,
         );
         break;
@@ -387,7 +391,8 @@ class StepEMIParametersNotifier extends StateNotifier<StepEMIParameters> {
 }
 
 // Step EMI calculation notifier
-class StepEMICalculationNotifier extends StateNotifier<AsyncValue<StepEMIResult?>> {
+class StepEMICalculationNotifier
+    extends StateNotifier<AsyncValue<StepEMIResult?>> {
   StepEMICalculationNotifier(this._ref) : super(const AsyncValue.data(null));
 
   final Ref _ref;
@@ -395,7 +400,7 @@ class StepEMICalculationNotifier extends StateNotifier<AsyncValue<StepEMIResult?
   Future<void> calculateStepEMI() async {
     final loanParameters = _ref.read(loanParametersProvider);
     final stepParameters = _ref.read(stepEMIParametersProvider);
-    
+
     state = const AsyncValue.loading();
 
     try {
@@ -418,15 +423,17 @@ class StepEMICalculationNotifier extends StateNotifier<AsyncValue<StepEMIResult?
 }
 
 // Combined EMI calculation notifier (includes step EMI)
-class EnhancedEMICalculationNotifier extends StateNotifier<AsyncValue<EMIResult?>> {
-  EnhancedEMICalculationNotifier(this._ref) : super(const AsyncValue.data(null));
+class EnhancedEMICalculationNotifier
+    extends StateNotifier<AsyncValue<EMIResult?>> {
+  EnhancedEMICalculationNotifier(this._ref)
+    : super(const AsyncValue.data(null));
 
   final Ref _ref;
 
   Future<void> calculateEMI() async {
     final parameters = _ref.read(loanParametersProvider);
     final stepParameters = _ref.read(stepEMIParametersProvider);
-    
+
     state = const AsyncValue.loading();
 
     try {
@@ -438,7 +445,7 @@ class EnhancedEMICalculationNotifier extends StateNotifier<AsyncValue<EMIResult?
         (emiResult) async {
           // Calculate step EMI if enabled
           EMIResult finalResult = emiResult;
-          
+
           if (stepParameters.type != StepEMIType.none) {
             final stepResult = StepEMICalculationUtils.calculateStepEMI(
               principal: parameters.loanAmount,
@@ -480,20 +487,28 @@ final stepEMIParametersProvider =
     });
 
 final stepEMICalculationProvider =
-    StateNotifierProvider<StepEMICalculationNotifier, AsyncValue<StepEMIResult?>>((ref) {
+    StateNotifierProvider<
+      StepEMICalculationNotifier,
+      AsyncValue<StepEMIResult?>
+    >((ref) {
       return StepEMICalculationNotifier(ref);
     });
 
 final enhancedEMICalculationProvider =
-    StateNotifierProvider<EnhancedEMICalculationNotifier, AsyncValue<EMIResult?>>((ref) {
+    StateNotifierProvider<
+      EnhancedEMICalculationNotifier,
+      AsyncValue<EMIResult?>
+    >((ref) {
       return EnhancedEMICalculationNotifier(ref);
     });
 
 // Auto-calculate step EMI when parameters change
-final autoStepEMICalculationProvider = Provider<AsyncValue<StepEMIResult?>>((ref) {
+final autoStepEMICalculationProvider = Provider<AsyncValue<StepEMIResult?>>((
+  ref,
+) {
   final loanParameters = ref.watch(loanParametersProvider);
   final stepParameters = ref.watch(stepEMIParametersProvider);
-  
+
   if (stepParameters.type == StepEMIType.none) {
     return const AsyncValue.data(null);
   }

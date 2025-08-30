@@ -143,9 +143,9 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
                               padding: const EdgeInsets.only(right: 4),
                               child: Text(
                                 value.toCompactFormat(),
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontSize: 10,
-                                ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.labelSmall?.copyWith(fontSize: 10),
                               ),
                             );
                           },
@@ -173,9 +173,8 @@ class _YearlyBreakdownTabState extends State<YearlyBreakdownTab>
                                 padding: const EdgeInsets.only(top: 4),
                                 child: Text(
                                   'Y$year',
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                    fontSize: 10,
-                                  ),
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(fontSize: 10),
                                 ),
                               );
                             }

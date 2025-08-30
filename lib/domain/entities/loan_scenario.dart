@@ -66,14 +66,17 @@ class ScenarioComparison extends Equatable {
     this.bestScenarioId,
   });
 
-  List<LoanScenario> get enabledScenarios => scenarios.where((s) => s.isEnabled).toList();
+  List<LoanScenario> get enabledScenarios =>
+      scenarios.where((s) => s.isEnabled).toList();
 
-  List<LoanScenario> get scenariosWithResults => scenarios.where((s) => s.result != null).toList();
+  List<LoanScenario> get scenariosWithResults =>
+      scenarios.where((s) => s.result != null).toList();
 
-  LoanScenario? get baseScenario => scenarios.where((s) => s.isBaseScenario).firstOrNull;
+  LoanScenario? get baseScenario =>
+      scenarios.where((s) => s.isBaseScenario).firstOrNull;
 
-  LoanScenario? get bestScenario => bestScenarioId != null 
-      ? scenarios.where((s) => s.id == bestScenarioId).firstOrNull 
+  LoanScenario? get bestScenario => bestScenarioId != null
+      ? scenarios.where((s) => s.id == bestScenarioId).firstOrNull
       : null;
 
   ScenarioComparison copyWith({
@@ -177,7 +180,7 @@ enum ScenarioPreset {
   higherAmount('Higher Amount', 'Loan amount 20% more than base');
 
   const ScenarioPreset(this.displayName, this.description);
-  
+
   final String displayName;
   final String description;
 }
@@ -187,29 +190,32 @@ extension LoanScenarioExtensions on LoanScenario {
   /// Calculate effective interest rate after tax benefits
   double get effectiveInterestRate {
     if (result == null) return parameters.interestRate;
-    
-    final totalInterestAfterTax = result!.totalInterest - 
+
+    final totalInterestAfterTax =
+        result!.totalInterest -
         (result!.taxBenefits.totalAnnualSavings * parameters.tenureYears);
-    final effectiveRate = (totalInterestAfterTax / parameters.loanAmount) * 
+    final effectiveRate =
+        (totalInterestAfterTax / parameters.loanAmount) *
         (100 / parameters.tenureYears);
-    
+
     return effectiveRate.clamp(0, parameters.interestRate);
   }
 
   /// Get total cost including PMAY benefits
   double get totalCostAfterBenefits {
     if (result == null) return 0;
-    
+
     double totalCost = result!.totalAmount;
-    
+
     // Subtract PMAY subsidy
     if (result!.pmayBenefit?.isEligible == true) {
       totalCost -= result!.pmayBenefit!.subsidyAmount;
     }
-    
+
     // Subtract tax benefits over the loan tenure
-    totalCost -= result!.taxBenefits.totalAnnualSavings * parameters.tenureYears;
-    
+    totalCost -=
+        result!.taxBenefits.totalAnnualSavings * parameters.tenureYears;
+
     return totalCost.clamp(0, result!.totalAmount);
   }
 

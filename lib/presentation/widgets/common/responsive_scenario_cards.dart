@@ -26,15 +26,13 @@ class ResponsiveScenarioCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (scenarios.isEmpty) {
-      return const Center(
-        child: Text('No scenarios available'),
-      );
+      return const Center(child: Text('No scenarios available'));
     }
 
     return LayoutBuilder(
       builder: (context, constraints) {
         final isTabletOrLarger = constraints.maxWidth >= AppBreakpoints.tablet;
-        
+
         if (isTabletOrLarger) {
           return _buildGridLayout(context, constraints);
         } else {
@@ -49,21 +47,21 @@ class ResponsiveScenarioCards extends StatelessWidget {
       padding: ResponsivePadding.screen(context),
       physics: physics,
       itemCount: scenarios.length,
-      separatorBuilder: (context, index) => 
-        const SizedBox(height: ResponsiveSpacing.md),
+      separatorBuilder: (context, index) =>
+          const SizedBox(height: ResponsiveSpacing.md),
       itemBuilder: (context, index) {
         final scenario = scenarios[index];
         return MobileScenarioCard(
           scenario: scenario,
           isBest: bestScenario?.id == scenario.id,
-          onToggle: scenario.isBaseScenario 
-            ? null 
-            : () => onToggleScenario?.call(scenario.id),
+          onToggle: scenario.isBaseScenario
+              ? null
+              : () => onToggleScenario?.call(scenario.id),
           onEdit: () => onEditScenario?.call(scenario),
-          onRemove: scenario.isBaseScenario || 
-                   !scenario.id.startsWith('custom_')
-            ? null
-            : () => onRemoveScenario?.call(scenario.id),
+          onRemove:
+              scenario.isBaseScenario || !scenario.id.startsWith('custom_')
+              ? null
+              : () => onRemoveScenario?.call(scenario.id),
         );
       },
     );
@@ -88,14 +86,14 @@ class ResponsiveScenarioCards extends StatelessWidget {
         return TabletScenarioCard(
           scenario: scenario,
           isBest: bestScenario?.id == scenario.id,
-          onToggle: scenario.isBaseScenario 
-            ? null 
-            : () => onToggleScenario?.call(scenario.id),
+          onToggle: scenario.isBaseScenario
+              ? null
+              : () => onToggleScenario?.call(scenario.id),
           onEdit: () => onEditScenario?.call(scenario),
-          onRemove: scenario.isBaseScenario || 
-                   !scenario.id.startsWith('custom_')
-            ? null
-            : () => onRemoveScenario?.call(scenario.id),
+          onRemove:
+              scenario.isBaseScenario || !scenario.id.startsWith('custom_')
+              ? null
+              : () => onRemoveScenario?.call(scenario.id),
         );
       },
     );
@@ -124,15 +122,15 @@ class MobileScenarioCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final hasResult = scenario.result != null;
     final isEnabled = scenario.isEnabled;
-    
+
     return Card(
       elevation: isBest ? 3 : 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: isBest 
-            ? FinancialColors.savings
-            : colorScheme.outline.withValues(alpha: 0.2),
+          color: isBest
+              ? FinancialColors.savings
+              : colorScheme.outline.withValues(alpha: 0.2),
           width: isBest ? 2 : 1,
         ),
       ),
@@ -147,9 +145,9 @@ class MobileScenarioCard extends StatelessWidget {
             children: [
               // Header with badges and toggle
               _buildHeader(context, isEnabled),
-              
+
               const SizedBox(height: ResponsiveSpacing.lg),
-              
+
               // Key metrics prominently displayed
               if (hasResult && isEnabled)
                 _buildMobileMetrics(context)
@@ -157,12 +155,12 @@ class MobileScenarioCard extends StatelessWidget {
                 const Center(child: CircularProgressIndicator())
               else
                 _buildDisabledState(context),
-              
+
               const SizedBox(height: ResponsiveSpacing.md),
-              
+
               // Parameters in compact format
               _buildCompactParameters(context, isEnabled),
-              
+
               // Action buttons
               if (onEdit != null || onRemove != null) ...[
                 const SizedBox(height: ResponsiveSpacing.lg),
@@ -205,11 +203,14 @@ class MobileScenarioCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             scenario.name,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                              color: isEnabled ? null : 
-                                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-                            ),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: isEnabled
+                                      ? null
+                                      : Theme.of(context).colorScheme.onSurface
+                                            .withValues(alpha: 0.6),
+                                ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -222,9 +223,11 @@ class MobileScenarioCard extends StatelessWidget {
                     Text(
                       scenario.description,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: isEnabled 
-                          ? Theme.of(context).colorScheme.onSurfaceVariant
-                          : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+                        color: isEnabled
+                            ? Theme.of(context).colorScheme.onSurfaceVariant
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.4),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -238,10 +241,7 @@ class MobileScenarioCard extends StatelessWidget {
         // Toggle switch
         if (onToggle != null) ...[
           const SizedBox(width: ResponsiveSpacing.sm),
-          Switch.adaptive(
-            value: isEnabled,
-            onChanged: (_) => onToggle?.call(),
-          ),
+          Switch.adaptive(value: isEnabled, onChanged: (_) => onToggle?.call()),
         ],
       ],
     );
@@ -249,11 +249,13 @@ class MobileScenarioCard extends StatelessWidget {
 
   Widget _buildMobileMetrics(BuildContext context) {
     final result = scenario.result!;
-    
+
     return Container(
       padding: const EdgeInsets.all(ResponsiveSpacing.md),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+        color: Theme.of(
+          context,
+        ).colorScheme.primaryContainer.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -264,9 +266,9 @@ class MobileScenarioCard extends StatelessWidget {
             children: [
               Text(
                 'Monthly EMI',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w500),
               ),
               Text(
                 result.monthlyEMI.toEMIFormat(),
@@ -277,16 +279,16 @@ class MobileScenarioCard extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const SizedBox(height: ResponsiveSpacing.sm),
-          
+
           // Secondary metrics row
           Row(
             children: [
               Expanded(
                 child: _buildMiniMetric(
-                  context, 
-                  'Total Interest', 
+                  context,
+                  'Total Interest',
                   '₹${(result.totalInterest / 100000).toStringAsFixed(1)}L',
                   FinancialColors.cost,
                 ),
@@ -294,17 +296,17 @@ class MobileScenarioCard extends StatelessWidget {
               const SizedBox(width: ResponsiveSpacing.md),
               Expanded(
                 child: _buildMiniMetric(
-                  context, 
-                  'Total Amount', 
+                  context,
+                  'Total Amount',
                   '₹${(result.totalAmount / 100000).toStringAsFixed(1)}L',
                   Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],
           ),
-          
+
           // Additional benefits if available
-          if (result.taxBenefits.totalAnnualSavings > 0 || 
+          if (result.taxBenefits.totalAnnualSavings > 0 ||
               result.pmayBenefit?.isEligible == true) ...[
             const SizedBox(height: ResponsiveSpacing.sm),
             Row(
@@ -312,20 +314,20 @@ class MobileScenarioCard extends StatelessWidget {
                 if (result.taxBenefits.totalAnnualSavings > 0)
                   Expanded(
                     child: _buildMiniMetric(
-                      context, 
-                      'Tax Savings/Year', 
+                      context,
+                      'Tax Savings/Year',
                       result.taxBenefits.totalAnnualSavings.toEMIFormat(),
                       FinancialColors.taxBenefit,
                     ),
                   ),
-                if (result.taxBenefits.totalAnnualSavings > 0 && 
+                if (result.taxBenefits.totalAnnualSavings > 0 &&
                     result.pmayBenefit?.isEligible == true)
                   const SizedBox(width: ResponsiveSpacing.md),
                 if (result.pmayBenefit?.isEligible == true)
                   Expanded(
                     child: _buildMiniMetric(
-                      context, 
-                      'PMAY Subsidy', 
+                      context,
+                      'PMAY Subsidy',
                       result.pmayBenefit!.subsidyAmount.toEMIFormat(),
                       FinancialColors.pmayBenefit,
                     ),
@@ -338,7 +340,12 @@ class MobileScenarioCard extends StatelessWidget {
     );
   }
 
-  Widget _buildMiniMetric(BuildContext context, String label, String value, Color? color) {
+  Widget _buildMiniMetric(
+    BuildContext context,
+    String label,
+    String value,
+    Color? color,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -368,7 +375,9 @@ class MobileScenarioCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(ResponsiveSpacing.sm),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        color: Theme.of(
+          context,
+        ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
@@ -412,24 +421,31 @@ class MobileScenarioCard extends StatelessWidget {
     );
   }
 
-  Widget _buildParameterChip(BuildContext context, IconData icon, String value, bool isEnabled) {
+  Widget _buildParameterChip(
+    BuildContext context,
+    IconData icon,
+    String value,
+    bool isEnabled,
+  ) {
     return Column(
       children: [
         Icon(
           icon,
           size: 14,
-          color: isEnabled 
-            ? Theme.of(context).colorScheme.primary
-            : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+          color: isEnabled
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
         ),
         const SizedBox(height: 4),
         Text(
           value,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             fontWeight: FontWeight.w600,
-            color: isEnabled 
-              ? null
-              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.4),
+            color: isEnabled
+                ? null
+                : Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withValues(alpha: 0.4),
           ),
           textAlign: TextAlign.center,
           maxLines: 1,
@@ -446,7 +462,9 @@ class MobileScenarioCard extends StatelessWidget {
         child: Text(
           'Scenario disabled',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: 0.6),
             fontStyle: FontStyle.italic,
           ),
         ),
@@ -469,7 +487,7 @@ class MobileScenarioCard extends StatelessWidget {
             ),
           ),
         ],
-        if (onEdit != null && onRemove != null) 
+        if (onEdit != null && onRemove != null)
           const SizedBox(width: ResponsiveSpacing.sm),
         if (onRemove != null) ...[
           Expanded(
@@ -537,10 +555,14 @@ class MobileScenarioCard extends StatelessWidget {
       return FinancialColors.savings.withValues(alpha: 0.03);
     }
     if (scenario.isBaseScenario) {
-      return Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.05);
+      return Theme.of(
+        context,
+      ).colorScheme.primaryContainer.withValues(alpha: 0.05);
     }
     if (!scenario.isEnabled) {
-      return Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
+      return Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
     }
     return null;
   }
@@ -567,9 +589,11 @@ class MobileScenarioCard extends StatelessWidget {
 
   IconData _getScenarioIcon() {
     if (scenario.isBaseScenario) return Icons.home;
-    if (scenario.name.toLowerCase().contains('sbi')) return Icons.account_balance;
+    if (scenario.name.toLowerCase().contains('sbi'))
+      return Icons.account_balance;
     if (scenario.name.toLowerCase().contains('hdfc')) return Icons.business;
-    if (scenario.name.toLowerCase().contains('icici')) return Icons.corporate_fare;
+    if (scenario.name.toLowerCase().contains('icici'))
+      return Icons.corporate_fare;
     if (scenario.name.toLowerCase().contains('prepay')) return Icons.payment;
     if (scenario.name.toLowerCase().contains('step')) return Icons.trending_up;
     return Icons.compare_arrows;
@@ -598,15 +622,15 @@ class TabletScenarioCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final hasResult = scenario.result != null;
     final isEnabled = scenario.isEnabled;
-    
+
     return Card(
       elevation: isBest ? 3 : 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: isBest 
-            ? FinancialColors.savings
-            : colorScheme.outline.withValues(alpha: 0.2),
+          color: isBest
+              ? FinancialColors.savings
+              : colorScheme.outline.withValues(alpha: 0.2),
           width: isBest ? 2 : 1,
         ),
       ),
@@ -621,18 +645,18 @@ class TabletScenarioCard extends StatelessWidget {
             children: [
               // Compact header
               _buildCompactHeader(context, isEnabled),
-              
+
               const SizedBox(height: ResponsiveSpacing.sm),
-              
+
               // Key metrics
               Expanded(
                 child: hasResult && isEnabled
-                  ? _buildTabletMetrics(context)
-                  : !hasResult && isEnabled
+                    ? _buildTabletMetrics(context)
+                    : !hasResult && isEnabled
                     ? const Center(child: CircularProgressIndicator())
                     : _buildDisabledState(context),
               ),
-              
+
               // Compact action bar
               if (onToggle != null || onEdit != null || onRemove != null)
                 _buildCompactActions(context),
@@ -657,8 +681,11 @@ class TabletScenarioCard extends StatelessWidget {
                       scenario.name,
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w600,
-                        color: isEnabled ? null : 
-                          Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
+                        color: isEnabled
+                            ? null
+                            : Theme.of(
+                                context,
+                              ).colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -670,8 +697,9 @@ class TabletScenarioCard extends StatelessWidget {
                       width: 8,
                       height: 8,
                       decoration: BoxDecoration(
-                        color: isBest ? FinancialColors.savings : 
-                               Theme.of(context).colorScheme.primary,
+                        color: isBest
+                            ? FinancialColors.savings
+                            : Theme.of(context).colorScheme.primary,
                         shape: BoxShape.circle,
                       ),
                     ),
@@ -695,7 +723,7 @@ class TabletScenarioCard extends StatelessWidget {
 
   Widget _buildTabletMetrics(BuildContext context) {
     final result = scenario.result!;
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -713,13 +741,21 @@ class TabletScenarioCard extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurfaceVariant,
           ),
         ),
-        
+
         const SizedBox(height: ResponsiveSpacing.sm),
-        
+
         // Other metrics
-        _buildMetricRow(context, 'Interest', '₹${(result.totalInterest / 100000).toStringAsFixed(1)}L'),
+        _buildMetricRow(
+          context,
+          'Interest',
+          '₹${(result.totalInterest / 100000).toStringAsFixed(1)}L',
+        ),
         if (result.taxBenefits.totalAnnualSavings > 0)
-          _buildMetricRow(context, 'Tax Savings', result.taxBenefits.totalAnnualSavings.toEMIFormat()),
+          _buildMetricRow(
+            context,
+            'Tax Savings',
+            result.taxBenefits.totalAnnualSavings.toEMIFormat(),
+          ),
       ],
     );
   }
@@ -730,15 +766,12 @@ class TabletScenarioCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          Text(label, style: Theme.of(context).textTheme.bodySmall),
           Text(
             value,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -779,7 +812,7 @@ class TabletScenarioCard extends StatelessWidget {
           IconButton(
             onPressed: onRemove,
             icon: Icon(
-              Icons.delete, 
+              Icons.delete,
               size: 16,
               color: Theme.of(context).colorScheme.error,
             ),
@@ -795,10 +828,14 @@ class TabletScenarioCard extends StatelessWidget {
       return FinancialColors.savings.withValues(alpha: 0.03);
     }
     if (scenario.isBaseScenario) {
-      return Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.05);
+      return Theme.of(
+        context,
+      ).colorScheme.primaryContainer.withValues(alpha: 0.05);
     }
     if (!scenario.isEnabled) {
-      return Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
+      return Theme.of(
+        context,
+      ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3);
     }
     return null;
   }

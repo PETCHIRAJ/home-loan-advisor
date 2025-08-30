@@ -111,9 +111,9 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
                   children: [
                     Text(
                       'Balance Trend Over Time',
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Row(
@@ -145,9 +145,8 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
                     Expanded(
                       child: Text(
                         'Balance Trend Over Time',
-                        style: Theme.of(
-                          context,
-                        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                     Row(
@@ -221,9 +220,9 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
                               padding: const EdgeInsets.only(right: 4),
                               child: Text(
                                 value.toCompactFormat(),
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontSize: 10,
-                                ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.labelSmall?.copyWith(fontSize: 10),
                               ),
                             );
                           },
@@ -240,9 +239,9 @@ class _BalanceTrendTabState extends State<BalanceTrendTab>
                               padding: const EdgeInsets.only(top: 4),
                               child: Text(
                                 '${years}Y',
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  fontSize: 10,
-                                ),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.labelSmall?.copyWith(fontSize: 10),
                               ),
                             );
                           },

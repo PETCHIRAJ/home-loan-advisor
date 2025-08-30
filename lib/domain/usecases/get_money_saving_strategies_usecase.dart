@@ -6,7 +6,6 @@ import 'dart:math';
 
 /// Use case to get personalized money-saving strategies for Indian home loans
 class GetMoneySavingStrategiesUseCase {
-  
   /// Get all available strategies with personalized calculations
   Future<List<PersonalizedStrategyResult>> call({
     required LoanParameters parameters,
@@ -26,8 +25,9 @@ class GetMoneySavingStrategiesUseCase {
       }
 
       // Sort by savings amount (highest first)
-      personalizedResults.sort((a, b) => 
-          b.personalizedSavings.compareTo(a.personalizedSavings));
+      personalizedResults.sort(
+        (a, b) => b.personalizedSavings.compareTo(a.personalizedSavings),
+      );
 
       return personalizedResults;
     } catch (e) {
@@ -42,7 +42,8 @@ class GetMoneySavingStrategiesUseCase {
       const MoneySavingStrategy(
         id: 'extra_emi_yearly',
         title: 'Extra EMI Strategy',
-        description: 'Pay one additional EMI every year to save massive interest',
+        description:
+            'Pay one additional EMI every year to save massive interest',
         emoji: '💰',
         category: StrategyCategory.prepayment,
         complexity: StrategyComplexity.low,
@@ -120,7 +121,8 @@ class GetMoneySavingStrategiesUseCase {
       const MoneySavingStrategy(
         id: 'lump_sum_prepayment',
         title: 'Lump Sum Prepayment',
-        description: 'Use bonus, inheritance, or savings for one-time prepayment',
+        description:
+            'Use bonus, inheritance, or savings for one-time prepayment',
         emoji: '💸',
         category: StrategyCategory.prepayment,
         complexity: StrategyComplexity.low,
@@ -201,7 +203,8 @@ class GetMoneySavingStrategiesUseCase {
       const MoneySavingStrategy(
         id: 'emi_round_up',
         title: 'Round-up EMI Strategy',
-        description: 'Round your EMI to the nearest ₹1,000 for effortless saving',
+        description:
+            'Round your EMI to the nearest ₹1,000 for effortless saving',
         emoji: '🎯',
         category: StrategyCategory.optimization,
         complexity: StrategyComplexity.low,
@@ -282,7 +285,7 @@ class GetMoneySavingStrategiesUseCase {
     final currentEMI = currentResult.monthlyEMI;
     final extraAmount = currentEMI; // One additional EMI per year
     final originalTenure = parameters.tenureYears * 12;
-    
+
     // Calculate savings from extra EMI payment
     final prepaymentResult = CalculationUtils.calculatePrepaymentBenefit(
       principal: parameters.loanAmount,
@@ -294,8 +297,9 @@ class GetMoneySavingStrategiesUseCase {
 
     // Estimate annual repetition impact
     final annualSavings = prepaymentResult['interestSaved'] as double;
-    final estimatedTotalSavings = annualSavings * (parameters.tenureYears / 2); // Conservative estimate
-    
+    final estimatedTotalSavings =
+        annualSavings * (parameters.tenureYears / 2); // Conservative estimate
+
     // Assess feasibility
     final monthlyIncome = parameters.annualIncome / 12;
     final currentEMItoIncome = currentEMI / monthlyIncome;
@@ -312,10 +316,13 @@ class GetMoneySavingStrategiesUseCase {
       currentEMI: currentEMI,
       newEMI: currentEMI, // EMI remains same, just one extra payment
       currentTenureMonths: originalTenure,
-      newTenureMonths: originalTenure - (prepaymentResult['tenureReduced'] as int),
+      newTenureMonths:
+          originalTenure - (prepaymentResult['tenureReduced'] as int),
       tenureReductionMonths: prepaymentResult['tenureReduced'] as int,
       totalInterestSaved: estimatedTotalSavings,
-      roiOnInvestment: (estimatedTotalSavings / (extraAmount * parameters.tenureYears)) * 100,
+      roiOnInvestment:
+          (estimatedTotalSavings / (extraAmount * parameters.tenureYears)) *
+          100,
       feasibility: feasibility.$1,
       feasibilityReason: feasibility.$2,
       calculationDetails: {
@@ -336,44 +343,52 @@ class GetMoneySavingStrategiesUseCase {
     final currentEMI = currentResult.monthlyEMI;
     final stepUpRate = 0.05; // 5% per year
     final originalTenure = parameters.tenureYears * 12;
-    
+
     // Simulate step-up EMI calculation
     double totalInterestSaved = 0;
     double currentPrincipal = parameters.loanAmount;
     double emi = currentEMI;
     int monthsToPayOff = 0;
-    
+
     for (int year = 1; year <= parameters.tenureYears; year++) {
       // Increase EMI by 5% from second year onwards
       if (year > 1) {
         emi *= (1 + stepUpRate);
       }
-      
+
       // Calculate payments for this year
       for (int month = 1; month <= 12 && currentPrincipal > 0; month++) {
         final monthlyRate = parameters.interestRate / 100 / 12;
         final interestComponent = currentPrincipal * monthlyRate;
-        final principalComponent = min(emi - interestComponent, currentPrincipal);
-        
+        final principalComponent = min(
+          emi - interestComponent,
+          currentPrincipal,
+        );
+
         currentPrincipal -= principalComponent;
         monthsToPayOff++;
-        
+
         if (currentPrincipal <= 0) break;
       }
-      
+
       if (currentPrincipal <= 0) break;
     }
-    
+
     // Calculate total savings
     final originalTotalAmount = currentResult.monthlyEMI * originalTenure;
     final stepUpTotalAmount = _calculateTotalAmountWithStepUp(
-      currentEMI, stepUpRate, monthsToPayOff);
-    totalInterestSaved = (originalTotalAmount - parameters.loanAmount) - 
-                        (stepUpTotalAmount - parameters.loanAmount);
+      currentEMI,
+      stepUpRate,
+      monthsToPayOff,
+    );
+    totalInterestSaved =
+        (originalTotalAmount - parameters.loanAmount) -
+        (stepUpTotalAmount - parameters.loanAmount);
 
     // Assess feasibility
     final monthlyIncome = parameters.annualIncome / 12;
-    final finalEMI = currentEMI * pow(1 + stepUpRate, parameters.tenureYears - 1);
+    final finalEMI =
+        currentEMI * pow(1 + stepUpRate, parameters.tenureYears - 1);
     final feasibility = _assessFeasibility(
       monthlyIncome: monthlyIncome,
       currentEMItoIncome: currentEMI / monthlyIncome,
@@ -390,8 +405,11 @@ class GetMoneySavingStrategiesUseCase {
       newTenureMonths: monthsToPayOff,
       tenureReductionMonths: originalTenure - monthsToPayOff,
       totalInterestSaved: totalInterestSaved,
-      roiOnInvestment: (totalInterestSaved / 
-          (finalEMI - currentEMI) * parameters.tenureYears) * 100,
+      roiOnInvestment:
+          (totalInterestSaved /
+              (finalEMI - currentEMI) *
+              parameters.tenureYears) *
+          100,
       feasibility: feasibility.$1,
       feasibilityReason: feasibility.$2,
       calculationDetails: {
@@ -413,7 +431,7 @@ class GetMoneySavingStrategiesUseCase {
     final twoYearEMI = currentResult.monthlyEMI * 24;
     final tenPercentLoan = parameters.loanAmount * 0.1;
     final lumpSumAmount = min(twoYearEMI, tenPercentLoan);
-    
+
     final prepaymentResult = CalculationUtils.calculatePrepaymentBenefit(
       principal: parameters.loanAmount,
       annualRate: parameters.interestRate,
@@ -436,19 +454,23 @@ class GetMoneySavingStrategiesUseCase {
       currentEMI: currentResult.monthlyEMI,
       newEMI: prepaymentResult['newEMI'] as double,
       currentTenureMonths: parameters.tenureYears * 12,
-      newTenureMonths: (parameters.tenureYears * 12) - 
+      newTenureMonths:
+          (parameters.tenureYears * 12) -
           (prepaymentResult['tenureReduced'] as int),
       tenureReductionMonths: prepaymentResult['tenureReduced'] as int,
       totalInterestSaved: prepaymentResult['interestSaved'] as double,
-      roiOnInvestment: ((prepaymentResult['interestSaved'] as double) / 
-          lumpSumAmount) * 100,
+      roiOnInvestment:
+          ((prepaymentResult['interestSaved'] as double) / lumpSumAmount) * 100,
       feasibility: feasibility.$1,
       feasibilityReason: feasibility.$2,
       calculationDetails: {
         'lumpSumAmount': lumpSumAmount,
         'paymentTiming': 'After 2 years',
-        'roiEquivalent': ((prepaymentResult['interestSaved'] as double) / 
-            lumpSumAmount * 100).toStringAsFixed(1),
+        'roiEquivalent':
+            ((prepaymentResult['interestSaved'] as double) /
+                    lumpSumAmount *
+                    100)
+                .toStringAsFixed(1),
       },
     );
   }
@@ -462,17 +484,18 @@ class GetMoneySavingStrategiesUseCase {
     // Assume 0.5% to 1% rate reduction is possible
     final rateReduction = 0.75; // 0.75% reduction
     final newRate = parameters.interestRate - rateReduction;
-    
+
     final newEMI = CalculationUtils.calculateEMI(
       principal: parameters.loanAmount,
       annualRate: newRate,
       tenureYears: parameters.tenureYears,
     );
-    
-    final currentTotalAmount = currentResult.monthlyEMI * parameters.tenureYears * 12;
+
+    final currentTotalAmount =
+        currentResult.monthlyEMI * parameters.tenureYears * 12;
     final newTotalAmount = newEMI * parameters.tenureYears * 12;
     final totalSavings = currentTotalAmount - newTotalAmount;
-    
+
     // Subtract switching costs
     final switchingCost = 50000; // Typical switching cost
     final netSavings = totalSavings - switchingCost;
@@ -503,7 +526,8 @@ class GetMoneySavingStrategiesUseCase {
         'newRate': newRate,
         'rateReduction': rateReduction,
         'switchingCost': switchingCost,
-        'breakEvenMonths': (switchingCost / (currentResult.monthlyEMI - newEMI)).ceil(),
+        'breakEvenMonths': (switchingCost / (currentResult.monthlyEMI - newEMI))
+            .ceil(),
       },
     );
   }
@@ -515,19 +539,30 @@ class GetMoneySavingStrategiesUseCase {
     EMIResult currentResult,
   ) {
     final currentEMI = currentResult.monthlyEMI;
-    final roundedEMI = (currentEMI / 1000).ceil() * 1000.0; // Round up to nearest 1000
+    final roundedEMI =
+        (currentEMI / 1000).ceil() * 1000.0; // Round up to nearest 1000
     final extraAmount = roundedEMI - currentEMI;
-    
+
     if (extraAmount < 100) {
       // If difference is too small, round to next thousand
       final nextRoundedEMI = roundedEMI + 1000;
       final nextExtraAmount = nextRoundedEMI - currentEMI;
       return _calculateRoundUpWithAmount(
-        strategy, parameters, currentResult, nextRoundedEMI, nextExtraAmount);
+        strategy,
+        parameters,
+        currentResult,
+        nextRoundedEMI,
+        nextExtraAmount,
+      );
     }
-    
+
     return _calculateRoundUpWithAmount(
-        strategy, parameters, currentResult, roundedEMI, extraAmount);
+      strategy,
+      parameters,
+      currentResult,
+      roundedEMI,
+      extraAmount,
+    );
   }
 
   /// Helper for round-up calculation
@@ -540,12 +575,14 @@ class GetMoneySavingStrategiesUseCase {
   ) {
     // Calculate new tenure with rounded EMI
     final monthlyRate = parameters.interestRate / 100 / 12;
-    final newTenure = monthlyRate == 0 
+    final newTenure = monthlyRate == 0
         ? (parameters.loanAmount / newEMI).ceil()
-        : (log(1 + (parameters.loanAmount * monthlyRate / newEMI)) / 
-           log(1 + monthlyRate)).ceil();
-    
-    final originalTotalAmount = currentResult.monthlyEMI * parameters.tenureYears * 12;
+        : (log(1 + (parameters.loanAmount * monthlyRate / newEMI)) /
+                  log(1 + monthlyRate))
+              .ceil();
+
+    final originalTotalAmount =
+        currentResult.monthlyEMI * parameters.tenureYears * 12;
     final newTotalAmount = newEMI * newTenure;
     final totalSavings = originalTotalAmount - newTotalAmount;
 
@@ -567,7 +604,8 @@ class GetMoneySavingStrategiesUseCase {
       newTenureMonths: newTenure,
       tenureReductionMonths: (parameters.tenureYears * 12) - newTenure,
       totalInterestSaved: totalSavings,
-      roiOnInvestment: (totalSavings / (extraAmount * parameters.tenureYears)) * 100,
+      roiOnInvestment:
+          (totalSavings / (extraAmount * parameters.tenureYears)) * 100,
       feasibility: feasibility.$1,
       feasibilityReason: feasibility.$2,
       calculationDetails: {
@@ -581,22 +619,25 @@ class GetMoneySavingStrategiesUseCase {
 
   /// Helper method to calculate total amount with step-up
   double _calculateTotalAmountWithStepUp(
-      double baseEMI, double stepUpRate, int totalMonths) {
+    double baseEMI,
+    double stepUpRate,
+    int totalMonths,
+  ) {
     double totalAmount = 0;
     double currentEMI = baseEMI;
     int monthsInYear = 0;
-    
+
     for (int month = 1; month <= totalMonths; month++) {
       totalAmount += currentEMI;
       monthsInYear++;
-      
+
       // Increase EMI at year-end
       if (monthsInYear == 12) {
         currentEMI *= (1 + stepUpRate);
         monthsInYear = 0;
       }
     }
-    
+
     return totalAmount;
   }
 
@@ -607,20 +648,29 @@ class GetMoneySavingStrategiesUseCase {
     required double additionalAmount,
     required MoneySavingStrategy strategy,
   }) {
-    final newEMItoIncome = (currentEMItoIncome * monthlyIncome + additionalAmount) / monthlyIncome;
-    
+    final newEMItoIncome =
+        (currentEMItoIncome * monthlyIncome + additionalAmount) / monthlyIncome;
+
     if (newEMItoIncome > 0.6) {
-      return (StrategyFeasibility.notRecommended, 
-             'EMI would exceed 60% of income');
+      return (
+        StrategyFeasibility.notRecommended,
+        'EMI would exceed 60% of income',
+      );
     } else if (newEMItoIncome > 0.5) {
-      return (StrategyFeasibility.conditional, 
-             'Consider if you have stable income and low expenses');
+      return (
+        StrategyFeasibility.conditional,
+        'Consider if you have stable income and low expenses',
+      );
     } else if (newEMItoIncome > 0.4) {
-      return (StrategyFeasibility.recommended, 
-             'Good option with some budget planning');
+      return (
+        StrategyFeasibility.recommended,
+        'Good option with some budget planning',
+      );
     } else {
-      return (StrategyFeasibility.highlyRecommended, 
-             'Excellent fit for your financial profile');
+      return (
+        StrategyFeasibility.highlyRecommended,
+        'Excellent fit for your financial profile',
+      );
     }
   }
 
@@ -631,19 +681,24 @@ class GetMoneySavingStrategiesUseCase {
     required MoneySavingStrategy strategy,
   }) {
     final lumpSumToIncome = lumpSumAmount / annualIncome;
-    
+
     if (lumpSumToIncome > 0.5) {
-      return (StrategyFeasibility.notRecommended, 
-             'Amount exceeds 50% of annual income');
+      return (
+        StrategyFeasibility.notRecommended,
+        'Amount exceeds 50% of annual income',
+      );
     } else if (lumpSumToIncome > 0.3) {
-      return (StrategyFeasibility.conditional, 
-             'Ensure emergency fund remains intact');
+      return (
+        StrategyFeasibility.conditional,
+        'Ensure emergency fund remains intact',
+      );
     } else if (lumpSumToIncome > 0.15) {
-      return (StrategyFeasibility.recommended, 
-             'Good use of available surplus');
+      return (StrategyFeasibility.recommended, 'Good use of available surplus');
     } else {
-      return (StrategyFeasibility.highlyRecommended, 
-             'Perfect opportunity for prepayment');
+      return (
+        StrategyFeasibility.highlyRecommended,
+        'Perfect opportunity for prepayment',
+      );
     }
   }
 
@@ -656,19 +711,27 @@ class GetMoneySavingStrategiesUseCase {
     required MoneySavingStrategy strategy,
   }) {
     final rateDifference = currentRate - availableRate;
-    
+
     if (rateDifference < 0.5) {
-      return (StrategyFeasibility.notRecommended, 
-             'Rate difference too small to justify switching cost');
+      return (
+        StrategyFeasibility.notRecommended,
+        'Rate difference too small to justify switching cost',
+      );
     } else if (rateDifference < 0.75) {
-      return (StrategyFeasibility.conditional, 
-             'Consider only if switching costs are low');
+      return (
+        StrategyFeasibility.conditional,
+        'Consider only if switching costs are low',
+      );
     } else if (rateDifference < 1.0) {
-      return (StrategyFeasibility.recommended, 
-             'Good savings potential with moderate effort');
+      return (
+        StrategyFeasibility.recommended,
+        'Good savings potential with moderate effort',
+      );
     } else {
-      return (StrategyFeasibility.highlyRecommended, 
-             'Excellent opportunity for significant savings');
+      return (
+        StrategyFeasibility.highlyRecommended,
+        'Excellent opportunity for significant savings',
+      );
     }
   }
 }

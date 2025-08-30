@@ -38,12 +38,12 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
       'Yearly Breakdown',
       'Payment Schedule',
     ];
-    
+
     // Add Step EMI tab if step EMI is enabled
     if (widget.result.stepEMIResult != null) {
       baseLabels.insert(1, 'Step EMI');
     }
-    
+
     return baseLabels;
   }
 
@@ -54,12 +54,12 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
       Icons.bar_chart,
       Icons.table_chart,
     ];
-    
+
     // Add Step EMI icon if step EMI is enabled
     if (widget.result.stepEMIResult != null) {
       baseIcons.insert(1, Icons.trending_up);
     }
-    
+
     return baseIcons;
   }
 
@@ -105,10 +105,12 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
     int currentIndex = 0;
 
     // Overview Tab
-    tabs.add(OverviewTab(
-      result: widget.result,
-      isVisible: _selectedIndex == currentIndex,
-    ));
+    tabs.add(
+      OverviewTab(
+        result: widget.result,
+        isVisible: _selectedIndex == currentIndex,
+      ),
+    );
     currentIndex++;
 
     // Step EMI Tab (if enabled)
@@ -118,35 +120,43 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
         annualRate: widget.parameters.interestRate,
         tenureYears: widget.parameters.tenureYears,
       );
-      
-      tabs.add(StepEMIChartTab(
-        stepResult: widget.result.stepEMIResult!,
-        regularEMI: regularEMI,
-      ));
+
+      tabs.add(
+        StepEMIChartTab(
+          stepResult: widget.result.stepEMIResult!,
+          regularEMI: regularEMI,
+        ),
+      );
       currentIndex++;
     }
 
     // Balance Trend Tab
-    tabs.add(BalanceTrendTab(
-      result: widget.result,
-      parameters: widget.parameters,
-      isVisible: _selectedIndex == currentIndex,
-    ));
+    tabs.add(
+      BalanceTrendTab(
+        result: widget.result,
+        parameters: widget.parameters,
+        isVisible: _selectedIndex == currentIndex,
+      ),
+    );
     currentIndex++;
 
     // Yearly Breakdown Tab
-    tabs.add(YearlyBreakdownTab(
-      result: widget.result,
-      isVisible: _selectedIndex == currentIndex,
-    ));
+    tabs.add(
+      YearlyBreakdownTab(
+        result: widget.result,
+        isVisible: _selectedIndex == currentIndex,
+      ),
+    );
     currentIndex++;
 
     // Payment Schedule Tab
-    tabs.add(PaymentScheduleTab(
-      result: widget.result,
-      parameters: widget.parameters,
-      isVisible: _selectedIndex == currentIndex,
-    ));
+    tabs.add(
+      PaymentScheduleTab(
+        result: widget.result,
+        parameters: widget.parameters,
+        isVisible: _selectedIndex == currentIndex,
+      ),
+    );
 
     return tabs;
   }
@@ -202,7 +212,8 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                           Expanded(
                             child: _SummaryItem(
                               label: 'Total Interest',
-                              value: widget.result.totalInterest.toIndianFormat(),
+                              value: widget.result.totalInterest
+                                  .toIndianFormat(),
                               color: FinancialColors.cost,
                             ),
                           ),
@@ -244,13 +255,14 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                     return TabBar(
                       controller: _tabController,
                       isScrollable: constraints.maxWidth < 600,
-                      tabAlignment: constraints.maxWidth < 600 
-                          ? TabAlignment.start 
+                      tabAlignment: constraints.maxWidth < 600
+                          ? TabAlignment.start
                           : TabAlignment.fill,
-                      labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                      unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
+                      labelStyle: Theme.of(context).textTheme.labelSmall
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                      unselectedLabelStyle: Theme.of(
+                        context,
+                      ).textTheme.labelSmall,
                       indicatorSize: TabBarIndicatorSize.tab,
                       padding: EdgeInsets.symmetric(
                         horizontal: constraints.maxWidth < 600 ? 8 : 0,
@@ -259,7 +271,7 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                         _tabLabels.length,
                         (index) => Tab(
                           icon: Icon(_tabIcons[index], size: 18),
-                          text: constraints.maxWidth < 400 
+                          text: constraints.maxWidth < 400
                               ? _getShortLabel(_tabLabels[index])
                               : _tabLabels[index],
                           iconMargin: const EdgeInsets.only(bottom: 4),
@@ -279,13 +291,16 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                     return FadeTransition(
                       opacity: animation,
                       child: SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(0.05, 0),
-                          end: Offset.zero,
-                        ).animate(CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.easeInOut,
-                        )),
+                        position:
+                            Tween<Offset>(
+                              begin: const Offset(0.05, 0),
+                              end: Offset.zero,
+                            ).animate(
+                              CurvedAnimation(
+                                parent: animation,
+                                curve: Curves.easeInOut,
+                              ),
+                            ),
                         child: child,
                       ),
                     );
@@ -385,7 +400,9 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
 
         // Compare Scenarios Button
         Card(
-          color: Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.3),
+          color: Theme.of(
+            context,
+          ).colorScheme.secondaryContainer.withValues(alpha: 0.3),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -422,17 +439,21 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                       children: [
                         Text(
                           'Compare Scenarios',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           'Compare different loan options side-by-side to find the best deal',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.8),
+                              ),
                         ),
                       ],
                     ),
@@ -452,7 +473,9 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
 
         // Prepayment Calculator Button
         Card(
-          color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+          color: Theme.of(
+            context,
+          ).colorScheme.primaryContainer.withValues(alpha: 0.3),
           child: InkWell(
             onTap: () {
               Navigator.push(
@@ -489,17 +512,21 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                       children: [
                         Text(
                           'Prepayment Calculator',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           'Calculate how prepayments can save you money and reduce loan tenure',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.8),
+                              ),
                         ),
                       ],
                     ),
@@ -570,10 +597,11 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                                 Text(
                                   widget.result.pmayBenefit!.subsidyAmount
                                       .toEMIFormat(),
-                                  style: FinancialTypography.moneyMedium.copyWith(
-                                    color: FinancialColors.pmayBenefit,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: FinancialTypography.moneyMedium
+                                      .copyWith(
+                                        color: FinancialColors.pmayBenefit,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                               ],
                             ),
@@ -588,11 +616,15 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                                 children: [
                                   Text(
                                     'Category',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                   Text(
                                     widget.result.pmayBenefit!.category,
-                                    style: Theme.of(context).textTheme.titleSmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.titleSmall,
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -605,15 +637,18 @@ class _EnhancedEMIResultsCardState extends State<EnhancedEMIResultsCard>
                                 children: [
                                   Text(
                                     'Subsidy Amount',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                   Text(
                                     widget.result.pmayBenefit!.subsidyAmount
                                         .toEMIFormat(),
-                                    style: FinancialTypography.moneyMedium.copyWith(
-                                      color: FinancialColors.pmayBenefit,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                    style: FinancialTypography.moneyMedium
+                                        .copyWith(
+                                          color: FinancialColors.pmayBenefit,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -651,7 +686,7 @@ class _SummaryItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label, 
+          label,
           style: Theme.of(context).textTheme.bodySmall,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
@@ -695,13 +730,13 @@ class _TaxBenefitRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    section, 
+                    section,
                     style: Theme.of(context).textTheme.titleSmall,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    description, 
+                    description,
                     style: Theme.of(context).textTheme.bodySmall,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -731,13 +766,13 @@ class _TaxBenefitRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      section, 
+                      section,
                       style: Theme.of(context).textTheme.titleSmall,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      description, 
+                      description,
                       style: Theme.of(context).textTheme.bodySmall,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,

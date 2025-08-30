@@ -1,0 +1,91 @@
+{
+  "chartReadability": [
+    {
+      "viewport": "Mobile (Galaxy S21)",
+      "chartsFound": 1,
+      "status": "Has charts"
+    },
+    {
+      "viewport": "Tablet (iPad)",
+      "chartsFound": 1,
+      "status": "Has charts"
+    },
+    {
+      "viewport": "Desktop",
+      "chartsFound": 1,
+      "status": "Has charts"
+    }
+  ],
+  "touchTargets": [
+    {
+      "viewport": "Mobile (Galaxy S21)",
+      "minHeight": 1,
+      "meetsStandard": false
+    },
+    {
+      "viewport": "Tablet (iPad)",
+      "minHeight": 1,
+      "meetsStandard": false
+    },
+    {
+      "viewport": "Desktop",
+      "minHeight": 1,
+      "meetsStandard": false
+    }
+  ],
+  "stepEMILayout": [
+    {
+      "viewport": "Mobile (Galaxy S21)",
+      "scrollableElements": 0,
+      "hasHorizontalScroll": false
+    },
+    {
+      "viewport": "Tablet (iPad)",
+      "scrollableElements": 0,
+      "hasHorizontalScroll": false
+    },
+    {
+      "viewport": "Desktop",
+      "scrollableElements": 0,
+      "hasHorizontalScroll": false
+    }
+  ],
+  "responsiveCards": [],
+  "inputFields": [],
+  "bottomSheets": [],
+  "overall": [
+    {
+      "viewport": "Mobile (Galaxy S21)",
+      "score": 40,
+      "details": {
+        "charts": 20,
+        "touchTargets": 10,
+        "scrollable": 10,
+        "inputs": 0,
+        "responsive": 0
+      }
+    },
+    {
+      "viewport": "Tablet (iPad)",
+      "score": 40,
+      "details": {
+        "charts": 20,
+        "touchTargets": 10,
+        "scrollable": 10,
+        "inputs": 0,
+        "responsive": 0
+      }
+    },
+    {
+      "viewport": "Desktop",
+      "score": 40,
+      "details": {
+        "charts": 20,
+        "touchTargets": 10,
+        "scrollable": 10,
+        "inputs": 0,
+        "responsive": 0
+      }
+    }
+  ]
+}

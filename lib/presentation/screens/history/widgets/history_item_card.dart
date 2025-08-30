@@ -22,7 +22,7 @@ class HistoryItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Card(
       elevation: 0,
       color: colorScheme.surfaceContainerLow,
@@ -74,8 +74,12 @@ class HistoryItemCard extends StatelessWidget {
                       IconButton(
                         onPressed: onBookmark,
                         icon: Icon(
-                          item.isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                          color: item.isBookmarked ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                          item.isBookmarked
+                              ? Icons.bookmark
+                              : Icons.bookmark_border,
+                          color: item.isBookmarked
+                              ? colorScheme.primary
+                              : colorScheme.onSurfaceVariant,
                           size: 20,
                         ),
                         constraints: const BoxConstraints(
@@ -113,7 +117,10 @@ class HistoryItemCard extends StatelessWidget {
                               children: [
                                 Icon(Icons.delete, size: 20, color: Colors.red),
                                 SizedBox(width: 12),
-                                Text('Delete', style: TextStyle(color: Colors.red)),
+                                Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               ],
                             ),
                           ),
@@ -123,9 +130,9 @@ class HistoryItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Loan details grid
               Row(
                 children: [
@@ -148,9 +155,9 @@ class HistoryItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               Row(
                 children: [
                   Expanded(
@@ -172,9 +179,9 @@ class HistoryItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 8),
-              
+
               Row(
                 children: [
                   Expanded(
@@ -196,7 +203,7 @@ class HistoryItemCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               // Benefits badges
               if (item.hasPMAY || item.taxSavings > 0) ...[
                 const SizedBox(height: 12),
@@ -278,7 +285,7 @@ class HistoryItemCard extends StatelessWidget {
     final today = DateTime(now.year, now.month, now.day);
     final yesterday = today.subtract(const Duration(days: 1));
     final dateOnly = DateTime(date.year, date.month, date.day);
-    
+
     if (dateOnly == today) {
       return 'Today, ${DateFormat.jm().format(date)}';
     } else if (dateOnly == yesterday) {
@@ -291,11 +298,14 @@ class HistoryItemCard extends StatelessWidget {
   }
 
   String _formatCurrency(double amount) {
-    if (amount >= 10000000) { // 1 crore
+    if (amount >= 10000000) {
+      // 1 crore
       return '${(amount / 10000000).toStringAsFixed(2)}Cr';
-    } else if (amount >= 100000) { // 1 lakh
+    } else if (amount >= 100000) {
+      // 1 lakh
       return '${(amount / 100000).toStringAsFixed(2)}L';
-    } else if (amount >= 1000) { // 1 thousand
+    } else if (amount >= 1000) {
+      // 1 thousand
       return '${(amount / 1000).toStringAsFixed(1)}K';
     } else {
       return amount.toStringAsFixed(0);

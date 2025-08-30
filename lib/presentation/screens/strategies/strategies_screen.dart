@@ -20,8 +20,13 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
   late AnimationController _animationController;
   late Animation<double> _fadeInAnimation;
   String _selectedFilter = 'All';
-  
-  final List<String> _filters = ['All', 'Low Effort', 'High Impact', 'Quick Win'];
+
+  final List<String> _filters = [
+    'All',
+    'Low Effort',
+    'High Impact',
+    'Quick Win',
+  ];
 
   @override
   void initState() {
@@ -30,13 +35,9 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
       duration: const Duration(milliseconds: 800),
       vsync: this,
     );
-    _fadeInAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeOutCubic,
-    ));
+    _fadeInAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic),
+    );
 
     // Load strategies when screen initializes
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -62,7 +63,7 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
 
   void _loadStrategies() {
     final emiCalculation = ref.read(emiCalculationProvider);
-    
+
     if (emiCalculation.hasValue && emiCalculation.value != null) {
       ref.read(moneySavingStrategiesProvider.notifier).loadStrategies();
       _animationController.forward();
@@ -82,9 +83,10 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
   }
 
   List<PersonalizedStrategyResult> _filterStrategies(
-    List<PersonalizedStrategyResult> strategies) {
+    List<PersonalizedStrategyResult> strategies,
+  ) {
     if (_selectedFilter == 'All') return strategies;
-    
+
     // This would need strategy metadata to filter properly
     // For now, return all strategies
     return strategies;
@@ -96,8 +98,12 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
     final emiCalculation = ref.watch(emiCalculationProvider);
 
     // Listen for changes in EMI calculation and reload strategies
-    ref.listen<AsyncValue<EMIResult?>>(emiCalculationProvider, (previous, next) {
-      if (next.hasValue && next.value != null && 
+    ref.listen<AsyncValue<EMIResult?>>(emiCalculationProvider, (
+      previous,
+      next,
+    ) {
+      if (next.hasValue &&
+          next.value != null &&
           (previous?.value == null || previous?.hasValue != true)) {
         _loadStrategies();
       }
@@ -110,7 +116,7 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
           if (result == null) {
             return _buildEmptyState();
           }
-          
+
           return strategiesAsync.when(
             data: (strategies) {
               if (strategies.isEmpty) {
@@ -145,9 +151,9 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
           const SizedBox(height: 16),
           Text(
             'Calculate EMI First',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w500),
           ),
           const SizedBox(height: 8),
           Padding(
@@ -211,10 +217,7 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
             ),
           ),
           const SizedBox(height: 24),
-          FilledButton(
-            onPressed: _loadStrategies,
-            child: const Text('Retry'),
-          ),
+          FilledButton(onPressed: _loadStrategies, child: const Text('Retry')),
         ],
       ),
     );
@@ -223,7 +226,9 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
   Widget _buildStrategiesContent(List<PersonalizedStrategyResult> strategies) {
     final filteredStrategies = _filterStrategies(strategies);
     final totalPotentialSavings = strategies.fold<double>(
-      0, (sum, strategy) => sum + strategy.personalizedSavings);
+      0,
+      (sum, strategy) => sum + strategy.personalizedSavings,
+    );
 
     return FadeTransition(
       opacity: _fadeInAnimation,
@@ -237,7 +242,11 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
                 totalStrategies: strategies.length,
                 totalPotentialSavings: totalPotentialSavings,
                 recommendedStrategies: strategies
-                    .where((s) => s.feasibility == StrategyFeasibility.highlyRecommended)
+                    .where(
+                      (s) =>
+                          s.feasibility ==
+                          StrategyFeasibility.highlyRecommended,
+                    )
                     .length,
               ),
             ),
@@ -274,36 +283,36 @@ class _StrategiesScreenState extends ConsumerState<StrategiesScreen>
 
           // Strategy Cards
           SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                final strategy = filteredStrategies[index];
-                return Padding(
-                  padding: EdgeInsets.only(
-                    left: 16,
-                    right: 16,
-                    bottom: index == filteredStrategies.length - 1 ? 16 : 8,
-                  ),
-                  child: SlideTransition(
-                    position: Tween<Offset>(
-                      begin: Offset(0, 0.3),
-                      end: Offset.zero,
-                    ).animate(CurvedAnimation(
-                      parent: _animationController,
-                      curve: Interval(
-                        (index * 0.1).clamp(0.0, 0.8),
-                        ((index * 0.1) + 0.2).clamp(0.2, 1.0),
-                        curve: Curves.easeOutCubic,
+            delegate: SliverChildBuilderDelegate((context, index) {
+              final strategy = filteredStrategies[index];
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  bottom: index == filteredStrategies.length - 1 ? 16 : 8,
+                ),
+                child: SlideTransition(
+                  position:
+                      Tween<Offset>(
+                        begin: Offset(0, 0.3),
+                        end: Offset.zero,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: _animationController,
+                          curve: Interval(
+                            (index * 0.1).clamp(0.0, 0.8),
+                            ((index * 0.1) + 0.2).clamp(0.2, 1.0),
+                            curve: Curves.easeOutCubic,
+                          ),
+                        ),
                       ),
-                    )),
-                    child: StrategyCard(
-                      strategy: strategy,
-                      onTap: () => _showStrategyDetails(strategy),
-                    ),
+                  child: StrategyCard(
+                    strategy: strategy,
+                    onTap: () => _showStrategyDetails(strategy),
                   ),
-                );
-              },
-              childCount: filteredStrategies.length,
-            ),
+                ),
+              );
+            }, childCount: filteredStrategies.length),
           ),
         ],
       ),

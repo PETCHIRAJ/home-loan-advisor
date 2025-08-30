@@ -14,7 +14,7 @@ class PrepaymentCalculationUtils {
   }) {
     // Generate prepayment schedule based on scenario type
     final schedule = _generatePrepaymentSchedule(scenario, loanParams);
-    
+
     // Calculate loan comparison
     final comparison = _calculateLoanComparison(
       scenario,
@@ -73,21 +73,29 @@ class PrepaymentCalculationUtils {
     switch (scenario.type) {
       case PrepaymentType.oneTime:
         // Single prepayment at specified month
-        final prepaymentMonth = (scenario.startYear - 1) * 12 + scenario.startMonth;
-        
-        for (int month = 1; month <= min(prepaymentMonth, totalMonths); month++) {
+        final prepaymentMonth =
+            (scenario.startYear - 1) * 12 + scenario.startMonth;
+
+        for (
+          int month = 1;
+          month <= min(prepaymentMonth, totalMonths);
+          month++
+        ) {
           final interestPayment = outstandingBalance * monthlyRate;
           final principalPayment = monthlyEMI - interestPayment;
           outstandingBalance -= principalPayment;
 
           if (month == prepaymentMonth && outstandingBalance > 0) {
             final prepaymentAmount = min(scenario.amount, outstandingBalance);
-            schedule.add(PrepaymentSchedule(
-              month: month,
-              amount: prepaymentAmount,
-              outstandingBeforePrepayment: outstandingBalance,
-              outstandingAfterPrepayment: outstandingBalance - prepaymentAmount,
-            ));
+            schedule.add(
+              PrepaymentSchedule(
+                month: month,
+                amount: prepaymentAmount,
+                outstandingBeforePrepayment: outstandingBalance,
+                outstandingAfterPrepayment:
+                    outstandingBalance - prepaymentAmount,
+              ),
+            );
             outstandingBalance -= prepaymentAmount;
           }
         }
@@ -96,7 +104,7 @@ class PrepaymentCalculationUtils {
       case PrepaymentType.recurring:
         final startMonth = (scenario.startYear - 1) * 12 + scenario.startMonth;
         int frequencyMonths;
-        
+
         switch (scenario.frequency) {
           case PrepaymentFrequency.monthly:
             frequencyMonths = 1;
@@ -114,16 +122,19 @@ class PrepaymentCalculationUtils {
           final principalPayment = monthlyEMI - interestPayment;
           outstandingBalance -= principalPayment;
 
-          if (month >= startMonth && 
+          if (month >= startMonth &&
               (month - startMonth) % frequencyMonths == 0 &&
               outstandingBalance > 0) {
             final prepaymentAmount = min(scenario.amount, outstandingBalance);
-            schedule.add(PrepaymentSchedule(
-              month: month,
-              amount: prepaymentAmount,
-              outstandingBeforePrepayment: outstandingBalance,
-              outstandingAfterPrepayment: outstandingBalance - prepaymentAmount,
-            ));
+            schedule.add(
+              PrepaymentSchedule(
+                month: month,
+                amount: prepaymentAmount,
+                outstandingBeforePrepayment: outstandingBalance,
+                outstandingAfterPrepayment:
+                    outstandingBalance - prepaymentAmount,
+              ),
+            );
             outstandingBalance -= prepaymentAmount;
           }
         }
@@ -132,7 +143,7 @@ class PrepaymentCalculationUtils {
       case PrepaymentType.extraEMI:
         final extraEMIsPerYear = scenario.extraEMIsPerYear ?? 1;
         final monthsPerExtraEMI = 12 ~/ extraEMIsPerYear;
-        
+
         for (int month = 1; month <= totalMonths; month++) {
           final interestPayment = outstandingBalance * monthlyRate;
           final principalPayment = monthlyEMI - interestPayment;
@@ -140,12 +151,15 @@ class PrepaymentCalculationUtils {
 
           if (month % monthsPerExtraEMI == 0 && outstandingBalance > 0) {
             final prepaymentAmount = min(monthlyEMI, outstandingBalance);
-            schedule.add(PrepaymentSchedule(
-              month: month,
-              amount: prepaymentAmount,
-              outstandingBeforePrepayment: outstandingBalance,
-              outstandingAfterPrepayment: outstandingBalance - prepaymentAmount,
-            ));
+            schedule.add(
+              PrepaymentSchedule(
+                month: month,
+                amount: prepaymentAmount,
+                outstandingBeforePrepayment: outstandingBalance,
+                outstandingAfterPrepayment:
+                    outstandingBalance - prepaymentAmount,
+              ),
+            );
             outstandingBalance -= prepaymentAmount;
           }
         }
@@ -164,7 +178,7 @@ class PrepaymentCalculationUtils {
   ) {
     final originalTenureMonths = loanParams.tenureYears * 12;
     final monthlyEMI = originalEMI.monthlyEMI;
-    
+
     // Calculate new tenure and total amounts with prepayments
     final newTenureMonths = _calculateNewTenure(
       loanParams,
@@ -172,11 +186,15 @@ class PrepaymentCalculationUtils {
       schedule,
     );
 
-    final totalPrepaymentAmount = schedule.fold(0.0, (sum, p) => sum + p.amount);
-    
+    final totalPrepaymentAmount = schedule.fold(
+      0.0,
+      (sum, p) => sum + p.amount,
+    );
+
     // New total amount = EMI * new tenure + total prepayments
     final newTotalAmount = monthlyEMI * newTenureMonths + totalPrepaymentAmount;
-    final newTotalInterest = newTotalAmount - loanParams.loanAmount - totalPrepaymentAmount;
+    final newTotalInterest =
+        newTotalAmount - loanParams.loanAmount - totalPrepaymentAmount;
 
     return LoanComparison(
       originalEMI: originalEMI.monthlyEMI,
@@ -199,7 +217,7 @@ class PrepaymentCalculationUtils {
     double outstandingBalance = loanParams.loanAmount;
     final monthlyRate = loanParams.interestRate / 100 / 12;
     final totalMonths = loanParams.tenureYears * 12;
-    
+
     // Create a map of prepayments by month for easy lookup
     final prepaymentMap = <int, double>{};
     for (final prepayment in schedule) {
@@ -208,7 +226,7 @@ class PrepaymentCalculationUtils {
 
     for (int month = 1; month <= totalMonths; month++) {
       if (outstandingBalance <= 0) return month - 1;
-      
+
       final interestPayment = outstandingBalance * monthlyRate;
       final principalPayment = monthlyEMI - interestPayment;
       outstandingBalance -= principalPayment;
@@ -232,7 +250,7 @@ class PrepaymentCalculationUtils {
     final List<MonthlyBalance> progression = [];
     final monthlyRate = loanParams.interestRate / 100 / 12;
     final monthlyEMI = originalEMI.monthlyEMI;
-    
+
     double originalBalance = loanParams.loanAmount;
     double newBalance = loanParams.loanAmount;
     double cumulativeSavings = 0;
@@ -268,16 +286,22 @@ class PrepaymentCalculationUtils {
       }
 
       // Calculate cumulative interest savings
-      final originalInterestThisMonth = originalBalance > 0 ? originalBalance * monthlyRate : 0;
-      final newInterestThisMonth = newBalance > 0 ? newBalance * monthlyRate : 0;
+      final originalInterestThisMonth = originalBalance > 0
+          ? originalBalance * monthlyRate
+          : 0;
+      final newInterestThisMonth = newBalance > 0
+          ? newBalance * monthlyRate
+          : 0;
       cumulativeSavings += originalInterestThisMonth - newInterestThisMonth;
 
-      progression.add(MonthlyBalance(
-        month: month,
-        originalBalance: max(0.0, originalBalance),
-        newBalance: max(0.0, newBalance),
-        cumulativeSavings: cumulativeSavings,
-      ));
+      progression.add(
+        MonthlyBalance(
+          month: month,
+          originalBalance: max(0.0, originalBalance),
+          newBalance: max(0.0, newBalance),
+          cumulativeSavings: cumulativeSavings,
+        ),
+      );
 
       if (originalBalance <= 0 && newBalance <= 0) break;
     }
@@ -298,22 +322,26 @@ class PrepaymentCalculationUtils {
     final tenureReducedMonths = comparison.tenureReducedMonths;
 
     // Calculate ROI percentage
-    final roiPercentage = totalPrepaymentAmount > 0 
-        ? (totalInterestSaved / totalPrepaymentAmount) * 100 
+    final roiPercentage = totalPrepaymentAmount > 0
+        ? (totalInterestSaved / totalPrepaymentAmount) * 100
         : 0.0;
 
     // Calculate break-even point (simplified)
-    final monthlyInterestSavings = totalInterestSaved / comparison.originalTenureMonths;
-    final breakEvenMonths = totalPrepaymentAmount > 0 && monthlyInterestSavings > 0
-        ? totalPrepaymentAmount / monthlyInterestSavings 
+    final monthlyInterestSavings =
+        totalInterestSaved / comparison.originalTenureMonths;
+    final breakEvenMonths =
+        totalPrepaymentAmount > 0 && monthlyInterestSavings > 0
+        ? totalPrepaymentAmount / monthlyInterestSavings
         : 0.0;
 
     // Estimate tax savings lost (simplified)
     final annualInterestSaved = totalInterestSaved / (loanParams.tenureYears);
-    final monthlyTaxSavingsLost = (annualInterestSaved * loanParams.taxSlabPercentage / 100) / 12;
+    final monthlyTaxSavingsLost =
+        (annualInterestSaved * loanParams.taxSlabPercentage / 100) / 12;
 
     // Net benefit after tax implications
-    final totalTaxSavingsLost = monthlyTaxSavingsLost * comparison.originalTenureMonths;
+    final totalTaxSavingsLost =
+        monthlyTaxSavingsLost * comparison.originalTenureMonths;
     final netBenefit = totalInterestSaved - totalTaxSavingsLost;
 
     return PrepaymentBenefits(
@@ -334,12 +362,15 @@ class PrepaymentCalculationUtils {
     required LoanParameters loanParams,
     required EMIResult originalEMI,
   }) {
-    final results = scenarios.map((scenario) => 
-        calculatePrepaymentResult(
-          scenario: scenario,
-          loanParams: loanParams,
-          originalEMI: originalEMI,
-        )).toList();
+    final results = scenarios
+        .map(
+          (scenario) => calculatePrepaymentResult(
+            scenario: scenario,
+            loanParams: loanParams,
+            originalEMI: originalEMI,
+          ),
+        )
+        .toList();
 
     // Find recommended scenario (highest ROI with reasonable prepayment)
     PrepaymentResult? recommended;
@@ -348,8 +379,10 @@ class PrepaymentCalculationUtils {
     for (final result in results) {
       final benefits = result.benefits;
       // Score based on ROI and reasonable prepayment amount (< 30% of loan)
-      final prepaymentRatio = benefits.totalPrepaymentAmount / loanParams.loanAmount;
-      if (prepaymentRatio <= 0.3) { // Reasonable prepayment limit
+      final prepaymentRatio =
+          benefits.totalPrepaymentAmount / loanParams.loanAmount;
+      if (prepaymentRatio <= 0.3) {
+        // Reasonable prepayment limit
         final score = benefits.roiPercentage * (1 - prepaymentRatio);
         if (score > bestScore) {
           bestScore = score;
@@ -369,13 +402,20 @@ class PrepaymentCalculationUtils {
     required double availableFunds,
     required double outstandingBalance,
     required double currentInterestRate,
-    required double alternativeInvestmentRate, // Expected returns from other investments
+    required double
+    alternativeInvestmentRate, // Expected returns from other investments
   }) {
     // If loan interest rate > investment rate, prepay more
     if (currentInterestRate > alternativeInvestmentRate) {
-      return min(availableFunds * 0.8, outstandingBalance); // Keep 20% as emergency fund
+      return min(
+        availableFunds * 0.8,
+        outstandingBalance,
+      ); // Keep 20% as emergency fund
     } else {
-      return min(availableFunds * 0.3, outstandingBalance); // Invest more, prepay less
+      return min(
+        availableFunds * 0.3,
+        outstandingBalance,
+      ); // Invest more, prepay less
     }
   }
 
@@ -387,9 +427,13 @@ class PrepaymentCalculationUtils {
   }) {
     // Account for lost tax benefits
     final taxBenefitLost = isSelfOccupied
-        ? min(interestSaved, 200000) * taxSlabPercentage / 100 // Section 24B limit
-        : interestSaved * taxSlabPercentage / 100; // No limit for let-out property
-    
+        ? min(interestSaved, 200000) *
+              taxSlabPercentage /
+              100 // Section 24B limit
+        : interestSaved *
+              taxSlabPercentage /
+              100; // No limit for let-out property
+
     return interestSaved - taxBenefitLost;
   }
 }

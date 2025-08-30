@@ -4,7 +4,7 @@ class AppErrorWidget extends StatelessWidget {
   final String error;
   final VoidCallback? onRetry;
   final IconData? icon;
-  
+
   const AppErrorWidget({
     super.key,
     required this.error,

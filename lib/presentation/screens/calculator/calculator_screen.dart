@@ -76,14 +76,18 @@ class CalculatorScreen extends ConsumerWidget {
             StepEMISelector(
               parameters: stepEMIParameters,
               onParametersChanged: (parameters) {
-                ref.read(stepEMIParametersProvider.notifier).updateParameters(parameters);
+                ref
+                    .read(stepEMIParametersProvider.notifier)
+                    .updateParameters(parameters);
               },
             ),
 
             const SizedBox(height: 16),
 
             // Step EMI preview (if enabled)
-            if (stepEMIParameters.type != StepEMIType.none && autoStepResult.hasValue && autoStepResult.value != null)
+            if (stepEMIParameters.type != StepEMIType.none &&
+                autoStepResult.hasValue &&
+                autoStepResult.value != null)
               StepEMIPreview(result: autoStepResult.value!),
 
             const SizedBox(height: 16),
@@ -96,32 +100,39 @@ class CalculatorScreen extends ConsumerWidget {
                       ref
                           .read(calculatorScreenStateProvider.notifier)
                           .setLoading(true);
-                      
+
                       await ref
                           .read(enhancedEMICalculationProvider.notifier)
                           .calculateEMI();
-                      
+
                       ref
                           .read(calculatorScreenStateProvider.notifier)
                           .setLoading(false);
-                      
+
                       // Check if calculation was successful and show results
-                      final calculationResult = ref.read(enhancedEMICalculationProvider);
-                      if (calculationResult.hasValue && calculationResult.value != null) {
+                      final calculationResult = ref.read(
+                        enhancedEMICalculationProvider,
+                      );
+                      if (calculationResult.hasValue &&
+                          calculationResult.value != null) {
                         ref
                             .read(calculatorScreenStateProvider.notifier)
                             .showResults();
-                        
+
                         // Save calculation to history
                         try {
                           final loanParams = ref.read(loanParametersProvider);
-                          await ref.read(historyActionsProvider.notifier).saveCalculation(
-                            parameters: loanParams,
-                            result: calculationResult.value!,
-                          );
+                          await ref
+                              .read(historyActionsProvider.notifier)
+                              .saveCalculation(
+                                parameters: loanParams,
+                                result: calculationResult.value!,
+                              );
                         } catch (e) {
                           // Silently handle history save errors - don't disrupt main flow
-                          debugPrint('Failed to save calculation to history: $e');
+                          debugPrint(
+                            'Failed to save calculation to history: $e',
+                          );
                         }
                       }
                     },
@@ -257,21 +268,21 @@ class CalculatorScreen extends ConsumerWidget {
   /// Navigate to calculation history screen
   Future<void> _navigateToHistory(BuildContext context, WidgetRef ref) async {
     final result = await Navigator.of(context).push<dynamic>(
-      MaterialPageRoute(
-        builder: (context) => const CalculationHistoryScreen(),
-      ),
+      MaterialPageRoute(builder: (context) => const CalculationHistoryScreen()),
     );
-    
+
     // If user selected a history item to load, restore the parameters
     if (result != null && result is CalculationHistory) {
-      ref.read(loanParametersProvider.notifier).loadFromHistory(result.parameters);
-      
+      ref
+          .read(loanParametersProvider.notifier)
+          .loadFromHistory(result.parameters);
+
       // Show snackbar to indicate parameters loaded
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              result.name != null 
+              result.name != null
                   ? 'Loaded "${result.name}"'
                   : 'Loaded calculation from history',
             ),
@@ -279,7 +290,9 @@ class CalculatorScreen extends ConsumerWidget {
               label: 'Calculate',
               onPressed: () {
                 // Trigger calculation
-                ref.read(enhancedEMICalculationProvider.notifier).calculateEMI();
+                ref
+                    .read(enhancedEMICalculationProvider.notifier)
+                    .calculateEMI();
               },
             ),
           ),

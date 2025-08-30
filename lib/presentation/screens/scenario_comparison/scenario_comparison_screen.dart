@@ -20,19 +20,17 @@ class ScenarioComparisonScreen extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<ScenarioComparisonScreen> createState() => _ScenarioComparisonScreenState();
+  ConsumerState<ScenarioComparisonScreen> createState() =>
+      _ScenarioComparisonScreenState();
 }
 
-class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScreen>
+class _ScenarioComparisonScreenState
+    extends ConsumerState<ScenarioComparisonScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isInitialized = false;
 
-  final List<String> _tabLabels = [
-    'Scenarios',
-    'Charts',
-    'Metrics',
-  ];
+  final List<String> _tabLabels = ['Scenarios', 'Charts', 'Metrics'];
 
   final List<IconData> _tabIcons = [
     Icons.view_column,
@@ -78,10 +76,14 @@ class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScr
           onSelected: (value) async {
             switch (value) {
               case 'reset':
-                await ref.read(scenarioComparisonProvider.notifier).resetToDefaults();
+                await ref
+                    .read(scenarioComparisonProvider.notifier)
+                    .resetToDefaults();
                 break;
               case 'toggle_view':
-                ref.read(scenarioComparisonProvider.notifier).toggleShowPresetsOnly();
+                ref
+                    .read(scenarioComparisonProvider.notifier)
+                    .toggleShowPresetsOnly();
                 break;
             }
           },
@@ -100,9 +102,15 @@ class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScr
               value: 'toggle_view',
               child: Row(
                 children: [
-                  Icon(state.showPresetsOnly ? Icons.visibility : Icons.visibility_off),
+                  Icon(
+                    state.showPresetsOnly
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                  ),
                   const SizedBox(width: 8),
-                  Text(state.showPresetsOnly ? 'Show All' : 'Show Presets Only'),
+                  Text(
+                    state.showPresetsOnly ? 'Show All' : 'Show Presets Only',
+                  ),
                 ],
               ),
             ),
@@ -115,7 +123,8 @@ class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScr
           ScenarioComparisonHeader(
             isLoading: state.isLoading,
             error: state.error,
-            onClearError: () => ref.read(scenarioComparisonProvider.notifier).clearError(),
+            onClearError: () =>
+                ref.read(scenarioComparisonProvider.notifier).clearError(),
           ),
 
           // Tab Bar
@@ -130,9 +139,9 @@ class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScr
                   text: _tabLabels[index],
                 ),
               ),
-              labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
+              labelStyle: Theme.of(
+                context,
+              ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
               unselectedLabelStyle: Theme.of(context).textTheme.labelMedium,
             ),
           ),
@@ -200,9 +209,7 @@ class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScr
     }
 
     if (state.comparison == null) {
-      return const Center(
-        child: Text('No comparison data available'),
-      );
+      return const Center(child: Text('No comparison data available'));
     }
 
     return const ScenarioCardsView();
@@ -213,7 +220,8 @@ class _ScenarioComparisonScreenState extends ConsumerState<ScenarioComparisonScr
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (state.comparison == null || state.comparison!.scenariosWithResults.isEmpty) {
+    if (state.comparison == null ||
+        state.comparison!.scenariosWithResults.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

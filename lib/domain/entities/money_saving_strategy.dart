@@ -163,35 +163,35 @@ class ActiveStrategy extends Equatable {
 
 /// Strategy categories for organization
 enum StrategyCategory {
-  prepayment,      // Extra EMI, Lump sum, Step-up
-  refinancing,     // Rate switch, bank transfer
-  optimization,    // Round-up, tenure adjustment
-  taxPlanning,     // Section 80C, 24B optimization
-  emergency,       // Emergency fund strategies
+  prepayment, // Extra EMI, Lump sum, Step-up
+  refinancing, // Rate switch, bank transfer
+  optimization, // Round-up, tenure adjustment
+  taxPlanning, // Section 80C, 24B optimization
+  emergency, // Emergency fund strategies
 }
 
 /// Complexity levels for strategies
 enum StrategyComplexity {
-  low,    // 1-2 steps, minimal documentation
+  low, // 1-2 steps, minimal documentation
   medium, // 3-4 steps, some paperwork
-  high,   // 5+ steps, significant effort/documentation
+  high, // 5+ steps, significant effort/documentation
 }
 
 /// Strategy feasibility based on user's financial profile
 enum StrategyFeasibility {
   highlyRecommended, // Perfect fit for user
-  recommended,       // Good fit with minor considerations
-  conditional,       // Requires specific conditions
-  notRecommended,    // Not suitable for user's profile
+  recommended, // Good fit with minor considerations
+  conditional, // Requires specific conditions
+  notRecommended, // Not suitable for user's profile
 }
 
 /// Different calculation methods for strategies
 enum StrategyCalculation {
-  extraEmiYearly,    // 13th EMI calculation
-  emiStepUp,         // 5% yearly increase
+  extraEmiYearly, // 13th EMI calculation
+  emiStepUp, // 5% yearly increase
   lumpSumPrepayment, // One-time prepayment
-  refinanceRate,     // Interest rate reduction
-  emiRoundUp,        // Round EMI to nearest 1000
+  refinanceRate, // Interest rate reduction
+  emiRoundUp, // Round EMI to nearest 1000
   tenureOptimization, // Optimal tenure calculation
 }
 

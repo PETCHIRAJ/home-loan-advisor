@@ -16,7 +16,8 @@ class PrepaymentResultsDisplay extends StatefulWidget {
   });
 
   @override
-  State<PrepaymentResultsDisplay> createState() => _PrepaymentResultsDisplayState();
+  State<PrepaymentResultsDisplay> createState() =>
+      _PrepaymentResultsDisplayState();
 }
 
 class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
@@ -24,11 +25,7 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
   late TabController _tabController;
   int _selectedIndex = 0;
 
-  final List<String> _tabLabels = [
-    'Summary',
-    'Timeline',
-    'Comparison',
-  ];
+  final List<String> _tabLabels = ['Summary', 'Timeline', 'Comparison'];
 
   final List<IconData> _tabIcons = [
     Icons.summarize,
@@ -94,10 +91,11 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                       children: [
                         Text(
                           'Prepayment Impact Analysis',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: FinancialColors.savings,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: FinancialColors.savings,
+                              ),
                         ),
                         Text(
                           'See how your prepayment strategy will save money and time',
@@ -114,9 +112,9 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
           // Tab Bar
           TabBar(
             controller: _tabController,
-            labelStyle: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            labelStyle: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
             unselectedLabelStyle: Theme.of(context).textTheme.labelMedium,
             tabs: List.generate(
               _tabLabels.length,
@@ -226,7 +224,9 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+              color: Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
@@ -234,17 +234,32 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
               children: [
                 Text(
                   'Detailed Breakdown',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 16),
 
-                _buildDetailRow('Prepayment Amount', benefits.totalPrepaymentAmount.toIndianFormat()),
-                _buildDetailRow('Original Tenure', '${comparison.originalTenureMonths ~/ 12} years ${comparison.originalTenureMonths % 12} months'),
-                _buildDetailRow('New Tenure', '${comparison.newTenureMonths ~/ 12} years ${comparison.newTenureMonths % 12} months'),
-                _buildDetailRow('Original Total Interest', comparison.originalTotalInterest.toIndianFormat()),
-                _buildDetailRow('New Total Interest', comparison.newTotalInterest.toIndianFormat()),
+                _buildDetailRow(
+                  'Prepayment Amount',
+                  benefits.totalPrepaymentAmount.toIndianFormat(),
+                ),
+                _buildDetailRow(
+                  'Original Tenure',
+                  '${comparison.originalTenureMonths ~/ 12} years ${comparison.originalTenureMonths % 12} months',
+                ),
+                _buildDetailRow(
+                  'New Tenure',
+                  '${comparison.newTenureMonths ~/ 12} years ${comparison.newTenureMonths % 12} months',
+                ),
+                _buildDetailRow(
+                  'Original Total Interest',
+                  comparison.originalTotalInterest.toIndianFormat(),
+                ),
+                _buildDetailRow(
+                  'New Total Interest',
+                  comparison.newTotalInterest.toIndianFormat(),
+                ),
                 const Divider(),
                 _buildDetailRow(
                   'Net Benefit (After Tax Impact)',
@@ -262,7 +277,9 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -291,16 +308,16 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
 
   Widget _buildTimelineTab() {
     final progression = widget.result.breakdown.balanceProgression;
-    
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
           Text(
             'Outstanding Balance Over Time',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
 
@@ -320,9 +337,9 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                           padding: const EdgeInsets.only(right: 4),
                           child: Text(
                             value.toCompactIndianFormat(),
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              fontSize: 10,
-                            ),
+                            style: Theme.of(
+                              context,
+                            ).textTheme.bodySmall?.copyWith(fontSize: 10),
                           ),
                         );
                       },
@@ -332,16 +349,17 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 35,
-                      interval: (widget.loanParameters.tenureYears * 3).toDouble(),
+                      interval: (widget.loanParameters.tenureYears * 3)
+                          .toDouble(),
                       getTitlesWidget: (value, meta) {
                         if (value % 12 == 0) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
                               'Y${(value / 12).toInt()}',
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                fontSize: 10,
-                              ),
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodySmall?.copyWith(fontSize: 10),
                             ),
                           );
                         }
@@ -349,18 +367,24 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                       },
                     ),
                   ),
-                  rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
+                  topTitles: const AxisTitles(
+                    sideTitles: SideTitles(showTitles: false),
+                  ),
                 ),
                 borderData: FlBorderData(show: false),
                 lineBarsData: [
                   // Original loan line
                   LineChartBarData(
                     spots: progression
-                        .map((point) => FlSpot(
-                              point.month.toDouble(),
-                              point.originalBalance,
-                            ))
+                        .map(
+                          (point) => FlSpot(
+                            point.month.toDouble(),
+                            point.originalBalance,
+                          ),
+                        )
                         .toList(),
                     isCurved: true,
                     color: FinancialColors.cost,
@@ -370,10 +394,10 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                   // New loan line (with prepayment)
                   LineChartBarData(
                     spots: progression
-                        .map((point) => FlSpot(
-                              point.month.toDouble(),
-                              point.newBalance,
-                            ))
+                        .map(
+                          (point) =>
+                              FlSpot(point.month.toDouble(), point.newBalance),
+                        )
                         .toList(),
                     isCurved: true,
                     color: FinancialColors.savings,
@@ -410,24 +434,44 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
         children: [
           Text(
             'Before vs After Comparison',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 16),
 
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+              color: Theme.of(
+                context,
+              ).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               children: [
-                _buildComparisonRow('EMI Amount', comparison.originalEMI, comparison.newEMI, isEMI: true),
-                _buildComparisonRow('Tenure (Months)', comparison.originalTenureMonths, comparison.newTenureMonths, isMonths: true),
-                _buildComparisonRow('Total Interest', comparison.originalTotalInterest, comparison.newTotalInterest),
-                _buildComparisonRow('Total Amount', comparison.originalTotalAmount, comparison.newTotalAmount),
+                _buildComparisonRow(
+                  'EMI Amount',
+                  comparison.originalEMI,
+                  comparison.newEMI,
+                  isEMI: true,
+                ),
+                _buildComparisonRow(
+                  'Tenure (Months)',
+                  comparison.originalTenureMonths,
+                  comparison.newTenureMonths,
+                  isMonths: true,
+                ),
+                _buildComparisonRow(
+                  'Total Interest',
+                  comparison.originalTotalInterest,
+                  comparison.newTotalInterest,
+                ),
+                _buildComparisonRow(
+                  'Total Amount',
+                  comparison.originalTotalAmount,
+                  comparison.newTotalAmount,
+                ),
               ],
             ),
           ),
@@ -448,10 +492,7 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.savings,
-                      color: FinancialColors.savings,
-                    ),
+                    Icon(Icons.savings, color: FinancialColors.savings),
                     const SizedBox(width: 8),
                     Text(
                       'Your Savings',
@@ -463,7 +504,7 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
                   ],
                 ),
                 const SizedBox(height: 12),
-                
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -513,15 +554,18 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
     );
   }
 
-  Widget _buildBenefitCard(String title, String value, IconData icon, Color color) {
+  Widget _buildBenefitCard(
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: color.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -546,7 +590,11 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
     );
   }
 
-  Widget _buildDetailRow(String label, String value, {bool isHighlight = false}) {
+  Widget _buildDetailRow(
+    String label,
+    String value, {
+    bool isHighlight = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -600,9 +648,9 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
             flex: 2,
             child: Text(
               label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
             ),
           ),
           Expanded(
@@ -641,10 +689,7 @@ class _PrepaymentResultsDisplayState extends State<PrepaymentResultsDisplay>
           ),
         ),
         const SizedBox(width: 6),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text(label, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }

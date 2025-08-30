@@ -20,13 +20,15 @@ class RecurringPrepaymentCalculator extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<RecurringPrepaymentCalculator> createState() => _RecurringPrepaymentCalculatorState();
+  ConsumerState<RecurringPrepaymentCalculator> createState() =>
+      _RecurringPrepaymentCalculatorState();
 }
 
-class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaymentCalculator> {
+class _RecurringPrepaymentCalculatorState
+    extends ConsumerState<RecurringPrepaymentCalculator> {
   final _formKey = GlobalKey<FormState>();
   final _prepaymentAmountController = TextEditingController();
-  
+
   double _prepaymentAmount = 5000;
   PrepaymentFrequency _frequency = PrepaymentFrequency.monthly;
   int _startYear = 1;
@@ -35,8 +37,18 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
   bool _isCalculating = false;
 
   final List<String> _months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   @override
@@ -103,7 +115,6 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -115,7 +126,9 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
           children: [
             // Description Card
             Card(
-              color: Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.3),
+              color: Theme.of(
+                context,
+              ).colorScheme.secondaryContainer.withValues(alpha: 0.3),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -131,10 +144,11 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                         const SizedBox(width: 8),
                         Text(
                           'Recurring Prepayment',
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                         ),
                       ],
                     ),
@@ -147,7 +161,7 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
 
             Expanded(
@@ -164,9 +178,8 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                           children: [
                             Text(
                               'Prepayment Amount',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
 
@@ -179,13 +192,16 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                 hintText: 'Enter prepayment amount',
                                 prefixIcon: const Icon(Icons.currency_rupee),
                                 border: const OutlineInputBorder(),
-                                helperText: 'Minimum: ₹1,000 | Suggested: 5-20% of EMI',
+                                helperText:
+                                    'Minimum: ₹1,000 | Suggested: 5-20% of EMI',
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter prepayment amount';
                                 }
-                                final amount = double.tryParse(value.replaceAll(',', ''));
+                                final amount = double.tryParse(
+                                  value.replaceAll(',', ''),
+                                );
                                 if (amount == null) {
                                   return 'Please enter a valid amount';
                                 }
@@ -198,7 +214,9 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                 return null;
                               },
                               onChanged: (value) {
-                                final amount = double.tryParse(value.replaceAll(',', ''));
+                                final amount = double.tryParse(
+                                  value.replaceAll(',', ''),
+                                );
                                 if (amount != null) {
                                   setState(() {
                                     _prepaymentAmount = amount;
@@ -215,13 +233,15 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                               children: [
                                 Text(
                                   'Quick Amount Selection',
-                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(height: 8),
                                 Slider(
-                                  value: _prepaymentAmount.clamp(1000, widget.emiResult.monthlyEMI),
+                                  value: _prepaymentAmount.clamp(
+                                    1000,
+                                    widget.emiResult.monthlyEMI,
+                                  ),
                                   min: 1000,
                                   max: widget.emiResult.monthlyEMI,
                                   divisions: 20,
@@ -229,20 +249,28 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                   onChanged: (value) {
                                     setState(() {
                                       _prepaymentAmount = value;
-                                      _prepaymentAmountController.text = value.toInt().toString();
+                                      _prepaymentAmountController.text = value
+                                          .toInt()
+                                          .toString();
                                     });
                                   },
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       '₹1K',
-                                      style: Theme.of(context).textTheme.bodySmall,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                     ),
                                     Text(
-                                      widget.emiResult.monthlyEMI.toCompactIndianFormat(),
-                                      style: Theme.of(context).textTheme.bodySmall,
+                                      widget.emiResult.monthlyEMI
+                                          .toCompactIndianFormat(),
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodySmall,
                                     ),
                                   ],
                                 ),
@@ -259,9 +287,18 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                 _buildQuickAmountChip('₹2K', 2000),
                                 _buildQuickAmountChip('₹5K', 5000),
                                 _buildQuickAmountChip('₹10K', 10000),
-                                _buildQuickAmountChip('5% of EMI', widget.emiResult.monthlyEMI * 0.05),
-                                _buildQuickAmountChip('10% of EMI', widget.emiResult.monthlyEMI * 0.10),
-                                _buildQuickAmountChip('20% of EMI', widget.emiResult.monthlyEMI * 0.20),
+                                _buildQuickAmountChip(
+                                  '5% of EMI',
+                                  widget.emiResult.monthlyEMI * 0.05,
+                                ),
+                                _buildQuickAmountChip(
+                                  '10% of EMI',
+                                  widget.emiResult.monthlyEMI * 0.10,
+                                ),
+                                _buildQuickAmountChip(
+                                  '20% of EMI',
+                                  widget.emiResult.monthlyEMI * 0.20,
+                                ),
                               ],
                             ),
                           ],
@@ -280,15 +317,16 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                           children: [
                             Text(
                               'Payment Frequency',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
 
                             // Frequency Selection
                             Column(
-                              children: PrepaymentFrequency.values.map((frequency) {
+                              children: PrepaymentFrequency.values.map((
+                                frequency,
+                              ) {
                                 final isSelected = _frequency == frequency;
                                 return Container(
                                   margin: const EdgeInsets.only(bottom: 8),
@@ -303,12 +341,19 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                       padding: const EdgeInsets.all(12),
                                       decoration: BoxDecoration(
                                         color: isSelected
-                                            ? Theme.of(context).colorScheme.secondaryContainer
-                                            : Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.3),
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.secondaryContainer
+                                            : Theme.of(context)
+                                                  .colorScheme
+                                                  .surfaceContainerHighest
+                                                  .withValues(alpha: 0.3),
                                         borderRadius: BorderRadius.circular(8),
                                         border: Border.all(
                                           color: isSelected
-                                              ? Theme.of(context).colorScheme.secondary
+                                              ? Theme.of(
+                                                  context,
+                                                ).colorScheme.secondary
                                               : Theme.of(context).dividerColor,
                                           width: isSelected ? 2 : 1,
                                         ),
@@ -327,32 +372,53 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                           const SizedBox(width: 8),
                                           Expanded(
                                             child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  _getFrequencyDisplayName(frequency),
-                                                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                                    fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                                                  _getFrequencyDisplayName(
+                                                    frequency,
                                                   ),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                        fontWeight: isSelected
+                                                            ? FontWeight.bold
+                                                            : FontWeight.normal,
+                                                      ),
                                                 ),
                                                 Text(
                                                   '${_getAnnualPrepaymentsForFrequency(frequency)} payments per year',
-                                                  style: Theme.of(context).textTheme.bodySmall,
+                                                  style: Theme.of(
+                                                    context,
+                                                  ).textTheme.bodySmall,
                                                 ),
                                               ],
                                             ),
                                           ),
                                           Text(
-                                            (_prepaymentAmount * _getAnnualPrepaymentsForFrequency(frequency)).toCompactIndianFormat(),
-                                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                              fontWeight: FontWeight.w600,
-                                              color: Theme.of(context).colorScheme.primary,
-                                            ),
+                                            (_prepaymentAmount *
+                                                    _getAnnualPrepaymentsForFrequency(
+                                                      frequency,
+                                                    ))
+                                                .toCompactIndianFormat(),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.primary,
+                                                ),
                                           ),
                                           const SizedBox(width: 8),
                                           Text(
                                             '/year',
-                                            style: Theme.of(context).textTheme.bodySmall,
+                                            style: Theme.of(
+                                              context,
+                                            ).textTheme.bodySmall,
                                           ),
                                         ],
                                       ),
@@ -377,9 +443,8 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                           children: [
                             Text(
                               'When to Start',
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const SizedBox(height: 16),
 
@@ -387,13 +452,17 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                               children: [
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Year',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                       ),
                                       const SizedBox(height: 8),
                                       DropdownButtonFormField<int>(
@@ -424,13 +493,17 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
                                         'Month',
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w500,
+                                            ),
                                       ),
                                       const SizedBox(height: 8),
                                       DropdownButtonFormField<int>(
@@ -466,7 +539,9 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                             Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.surfaceContainerHighest,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
@@ -474,15 +549,22 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                                   Icon(
                                     Icons.schedule,
                                     size: 16,
-                                    color: Theme.of(context).colorScheme.secondary,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.secondary,
                                   ),
                                   const SizedBox(width: 8),
                                   Expanded(
                                     child: Text(
                                       'Prepayments will start from ${_months[_startMonth - 1]} of Year $_startYear, ${_getFrequencyDescription().toLowerCase()}',
-                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                        color: Theme.of(context).colorScheme.secondary,
-                                      ),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -500,8 +582,12 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
                       onPressed: _isCalculating ? null : _calculatePrepayment,
                       style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Theme.of(context).colorScheme.secondary,
-                        foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).colorScheme.secondary,
+                        foregroundColor: Theme.of(
+                          context,
+                        ).colorScheme.onSecondary,
                       ),
                       child: _isCalculating
                           ? const SizedBox(
@@ -541,16 +627,18 @@ class _RecurringPrepaymentCalculatorState extends ConsumerState<RecurringPrepaym
           color: isSelected
               ? Theme.of(context).colorScheme.onSecondary
               : canAfford
-                  ? Theme.of(context).colorScheme.secondary
-                  : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.5),
           fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         ),
       ),
       backgroundColor: isSelected
           ? Theme.of(context).colorScheme.secondary
           : canAfford
-              ? Theme.of(context).colorScheme.secondaryContainer.withValues(alpha: 0.3)
-              : Theme.of(context).colorScheme.surfaceContainerHighest,
+          ? Theme.of(
+              context,
+            ).colorScheme.secondaryContainer.withValues(alpha: 0.3)
+          : Theme.of(context).colorScheme.surfaceContainerHighest,
       onPressed: canAfford
           ? () {
               setState(() {

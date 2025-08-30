@@ -30,10 +30,7 @@ class _AppNavigationState extends ConsumerState<AppNavigation> {
             _currentIndex = index;
           });
         },
-        children: const [
-          CalculatorScreen(),
-          StrategiesScreen(),
-        ],
+        children: const [CalculatorScreen(), StrategiesScreen()],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,

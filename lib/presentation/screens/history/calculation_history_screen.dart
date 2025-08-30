@@ -13,10 +13,12 @@ class CalculationHistoryScreen extends ConsumerStatefulWidget {
   const CalculationHistoryScreen({super.key});
 
   @override
-  ConsumerState<CalculationHistoryScreen> createState() => _CalculationHistoryScreenState();
+  ConsumerState<CalculationHistoryScreen> createState() =>
+      _CalculationHistoryScreenState();
 }
 
-class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScreen>
+class _CalculationHistoryScreenState
+    extends ConsumerState<CalculationHistoryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final TextEditingController _searchController = TextEditingController();
@@ -25,10 +27,12 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    
+
     // Listen to search changes
     _searchController.addListener(() {
-      ref.read(historyFilterNotifierProvider.notifier).updateSearchQuery(_searchController.text);
+      ref
+          .read(historyFilterNotifierProvider.notifier)
+          .updateSearchQuery(_searchController.text);
     });
   }
 
@@ -43,15 +47,13 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: const Text(
           'Calculation History',
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w600),
         ),
         backgroundColor: colorScheme.surface,
         foregroundColor: colorScheme.onSurface,
@@ -129,8 +131,10 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
         Expanded(
           child: Consumer(
             builder: (context, ref, child) {
-              final groupedHistoryAsync = ref.watch(groupedHistoryItemsProvider);
-              
+              final groupedHistoryAsync = ref.watch(
+                groupedHistoryItemsProvider,
+              );
+
               return groupedHistoryAsync.when(
                 data: (groupedHistory) => _buildHistoryList(groupedHistory),
                 loading: () => const LoadingWidget(),
@@ -150,17 +154,18 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
     return Consumer(
       builder: (context, ref, child) {
         final bookmarkedAsync = ref.watch(bookmarkedHistoryProvider);
-        
+
         return bookmarkedAsync.when(
           data: (bookmarkedHistory) {
             if (bookmarkedHistory.isEmpty) {
               return _buildEmptyState(
                 icon: Icons.bookmark_border,
                 title: 'No Bookmarked Calculations',
-                subtitle: 'Bookmark important calculations to access them quickly.',
+                subtitle:
+                    'Bookmark important calculations to access them quickly.',
               );
             }
-            
+
             return ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: bookmarkedHistory.length,
@@ -194,7 +199,7 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
     return Consumer(
       builder: (context, ref, child) {
         final statsAsync = ref.watch(historyStatsProvider);
-        
+
         return statsAsync.when(
           data: (stats) => Padding(
             padding: const EdgeInsets.all(16),
@@ -213,7 +218,7 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   Widget _buildSearchBar() {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -232,12 +237,17 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
                   icon: Icon(Icons.clear, color: colorScheme.onSurfaceVariant),
                   onPressed: () {
                     _searchController.clear();
-                    ref.read(historyFilterNotifierProvider.notifier).updateSearchQuery('');
+                    ref
+                        .read(historyFilterNotifierProvider.notifier)
+                        .updateSearchQuery('');
                   },
                 )
               : null,
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
         ),
         style: TextStyle(color: colorScheme.onSurface),
       ),
@@ -282,18 +292,20 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
                 ),
               ),
             ),
-            
+
             // Group items
-            ...items.map((item) => Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-              child: HistoryItemCard(
-                item: item,
-                onTap: () => _loadCalculationFromItem(item),
-                onBookmark: () => _toggleBookmark(item.id),
-                onDelete: () => _deleteHistory(item.id),
-                onShare: () => _shareCalculationFromItem(item),
+            ...items.map(
+              (item) => Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                child: HistoryItemCard(
+                  item: item,
+                  onTap: () => _loadCalculationFromItem(item),
+                  onBookmark: () => _toggleBookmark(item.id),
+                  onDelete: () => _deleteHistory(item.id),
+                  onShare: () => _shareCalculationFromItem(item),
+                ),
               ),
-            )),
+            ),
           ],
         );
       },
@@ -369,15 +381,12 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
     try {
       final csv = await ref.read(historyActionsProvider.notifier).exportAsCSV();
       await Clipboard.setData(ClipboardData(text: csv));
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: const Text('CSV data copied to clipboard'),
-            action: SnackBarAction(
-              label: 'OK',
-              onPressed: () {},
-            ),
+            action: SnackBarAction(label: 'OK', onPressed: () {}),
           ),
         );
       }
@@ -395,9 +404,11 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
 
   Future<void> _exportText() async {
     try {
-      final text = await ref.read(historyActionsProvider.notifier).exportAsText();
+      final text = await ref
+          .read(historyActionsProvider.notifier)
+          .exportAsText();
       await Clipboard.setData(ClipboardData(text: text));
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -454,12 +465,10 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   Future<void> _clearAllHistory() async {
     try {
       await ref.read(historyActionsProvider.notifier).clearAllHistory();
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('All history cleared successfully'),
-          ),
+          const SnackBar(content: Text('All history cleared successfully')),
         );
       }
     } catch (e) {
@@ -477,7 +486,7 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   Future<void> _toggleBookmark(String id) async {
     try {
       await ref.read(historyActionsProvider.notifier).toggleBookmark(id);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -501,7 +510,7 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   Future<void> _deleteHistory(String id) async {
     try {
       await ref.read(historyActionsProvider.notifier).deleteHistory(id);
-      
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -534,7 +543,9 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
 
   Future<void> _loadCalculationFromItem(HistoryItem item) async {
     try {
-      final history = await ref.read(historyActionsProvider.notifier).getHistoryById(item.id);
+      final history = await ref
+          .read(historyActionsProvider.notifier)
+          .getHistoryById(item.id);
       if (history != null) {
         await _loadCalculation(history);
       }
@@ -553,7 +564,7 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
   Future<void> _shareCalculation(CalculationHistory history) async {
     final summary = history.generateSummary();
     await Clipboard.setData(ClipboardData(text: summary));
-    
+
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -571,7 +582,9 @@ class _CalculationHistoryScreenState extends ConsumerState<CalculationHistoryScr
 
   Future<void> _shareCalculationFromItem(HistoryItem item) async {
     try {
-      final history = await ref.read(historyActionsProvider.notifier).getHistoryById(item.id);
+      final history = await ref
+          .read(historyActionsProvider.notifier)
+          .getHistoryById(item.id);
       if (history != null) {
         await _shareCalculation(history);
       }

@@ -10,7 +10,7 @@ class ScenarioPresetsSheet extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(scenarioComparisonProvider);
     final scenarios = state.comparison?.scenarios ?? [];
-    
+
     // Find non-base scenarios that can be modified
     final modifiableScenarios = scenarios
         .where((s) => !s.isBaseScenario && !s.id.startsWith('custom_'))
@@ -29,9 +29,9 @@ class ScenarioPresetsSheet extends ConsumerWidget {
               const SizedBox(width: 8),
               Text(
                 'Apply Quick Presets',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const Spacer(),
               IconButton(
@@ -56,7 +56,12 @@ class ScenarioPresetsSheet extends ConsumerWidget {
             itemCount: ScenarioPreset.values.length,
             itemBuilder: (context, index) {
               final preset = ScenarioPreset.values[index];
-              return _buildPresetButton(context, ref, preset, modifiableScenarios);
+              return _buildPresetButton(
+                context,
+                ref,
+                preset,
+                modifiableScenarios,
+              );
             },
           ),
 
@@ -66,7 +71,9 @@ class ScenarioPresetsSheet extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.1),
+              color: Theme.of(
+                context,
+              ).colorScheme.primaryContainer.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -81,7 +88,9 @@ class ScenarioPresetsSheet extends ConsumerWidget {
                   child: Text(
                     'Presets will be applied to existing scenario slots. Enable/disable scenarios to compare different options.',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.8),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.8),
                     ),
                   ),
                 ),
@@ -114,9 +123,9 @@ class ScenarioPresetsSheet extends ConsumerWidget {
         children: [
           Text(
             preset.displayName,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w600),
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
@@ -170,7 +179,7 @@ class ScenarioPresetsSheet extends ConsumerWidget {
       ref
           .read(scenarioComparisonProvider.notifier)
           .applyScenarioPreset(targetScenario.id, preset);
-      
+
       // Enable the scenario if it's not already enabled
       if (!targetScenario.isEnabled) {
         ref

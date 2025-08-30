@@ -33,9 +33,9 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
 
           // Chart
           Expanded(
-            child: _selectedChartType == 0 
-              ? _buildEMIProgressionChart()
-              : _buildInterestPrincipalChart(),
+            child: _selectedChartType == 0
+                ? _buildEMIProgressionChart()
+                : _buildInterestPrincipalChart(),
           ),
 
           const SizedBox(height: 20),
@@ -98,7 +98,7 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
-            
+
             Expanded(
               child: LineChart(
                 LineChartData(
@@ -154,10 +154,7 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                   ),
                   borderData: FlBorderData(
                     show: true,
-                    border: Border.all(
-                      color: colorScheme.outline,
-                      width: 1,
-                    ),
+                    border: Border.all(color: colorScheme.outline, width: 1),
                   ),
                   lineBarsData: [
                     // Step EMI line
@@ -182,7 +179,7 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                         color: colorScheme.primary.withValues(alpha: 0.1),
                       ),
                     ),
-                    
+
                     // Regular EMI line (for comparison)
                     LineChartBarData(
                       spots: regularEMISpots,
@@ -196,7 +193,8 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                   lineTouchData: LineTouchData(
                     enabled: true,
                     touchTooltipData: LineTouchTooltipData(
-                      getTooltipColor: (touchedSpot) => colorScheme.inverseSurface,
+                      getTooltipColor: (touchedSpot) =>
+                          colorScheme.inverseSurface,
                       getTooltipItems: (touchedSpots) {
                         return touchedSpots.map((spot) {
                           final isStepEMI = spot.barIndex == 0;
@@ -215,9 +213,9 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Legend
             Row(
               children: [
@@ -263,16 +261,20 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 16),
-            
+
             Expanded(
               child: BarChart(
                 BarChartData(
                   alignment: BarChartAlignment.spaceAround,
-                  maxY: yearlyData.fold<double>(0, (max, item) => 
-                    (item.principalPaid + item.interestPaid) > max 
-                      ? (item.principalPaid + item.interestPaid) 
-                      : max,
-                  ) * 1.1,
+                  maxY:
+                      yearlyData.fold<double>(
+                        0,
+                        (max, item) =>
+                            (item.principalPaid + item.interestPaid) > max
+                            ? (item.principalPaid + item.interestPaid)
+                            : max,
+                      ) *
+                      1.1,
                   titlesData: FlTitlesData(
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
@@ -307,10 +309,7 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                   ),
                   borderData: FlBorderData(
                     show: true,
-                    border: Border.all(
-                      color: colorScheme.outline,
-                      width: 1,
-                    ),
+                    border: Border.all(color: colorScheme.outline, width: 1),
                   ),
                   gridData: FlGridData(
                     show: true,
@@ -324,7 +323,6 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                     },
                   ),
                   barGroups: yearlyData.map((yearly) {
-                    
                     return BarChartGroupData(
                       x: yearly.year,
                       barRods: [
@@ -368,9 +366,9 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Legend
             Row(
               children: [
@@ -412,16 +410,11 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
             borderRadius: BorderRadius.circular(1.5),
           ),
           child: isDashed
-            ? CustomPaint(
-                painter: DashedLinePainter(color: color),
-              )
-            : null,
+              ? CustomPaint(painter: DashedLinePainter(color: color))
+              : null,
         ),
         const SizedBox(width: 8),
-        Text(
-          label,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text(label, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }
@@ -441,7 +434,7 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 12),
-            
+
             Row(
               children: [
                 Expanded(
@@ -462,9 +455,9 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             Row(
               children: [
                 Expanded(
@@ -485,32 +478,32 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                 ),
               ],
             ),
-            
+
             const SizedBox(height: 12),
-            
+
             // Interest comparison
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: stepResult.isMoreExpensive
-                  ? colorScheme.errorContainer.withValues(alpha: 0.3)
-                  : colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    ? colorScheme.errorContainer.withValues(alpha: 0.3)
+                    : colorScheme.primaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: stepResult.isMoreExpensive
-                    ? colorScheme.error.withValues(alpha: 0.3)
-                    : colorScheme.primary.withValues(alpha: 0.3),
+                      ? colorScheme.error.withValues(alpha: 0.3)
+                      : colorScheme.primary.withValues(alpha: 0.3),
                 ),
               ),
               child: Row(
                 children: [
                   Icon(
                     stepResult.isMoreExpensive
-                      ? Icons.trending_up
-                      : Icons.trending_down,
+                        ? Icons.trending_up
+                        : Icons.trending_down,
                     color: stepResult.isMoreExpensive
-                      ? colorScheme.error
-                      : colorScheme.primary,
+                        ? colorScheme.error
+                        : colorScheme.primary,
                     size: 20,
                   ),
                   const SizedBox(width: 12),
@@ -520,32 +513,39 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
                       children: [
                         Text(
                           stepResult.isMoreExpensive
-                            ? 'Additional Cost'
-                            : 'Interest Saved',
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                            color: stepResult.isMoreExpensive
-                              ? colorScheme.onErrorContainer
-                              : colorScheme.onPrimaryContainer,
-                          ),
+                              ? 'Additional Cost'
+                              : 'Interest Saved',
+                          style: Theme.of(context).textTheme.labelMedium
+                              ?.copyWith(
+                                color: stepResult.isMoreExpensive
+                                    ? colorScheme.onErrorContainer
+                                    : colorScheme.onPrimaryContainer,
+                              ),
                         ),
                         Text(
                           '₹${stepResult.interestSavedVsRegular.abs().toIndianFormat()}',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: stepResult.isMoreExpensive
-                              ? colorScheme.onErrorContainer
-                              : colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: stepResult.isMoreExpensive
+                                    ? colorScheme.onErrorContainer
+                                    : colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                         Text(
                           stepResult.isMoreExpensive
-                            ? 'vs regular EMI'
-                            : 'compared to regular EMI',
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: stepResult.isMoreExpensive
-                              ? colorScheme.onErrorContainer.withValues(alpha: 0.7)
-                              : colorScheme.onPrimaryContainer.withValues(alpha: 0.7),
-                          ),
+                              ? 'vs regular EMI'
+                              : 'compared to regular EMI',
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                color: stepResult.isMoreExpensive
+                                    ? colorScheme.onErrorContainer.withValues(
+                                        alpha: 0.7,
+                                      )
+                                    : colorScheme.onPrimaryContainer.withValues(
+                                        alpha: 0.7,
+                                      ),
+                              ),
                         ),
                       ],
                     ),
@@ -574,11 +574,7 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
       ),
       child: Column(
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          Icon(icon, size: 20, color: Theme.of(context).colorScheme.primary),
           const SizedBox(height: 4),
           Text(
             title,
@@ -587,9 +583,9 @@ class _StepEMIChartTabState extends State<StepEMIChartTab> {
           ),
           Text(
             value,
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold),
             textAlign: TextAlign.center,
           ),
         ],

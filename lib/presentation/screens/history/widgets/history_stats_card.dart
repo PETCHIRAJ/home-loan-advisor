@@ -5,10 +5,7 @@ import '../../../../domain/entities/calculation_history.dart';
 class HistoryStatsCard extends StatelessWidget {
   final HistoryStats stats;
 
-  const HistoryStatsCard({
-    super.key,
-    required this.stats,
-  });
+  const HistoryStatsCard({super.key, required this.stats});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +70,8 @@ class HistoryStatsCard extends StatelessWidget {
           const SizedBox(height: 20),
 
           // Timeline card
-          if (stats.firstCalculationDate != null && stats.lastCalculationDate != null)
+          if (stats.firstCalculationDate != null &&
+              stats.lastCalculationDate != null)
             _buildTimelineCard(context),
         ],
       ),
@@ -186,9 +184,7 @@ class HistoryStatsCard extends StatelessWidget {
     return Card(
       elevation: 0,
       color: backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -197,11 +193,7 @@ class HistoryStatsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  icon,
-                  color: colorScheme.onSurface,
-                  size: 20,
-                ),
+                Icon(icon, color: colorScheme.onSurface, size: 20),
                 const Spacer(),
               ],
             ),
@@ -238,9 +230,7 @@ class HistoryStatsCard extends StatelessWidget {
     return Card(
       elevation: 0,
       color: colorScheme.surfaceContainerLow,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -248,11 +238,7 @@ class HistoryStatsCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.timeline,
-                  color: colorScheme.primary,
-                  size: 24,
-                ),
+                Icon(Icons.timeline, color: colorScheme.primary, size: 24),
                 const SizedBox(width: 12),
                 Text(
                   'Your Journey Timeline',
@@ -264,7 +250,7 @@ class HistoryStatsCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            
+
             // Timeline items
             _buildTimelineItem(
               context,
@@ -273,7 +259,7 @@ class HistoryStatsCard extends StatelessWidget {
               Icons.start,
               true,
             ),
-            
+
             if (daysBetween > 0) ...[
               const SizedBox(height: 12),
               _buildTimelineItem(
@@ -292,19 +278,15 @@ class HistoryStatsCard extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    Icon(
-                      Icons.insights,
-                      color: colorScheme.primary,
-                      size: 20,
-                    ),
+                    Icon(Icons.insights, color: colorScheme.primary, size: 20),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         monthsBetween > 0
                             ? 'Active for $monthsBetween months'
                             : daysBetween > 0
-                                ? 'Active for $daysBetween days'
-                                : 'Started today',
+                            ? 'Active for $daysBetween days'
+                            : 'Started today',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: colorScheme.onSurface,
                           fontWeight: FontWeight.w500,
@@ -336,16 +318,16 @@ class HistoryStatsCard extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: isFirst 
-                ? colorScheme.primaryContainer 
+            color: isFirst
+                ? colorScheme.primaryContainer
                 : colorScheme.secondaryContainer,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
             icon,
             size: 16,
-            color: isFirst 
-                ? colorScheme.onPrimaryContainer 
+            color: isFirst
+                ? colorScheme.onPrimaryContainer
                 : colorScheme.onSecondaryContainer,
           ),
         ),
@@ -375,11 +357,14 @@ class HistoryStatsCard extends StatelessWidget {
   }
 
   String _formatCurrency(double amount) {
-    if (amount >= 10000000) { // 1 crore
+    if (amount >= 10000000) {
+      // 1 crore
       return '${(amount / 10000000).toStringAsFixed(2)}Cr';
-    } else if (amount >= 100000) { // 1 lakh
+    } else if (amount >= 100000) {
+      // 1 lakh
       return '${(amount / 100000).toStringAsFixed(2)}L';
-    } else if (amount >= 1000) { // 1 thousand
+    } else if (amount >= 1000) {
+      // 1 thousand
       return '${(amount / 1000).toStringAsFixed(1)}K';
     } else {
       return amount.toStringAsFixed(0);
