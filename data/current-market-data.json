@@ -1,0 +1,1106 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "last_updated": "2024-01-15T14:30:00Z",
+    "next_update": "2024-01-16T00:01:00Z",
+    "data_provider": "Market Aggregation",
+    "update_frequency": "daily",
+    "data_completeness": 85
+  },
+  
+  "market_rates": {
+    "repo_rate": {
+      "current": 6.50,
+      "previous": 6.25,
+      "effective_date": "2024-01-15",
+      "change_percentage": 0.25
+    },
+    "average_home_loan_rate": 8.65,
+    "rate_trend": "stable",
+    "rate_range": {
+      "minimum": 8.40,
+      "maximum": 10.50
+    }
+  },
+  
+  "banks": [
+    {
+      "bank_id": "SBI",
+      "bank_name": "State Bank of India",
+      "bank_type": "public",
+      "market_share": 23.5,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.40,
+            "max_rate": 8.70,
+            "effective_rate": 8.55
+          },
+          "good_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "average_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.20,
+            "effective_rate": 9.00
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.50,
+            "max_rate": 8.80,
+            "effective_rate": 8.65
+          },
+          "good_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "average_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.30,
+            "effective_rate": 9.10
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.35
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.35,
+        "minimum": 10000,
+        "maximum": 30000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 70,
+        "min_income_salaried": 25000,
+        "min_income_self_employed": 35000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "HDFC",
+      "bank_name": "HDFC Bank",
+      "bank_type": "private",
+      "market_share": 18.2,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.50,
+            "max_rate": 8.80,
+            "effective_rate": 8.65
+          },
+          "good_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "average_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.30,
+            "effective_rate": 9.10
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "good_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.10,
+            "effective_rate": 8.95
+          },
+          "average_credit": {
+            "min_rate": 9.00,
+            "max_rate": 9.40,
+            "effective_rate": 9.20
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.45
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 15000,
+        "maximum": 45000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 65,
+        "min_income_salaried": 35000,
+        "min_income_self_employed": 50000,
+        "credit_score_minimum": 700
+      }
+    },
+    {
+      "bank_id": "ICICI",
+      "bank_name": "ICICI Bank",
+      "bank_type": "private",
+      "market_share": 15.8,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.55,
+            "max_rate": 8.85,
+            "effective_rate": 8.70
+          },
+          "good_credit": {
+            "min_rate": 8.75,
+            "max_rate": 9.05,
+            "effective_rate": 8.90
+          },
+          "average_credit": {
+            "min_rate": 8.95,
+            "max_rate": 9.35,
+            "effective_rate": 9.15
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.65,
+            "max_rate": 8.95,
+            "effective_rate": 8.80
+          },
+          "good_credit": {
+            "min_rate": 8.85,
+            "max_rate": 9.15,
+            "effective_rate": 9.00
+          },
+          "average_credit": {
+            "min_rate": 9.05,
+            "max_rate": 9.45,
+            "effective_rate": 9.25
+          }
+        },
+        "women_special": null
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 5000,
+        "maximum": 20000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 23,
+        "max_age": 65,
+        "min_income_salaried": 35000,
+        "min_income_self_employed": 60000,
+        "credit_score_minimum": 685
+      }
+    },
+    {
+      "bank_id": "AXIS",
+      "bank_name": "Axis Bank",
+      "bank_type": "private",
+      "market_share": 10.2,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.50,
+            "max_rate": 8.80,
+            "effective_rate": 8.65
+          },
+          "good_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "average_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.30,
+            "effective_rate": 9.10
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "good_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.10,
+            "effective_rate": 8.95
+          },
+          "average_credit": {
+            "min_rate": 9.00,
+            "max_rate": 9.40,
+            "effective_rate": 9.20
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.45
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 1.00,
+        "minimum": 10000,
+        "maximum": 25000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 70,
+        "min_income_salaried": 30000,
+        "min_income_self_employed": 50000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "KOTAK",
+      "bank_name": "Kotak Mahindra Bank",
+      "bank_type": "private",
+      "market_share": 6.5,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "good_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.20,
+            "effective_rate": 9.05
+          },
+          "average_credit": {
+            "min_rate": 9.10,
+            "max_rate": 9.50,
+            "effective_rate": 9.30
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.10,
+            "effective_rate": 8.95
+          },
+          "good_credit": {
+            "min_rate": 9.00,
+            "max_rate": 9.30,
+            "effective_rate": 9.15
+          },
+          "average_credit": {
+            "min_rate": 9.20,
+            "max_rate": 9.60,
+            "effective_rate": 9.40
+          }
+        },
+        "women_special": null
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 10000,
+        "maximum": 30000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 60,
+        "min_income_salaried": 40000,
+        "min_income_self_employed": 75000,
+        "credit_score_minimum": 700
+      }
+    },
+    {
+      "bank_id": "PNB",
+      "bank_name": "Punjab National Bank",
+      "bank_type": "public",
+      "market_share": 5.8,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.45,
+            "max_rate": 8.75,
+            "effective_rate": 8.60
+          },
+          "good_credit": {
+            "min_rate": 8.65,
+            "max_rate": 8.95,
+            "effective_rate": 8.80
+          },
+          "average_credit": {
+            "min_rate": 8.85,
+            "max_rate": 9.25,
+            "effective_rate": 9.05
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.55,
+            "max_rate": 8.85,
+            "effective_rate": 8.70
+          },
+          "good_credit": {
+            "min_rate": 8.75,
+            "max_rate": 9.05,
+            "effective_rate": 8.90
+          },
+          "average_credit": {
+            "min_rate": 8.95,
+            "max_rate": 9.35,
+            "effective_rate": 9.15
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.40
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.35,
+        "minimum": 10000,
+        "maximum": 25000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 70,
+        "min_income_salaried": 25000,
+        "min_income_self_employed": 40000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "BOB",
+      "bank_name": "Bank of Baroda",
+      "bank_type": "public",
+      "market_share": 4.2,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.40,
+            "max_rate": 8.70,
+            "effective_rate": 8.55
+          },
+          "good_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "average_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.20,
+            "effective_rate": 9.00
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.50,
+            "max_rate": 8.80,
+            "effective_rate": 8.65
+          },
+          "good_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "average_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.30,
+            "effective_rate": 9.10
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.35
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 8000,
+        "maximum": 20000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 70,
+        "min_income_salaried": 20000,
+        "min_income_self_employed": 35000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "CANARA",
+      "bank_name": "Canara Bank",
+      "bank_type": "public",
+      "market_share": 3.8,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.45,
+            "max_rate": 8.75,
+            "effective_rate": 8.60
+          },
+          "good_credit": {
+            "min_rate": 8.65,
+            "max_rate": 8.95,
+            "effective_rate": 8.80
+          },
+          "average_credit": {
+            "min_rate": 8.85,
+            "max_rate": 9.25,
+            "effective_rate": 9.05
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.55,
+            "max_rate": 8.85,
+            "effective_rate": 8.70
+          },
+          "good_credit": {
+            "min_rate": 8.75,
+            "max_rate": 9.05,
+            "effective_rate": 8.90
+          },
+          "average_credit": {
+            "min_rate": 8.95,
+            "max_rate": 9.35,
+            "effective_rate": 9.15
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.40
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 5000,
+        "maximum": 20000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 70,
+        "min_income_salaried": 20000,
+        "min_income_self_employed": 35000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "UNION",
+      "bank_name": "Union Bank of India",
+      "bank_type": "public",
+      "market_share": 3.5,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.40,
+            "max_rate": 8.70,
+            "effective_rate": 8.55
+          },
+          "good_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "average_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.20,
+            "effective_rate": 9.00
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.50,
+            "max_rate": 8.80,
+            "effective_rate": 8.65
+          },
+          "good_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "average_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.30,
+            "effective_rate": 9.10
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.35
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 5000,
+        "maximum": 15000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 70,
+        "min_income_salaried": 20000,
+        "min_income_self_employed": 35000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "IDFC",
+      "bank_name": "IDFC First Bank",
+      "bank_type": "private",
+      "market_share": 2.1,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "good_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.10,
+            "effective_rate": 8.95
+          },
+          "average_credit": {
+            "min_rate": 9.00,
+            "max_rate": 9.40,
+            "effective_rate": 9.20
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "good_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.20,
+            "effective_rate": 9.05
+          },
+          "average_credit": {
+            "min_rate": 9.10,
+            "max_rate": 9.50,
+            "effective_rate": 9.30
+          }
+        },
+        "women_special": null
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 10000,
+        "maximum": 25000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 25,
+        "max_age": 65,
+        "min_income_salaried": 30000,
+        "min_income_self_employed": 50000,
+        "credit_score_minimum": 700
+      }
+    },
+    {
+      "bank_id": "YES",
+      "bank_name": "Yes Bank",
+      "bank_type": "private",
+      "market_share": 1.8,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.75,
+            "max_rate": 9.05,
+            "effective_rate": 8.90
+          },
+          "good_credit": {
+            "min_rate": 8.95,
+            "max_rate": 9.25,
+            "effective_rate": 9.10
+          },
+          "average_credit": {
+            "min_rate": 9.15,
+            "max_rate": 9.55,
+            "effective_rate": 9.35
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.85,
+            "max_rate": 9.15,
+            "effective_rate": 9.00
+          },
+          "good_credit": {
+            "min_rate": 9.05,
+            "max_rate": 9.35,
+            "effective_rate": 9.20
+          },
+          "average_credit": {
+            "min_rate": 9.25,
+            "max_rate": 9.65,
+            "effective_rate": 9.45
+          }
+        },
+        "women_special": null
+      },
+      
+      "processing_fees": {
+        "percentage": 1.00,
+        "minimum": 10000,
+        "maximum": 50000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 21,
+        "max_age": 60,
+        "min_income_salaried": 40000,
+        "min_income_self_employed": 60000,
+        "credit_score_minimum": 700
+      }
+    },
+    {
+      "bank_id": "INDUSIND",
+      "bank_name": "IndusInd Bank",
+      "bank_type": "private",
+      "market_share": 1.5,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.65,
+            "max_rate": 8.95,
+            "effective_rate": 8.80
+          },
+          "good_credit": {
+            "min_rate": 8.85,
+            "max_rate": 9.15,
+            "effective_rate": 9.00
+          },
+          "average_credit": {
+            "min_rate": 9.05,
+            "max_rate": 9.45,
+            "effective_rate": 9.25
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.75,
+            "max_rate": 9.05,
+            "effective_rate": 8.90
+          },
+          "good_credit": {
+            "min_rate": 8.95,
+            "max_rate": 9.25,
+            "effective_rate": 9.10
+          },
+          "average_credit": {
+            "min_rate": 9.15,
+            "max_rate": 9.55,
+            "effective_rate": 9.35
+          }
+        },
+        "women_special": null
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 10000,
+        "maximum": 30000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 25,
+        "max_age": 65,
+        "min_income_salaried": 35000,
+        "min_income_self_employed": 50000,
+        "credit_score_minimum": 700
+      }
+    },
+    {
+      "bank_id": "LIC",
+      "bank_name": "LIC Housing Finance",
+      "bank_type": "nbfc",
+      "market_share": 8.7,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.50,
+            "max_rate": 8.80,
+            "effective_rate": 8.65
+          },
+          "good_credit": {
+            "min_rate": 8.70,
+            "max_rate": 9.00,
+            "effective_rate": 8.85
+          },
+          "average_credit": {
+            "min_rate": 8.90,
+            "max_rate": 9.30,
+            "effective_rate": 9.10
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.60,
+            "max_rate": 8.90,
+            "effective_rate": 8.75
+          },
+          "good_credit": {
+            "min_rate": 8.80,
+            "max_rate": 9.10,
+            "effective_rate": 8.95
+          },
+          "average_credit": {
+            "min_rate": 9.00,
+            "max_rate": 9.40,
+            "effective_rate": 9.20
+          }
+        },
+        "women_special": {
+          "discount": 0.05,
+          "min_rate": 8.45
+        }
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 10000,
+        "maximum": 40000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 18,
+        "max_age": 70,
+        "min_income_salaried": 25000,
+        "min_income_self_employed": 40000,
+        "credit_score_minimum": 650
+      }
+    },
+    {
+      "bank_id": "BAJAJ",
+      "bank_name": "Bajaj Housing Finance",
+      "bank_type": "nbfc",
+      "market_share": 3.4,
+      "last_updated": "2024-01-15T10:00:00Z",
+      
+      "interest_rates": {
+        "salaried": {
+          "excellent_credit": {
+            "min_rate": 8.55,
+            "max_rate": 8.85,
+            "effective_rate": 8.70
+          },
+          "good_credit": {
+            "min_rate": 8.75,
+            "max_rate": 9.05,
+            "effective_rate": 8.90
+          },
+          "average_credit": {
+            "min_rate": 8.95,
+            "max_rate": 9.35,
+            "effective_rate": 9.15
+          }
+        },
+        "self_employed": {
+          "excellent_credit": {
+            "min_rate": 8.65,
+            "max_rate": 8.95,
+            "effective_rate": 8.80
+          },
+          "good_credit": {
+            "min_rate": 8.85,
+            "max_rate": 9.15,
+            "effective_rate": 9.00
+          },
+          "average_credit": {
+            "min_rate": 9.05,
+            "max_rate": 9.45,
+            "effective_rate": 9.25
+          }
+        },
+        "women_special": null
+      },
+      
+      "processing_fees": {
+        "percentage": 0.50,
+        "minimum": 5000,
+        "maximum": 30000,
+        "gst_applicable": true,
+        "gst_rate": 18
+      },
+      
+      "eligibility": {
+        "min_age": 23,
+        "max_age": 70,
+        "min_income_salaried": 25000,
+        "min_income_self_employed": 40000,
+        "credit_score_minimum": 650
+      }
+    }
+  ],
+  
+  "tax_benefits": {
+    "section_80c": {
+      "max_deduction": 150000,
+      "applicable_on": "principal_repayment",
+      "conditions": [
+        "Self-occupied property",
+        "Within overall 80C limit",
+        "Valid loan from recognized institution"
+      ],
+      "fy_2024_25": true,
+      "tax_savings_by_bracket": {
+        "5_percent": 7500,
+        "10_percent": 15000,
+        "20_percent": 30000,
+        "30_percent": 45000
+      }
+    },
+    "section_24b": {
+      "max_deduction_self_occupied": 200000,
+      "max_deduction_let_out": "no_limit",
+      "applicable_on": "interest_payment",
+      "conditions": [
+        "Property construction completed",
+        "Possession certificate obtained"
+      ],
+      "fy_2024_25": true,
+      "pre_construction_interest": {
+        "allowed": true,
+        "claim_period": "5_years",
+        "per_year_limit": 40000
+      },
+      "tax_savings_by_bracket": {
+        "5_percent": 10000,
+        "10_percent": 20000,
+        "20_percent": 40000,
+        "30_percent": 60000
+      }
+    },
+    "section_80eea": {
+      "max_deduction": 150000,
+      "applicable_on": "interest_payment",
+      "conditions": [
+        "First time home buyer",
+        "Loan sanctioned between Apr 2019 - Mar 2022",
+        "Property value less than 45 lakhs"
+      ],
+      "active": false,
+      "note": "Scheme expired but may be renewed"
+    }
+  },
+  
+  "government_schemes": {
+    "pmay": {
+      "scheme_name": "Pradhan Mantri Awas Yojana",
+      "subsidy_available": true,
+      "ews_lig": {
+        "category": "EWS/LIG",
+        "max_subsidy": 267000,
+        "income_limit_annual": 600000,
+        "carpet_area_max_sqm": 60,
+        "interest_subsidy_rate": 6.5,
+        "max_loan_tenure": 20,
+        "npv_calculation_rate": 9.0
+      },
+      "mig_1": {
+        "category": "MIG-I",
+        "max_subsidy": 235000,
+        "income_limit_annual": 1200000,
+        "carpet_area_max_sqm": 160,
+        "interest_subsidy_rate": 4.0,
+        "max_loan_amount": 900000,
+        "max_loan_tenure": 20,
+        "npv_calculation_rate": 9.0
+      },
+      "mig_2": {
+        "category": "MIG-II",
+        "max_subsidy": 230000,
+        "income_limit_annual": 1800000,
+        "carpet_area_max_sqm": 200,
+        "interest_subsidy_rate": 3.0,
+        "max_loan_amount": 1200000,
+        "max_loan_tenure": 20,
+        "npv_calculation_rate": 9.0
+      },
+      "valid_till": "2024-12-31",
+      "application_process": "Through participating banks",
+      "documents_required": [
+        "Aadhaar card",
+        "Income proof",
+        "Property documents",
+        "No existing property declaration"
+      ]
+    }
+  },
+  
+  "stamp_duty_registration": {
+    "maharashtra": {
+      "stamp_duty": {
+        "urban": 5.0,
+        "rural": 3.0,
+        "women_discount": 1.0
+      },
+      "registration": 1.0,
+      "max_registration": 30000
+    },
+    "karnataka": {
+      "stamp_duty": {
+        "urban": 5.0,
+        "rural": 5.0,
+        "women_discount": 0
+      },
+      "registration": 1.0,
+      "max_registration": 30000
+    },
+    "delhi": {
+      "stamp_duty": {
+        "male": 6.0,
+        "female": 4.0,
+        "joint": 5.0
+      },
+      "registration": 1.0,
+      "max_registration": 30000
+    },
+    "tamil_nadu": {
+      "stamp_duty": {
+        "standard": 7.0,
+        "women_discount": 0
+      },
+      "registration": 1.0,
+      "max_registration": 30000
+    },
+    "gujarat": {
+      "stamp_duty": {
+        "standard": 4.9,
+        "women_discount": 0
+      },
+      "registration": 1.0,
+      "max_registration": 30000
+    }
+  },
+  
+  "insurance_rates": {
+    "property_insurance": {
+      "rate_per_lakh_per_year": 35,
+      "min_premium": 2500,
+      "coverage_type": "structure_only"
+    },
+    "life_insurance": {
+      "term_insurance_rate": {
+        "age_25_35": 80,
+        "age_36_45": 120,
+        "age_46_55": 180,
+        "age_56_65": 250
+      },
+      "mandatory": false
+    }
+  },
+  
+  "market_trends": {
+    "average_property_prices_per_sqft": {
+      "mumbai": 25000,
+      "delhi": 18000,
+      "bangalore": 12000,
+      "chennai": 9000,
+      "kolkata": 8000,
+      "hyderabad": 11000,
+      "pune": 8500,
+      "ahmedabad": 6500
+    },
+    "loan_statistics": {
+      "average_loan_amount": 3500000,
+      "average_tenure_years": 18,
+      "average_ltv": 75,
+      "prepayment_percentage": 22
+    }
+  },
+  
+  "prepayment_strategies": {
+    "extra_emi": {
+      "average_savings_percentage": 18,
+      "tenure_reduction_years": 5,
+      "implementation_difficulty": "easy"
+    },
+    "step_up": {
+      "average_savings_percentage": 23,
+      "tenure_reduction_years": 7,
+      "implementation_difficulty": "medium"
+    },
+    "lumpsum": {
+      "average_savings_percentage": 25,
+      "tenure_reduction_years": 6,
+      "implementation_difficulty": "medium"
+    },
+    "round_up": {
+      "average_savings_percentage": 12,
+      "tenure_reduction_years": 3,
+      "implementation_difficulty": "easy"
+    }
+  }
+}
