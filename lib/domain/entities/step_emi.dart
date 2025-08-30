@@ -1,4 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'step_emi.g.dart';
 
 /// Types of step EMI options
 enum StepEMIType {
@@ -58,6 +61,7 @@ extension StepFrequencyExtension on StepFrequency {
 }
 
 /// Parameters for step EMI calculation
+@JsonSerializable()
 class StepEMIParameters extends Equatable {
   final StepEMIType type;
   final double stepPercentage; // Percentage by which EMI changes
@@ -118,11 +122,19 @@ class StepEMIParameters extends Equatable {
     );
   }
 
+  /// Factory for creating from JSON
+  factory StepEMIParameters.fromJson(Map<String, dynamic> json) =>
+      _$StepEMIParametersFromJson(json);
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$StepEMIParametersToJson(this);
+
   @override
   List<Object?> get props => [type, stepPercentage, frequency, maxSteps];
 }
 
 /// Individual step EMI details for a specific period
+@JsonSerializable()
 class StepEMIDetail extends Equatable {
   final int stepNumber;
   final int startMonth;
@@ -157,6 +169,13 @@ class StepEMIDetail extends Equatable {
     }
   }
 
+  /// Factory for creating from JSON
+  factory StepEMIDetail.fromJson(Map<String, dynamic> json) =>
+      _$StepEMIDetailFromJson(json);
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$StepEMIDetailToJson(this);
+
   @override
   List<Object?> get props => [
     stepNumber,
@@ -170,6 +189,7 @@ class StepEMIDetail extends Equatable {
 }
 
 /// Complete result of step EMI calculation
+@JsonSerializable()
 class StepEMIResult extends Equatable {
   final StepEMIParameters parameters;
   final List<StepEMIDetail> steps;
@@ -241,6 +261,13 @@ class StepEMIResult extends Equatable {
   /// Last EMI amount
   double get lastEMI => steps.isNotEmpty ? steps.last.emiAmount : 0;
 
+  /// Factory for creating from JSON
+  factory StepEMIResult.fromJson(Map<String, dynamic> json) =>
+      _$StepEMIResultFromJson(json);
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$StepEMIResultToJson(this);
+
   @override
   List<Object?> get props => [
     parameters,
@@ -254,6 +281,7 @@ class StepEMIResult extends Equatable {
 }
 
 /// Yearly breakdown for step EMI
+@JsonSerializable()
 class YearlyStepEMI extends Equatable {
   final int year;
   final double emiAmount;
@@ -284,6 +312,13 @@ class YearlyStepEMI extends Equatable {
       outstandingBalance: outstandingBalance ?? this.outstandingBalance,
     );
   }
+
+  /// Factory for creating from JSON
+  factory YearlyStepEMI.fromJson(Map<String, dynamic> json) =>
+      _$YearlyStepEMIFromJson(json);
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$YearlyStepEMIToJson(this);
 
   @override
   List<Object?> get props => [

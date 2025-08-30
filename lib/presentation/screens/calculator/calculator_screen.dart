@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/calculation_providers.dart';
+import '../../providers/history_provider.dart';
 import '../../widgets/calculator/loan_input_form.dart';
 import '../../widgets/calculator/enhanced_emi_results_card.dart';
 import '../../widgets/calculator/step_emi_selector.dart';
 import '../../widgets/common/app_scaffold.dart';
 import '../../../domain/entities/step_emi.dart';
+import '../../../domain/entities/calculation_history.dart';
+import '../history/calculation_history_screen.dart';
 
 class CalculatorScreen extends ConsumerWidget {
   const CalculatorScreen({super.key});
@@ -20,6 +23,12 @@ class CalculatorScreen extends ConsumerWidget {
     return AppScaffold(
       title: 'EMI Calculator',
       actions: [
+        // History button
+        IconButton(
+          onPressed: () => _navigateToHistory(context, ref),
+          icon: const Icon(Icons.history),
+          tooltip: 'Calculation History',
+        ),
         TextButton.icon(
           icon: const Icon(Icons.clear_all),
           label: const Text('Clear'),
@@ -102,6 +111,18 @@ class CalculatorScreen extends ConsumerWidget {
                         ref
                             .read(calculatorScreenStateProvider.notifier)
                             .showResults();
+                        
+                        // Save calculation to history
+                        try {
+                          final loanParams = ref.read(loanParametersProvider);
+                          await ref.read(historyActionsProvider.notifier).saveCalculation(
+                            parameters: loanParams,
+                            result: calculationResult.value!,
+                          );
+                        } catch (e) {
+                          // Silently handle history save errors - don't disrupt main flow
+                          debugPrint('Failed to save calculation to history: $e');
+                        }
                       }
                     },
               child: calculatorState.isLoading
@@ -231,5 +252,39 @@ class CalculatorScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  /// Navigate to calculation history screen
+  Future<void> _navigateToHistory(BuildContext context, WidgetRef ref) async {
+    final result = await Navigator.of(context).push<dynamic>(
+      MaterialPageRoute(
+        builder: (context) => const CalculationHistoryScreen(),
+      ),
+    );
+    
+    // If user selected a history item to load, restore the parameters
+    if (result != null && result is CalculationHistory) {
+      ref.read(loanParametersProvider.notifier).loadFromHistory(result.parameters);
+      
+      // Show snackbar to indicate parameters loaded
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              result.name != null 
+                  ? 'Loaded "${result.name}"'
+                  : 'Loaded calculation from history',
+            ),
+            action: SnackBarAction(
+              label: 'Calculate',
+              onPressed: () {
+                // Trigger calculation
+                ref.read(enhancedEMICalculationProvider.notifier).calculateEMI();
+              },
+            ),
+          ),
+        );
+      }
+    }
   }
 }

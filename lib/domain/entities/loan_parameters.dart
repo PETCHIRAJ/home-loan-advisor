@@ -1,6 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'loan_parameters.g.dart';
 
 /// Represents the input parameters for home loan calculation
+@JsonSerializable()
 class LoanParameters extends Equatable {
   final double loanAmount;
   final double interestRate;
@@ -51,6 +55,13 @@ class LoanParameters extends Equatable {
       gender: gender ?? this.gender,
     );
   }
+
+  /// Factory for creating from JSON
+  factory LoanParameters.fromJson(Map<String, dynamic> json) =>
+      _$LoanParametersFromJson(json);
+
+  /// Convert to JSON
+  Map<String, dynamic> toJson() => _$LoanParametersToJson(this);
 
   @override
   List<Object?> get props => [

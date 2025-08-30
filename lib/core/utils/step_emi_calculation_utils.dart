@@ -67,8 +67,8 @@ class StepEMICalculationUtils {
     }
 
     final averageEMI = steps.isNotEmpty 
-      ? steps.map((s) => s.emiAmount * s.durationMonths).reduce((a, b) => a + b) / (tenureYears * 12)
-      : 0;
+      ? steps.map((s) => s.emiAmount * s.durationMonths).reduce((a, b) => a + b) / (tenureYears * 12).toDouble()
+      : 0.0;
 
     final interestSavedVsRegular = regularTotalInterest - totalInterest;
     final isMoreExpensive = totalInterest > regularTotalInterest;

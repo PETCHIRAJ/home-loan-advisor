@@ -79,6 +79,10 @@ class LoanParametersNotifier extends StateNotifier<domain.LoanParameters> {
       gender: 'male',
     );
   }
+  
+  void loadFromHistory(domain.LoanParameters parameters) {
+    state = parameters;
+  }
 }
 
 // EMI calculation notifier
